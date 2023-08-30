@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "id": "admiral_test",
+  "version": "1.0.0",
+  "name": "Admiral Test",
+  "description": "Admiral",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "de.maxhenkel.admiral.test.AdmiralMod"
+    ]
+  }
+}

@@ -1,0 +1,40 @@
+plugins {
+    id 'fabric-loom' version '1.3-SNAPSHOT'
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://maven.fabricmc.net/' }
+}
+
+runClient.doFirst {
+    args = ['--username', "henkelmax${new Random().nextInt(1000)}"]
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    mappings loom.officialMojangMappings()
+    modImplementation "net.fabricmc:fabric-loader:${loader_version}"
+
+    implementation project(':core')
+
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
+}
+
+processResources {
+    filesMatching('fabric.mod.json') {
+        expand 'version': version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = 'UTF-8'
+    it.options.release = 8
+}
+
+java {
+    withSourcesJar()
+}
