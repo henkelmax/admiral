@@ -27,7 +27,7 @@ public class AdmiralParameter<S, A, T> {
         } else {
             type = (Class<T>) parameter.getType();
         }
-        argumentType = admiralMethod.getAdmiralClass().getArgumentRegistry().get(type);
+        argumentType = admiralMethod.getAdmiralClass().getAdmiral().getArgumentRegistry().get(type);
         if (argumentType == null) {
             throw new IllegalStateException(String.format("ArgumentType %s not registered", type.getSimpleName()));
         }
@@ -53,6 +53,14 @@ public class AdmiralParameter<S, A, T> {
 
     public AdmiralMethod<S> getAdmiralMethod() {
         return admiralMethod;
+    }
+
+    public AdmiralClass<S> getAdmiralClass() {
+        return admiralMethod.getAdmiralClass();
+    }
+
+    public AdmiralImpl<S> getAdmiral() {
+        return admiralMethod.getAdmiralClass().getAdmiral();
     }
 
     public String getName() {

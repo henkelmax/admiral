@@ -1,6 +1,5 @@
 package de.maxhenkel.admiral.impl;
 
-import com.mojang.brigadier.CommandDispatcher;
 import de.maxhenkel.admiral.annotations.Command;
 
 import javax.annotation.Nullable;
@@ -13,16 +12,14 @@ import java.util.List;
 public class AdmiralClass<S> {
 
     private boolean registered;
-    private final ArgumentRegistryImpl argumentRegistry;
-    private final CommandDispatcher<S> dispatcher;
+    private AdmiralImpl<S> admiral;
     private final Class<?> clazz;
     @Nullable
     private Object instance;
     private Command[] classAnnotations;
 
-    public AdmiralClass(ArgumentRegistryImpl argumentRegistry, CommandDispatcher<S> dispatcher, Class<?> clazz) {
-        this.argumentRegistry = argumentRegistry;
-        this.dispatcher = dispatcher;
+    public AdmiralClass(AdmiralImpl<S> admiral, Class<?> clazz) {
+        this.admiral = admiral;
         this.clazz = clazz;
     }
 
@@ -52,12 +49,8 @@ public class AdmiralClass<S> {
         return clazz;
     }
 
-    public ArgumentRegistryImpl getArgumentRegistry() {
-        return argumentRegistry;
-    }
-
-    public CommandDispatcher<S> getDispatcher() {
-        return dispatcher;
+    public AdmiralImpl<S> getAdmiral() {
+        return admiral;
     }
 
     @Nullable

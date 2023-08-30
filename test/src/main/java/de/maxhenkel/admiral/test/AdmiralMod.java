@@ -16,14 +16,25 @@ public class AdmiralMod implements ModInitializer {
     public void onInitialize() {
         LOGGER.info("Initializing Admiral test mod");
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
-            MinecraftAdmiral.builder(dispatcher).addCommandClasses(
-                    ExampleCommands.class,
-                    IntegerCommands.class,
-                    PlayerCommands.class,
-                    AliasCommands.class,
-                    NoClassAnnotationCommands.class,
-                    NoMethodAnnotationCommands.class
-            ).build();
+            MinecraftAdmiral.builder(dispatcher)
+                    .addCommandClasses(
+                            ExampleCommands.class,
+                            IntegerCommands.class,
+                            PlayerCommands.class,
+                            AliasCommands.class,
+                            NoClassAnnotationCommands.class,
+                            NoMethodAnnotationCommands.class,
+                            PermissionCommands.class
+                    ).setPermissionManager((source, permission) -> {
+                        if (permission.equals("admiral.test.perm1")) {
+                            return true;
+                        } else if (permission.equals("admiral.test.perm2")) {
+                            return false;
+                        } else {
+                            return source.hasPermission(2);
+                        }
+                    })
+                    .build();
         });
     }
 }

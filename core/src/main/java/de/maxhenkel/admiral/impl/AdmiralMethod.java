@@ -8,7 +8,10 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import de.maxhenkel.admiral.annotations.Command;
+import de.maxhenkel.admiral.annotations.RequiresPermission;
+import de.maxhenkel.admiral.permissions.PermissionManager;
 
+import javax.annotation.Nullable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -23,6 +26,8 @@ public class AdmiralMethod<S> {
     private final Method method;
     private final List<MethodParameter<S, ?, ?>> parameters;
     private Command[] methodAnnotations;
+    @Nullable
+    private RequiresPermission requiredPermission;
 
     public AdmiralMethod(AdmiralClass<S> admiralClass, Method method) {
         this.admiralClass = admiralClass;
@@ -36,6 +41,7 @@ public class AdmiralMethod<S> {
         }
         parameters.addAll(collectParameters());
         methodAnnotations = method.getDeclaredAnnotationsByType(Command.class);
+        requiredPermission = method.getDeclaredAnnotation(RequiresPermission.class);
 
         for (List<String> path : getPaths()) {
             handleCommand(path);
@@ -44,7 +50,7 @@ public class AdmiralMethod<S> {
 
     private LiteralCommandNode<S> handleCommand(List<String> path) {
         if (path.isEmpty()) {
-            throw new IllegalStateException("Can't create command without arguments");
+            throw new IllegalStateException("Can't create command without parameters");
         }
 
         ArgumentBuilder<S, ?> last = null;
@@ -60,21 +66,29 @@ public class AdmiralMethod<S> {
                 argument.then(last);
             }
             if (lastParameter == null || lastParameter.isOptional()) {
+                permission(argument);
                 execute(argument);
             }
             last = argument;
             lastParameter = admiralParameter;
         }
 
+        boolean firstPass = true;
         for (int i = path.size() - 1; i >= 0; i--) {
             LiteralArgumentBuilder<S> literal = LiteralArgumentBuilder.literal(path.get(i));
             if (last != null) {
                 literal.then(last);
             }
-            if (lastParameter == null || lastParameter.isOptional()) {
+            if (lastParameter == null || lastParameter.isOptional() && firstPass) {
+                permission(literal);
                 execute(literal);
             }
             last = literal;
+            firstPass = false;
+        }
+
+        if (last == null) {
+            throw new IllegalStateException("Can't create command without parameters");
         }
 
         registered = true;
@@ -83,6 +97,18 @@ public class AdmiralMethod<S> {
 
     private void execute(ArgumentBuilder<S, ?> builder) {
         builder.executes(this::onExecute);
+    }
+
+    private void permission(ArgumentBuilder<S, ?> builder) {
+        if (requiredPermission != null) {
+            builder.requires(source -> {
+                PermissionManager<S> permissionManager = getAdmiral().getPermissionManager();
+                if (permissionManager == null) {
+                    return false;
+                }
+                return permissionManager.hasPermission(source, requiredPermission.value());
+            });
+        }
     }
 
     private int onExecute(CommandContext<S> context) throws CommandSyntaxException {
@@ -160,10 +186,14 @@ public class AdmiralMethod<S> {
     }
 
     public CommandDispatcher<S> getDispatcher() {
-        return admiralClass.getDispatcher();
+        return admiralClass.getAdmiral().getDispatcher();
     }
 
     public AdmiralClass<S> getAdmiralClass() {
         return admiralClass;
+    }
+
+    public AdmiralImpl<S> getAdmiral() {
+        return admiralClass.getAdmiral();
     }
 }
