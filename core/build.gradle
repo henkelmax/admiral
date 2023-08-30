@@ -2,6 +2,9 @@ plugins {
     id 'java'
 }
 
+group = maven_group
+archivesBaseName = archives_base_name
+
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
