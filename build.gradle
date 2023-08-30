@@ -1,3 +1,4 @@
 plugins {
     id 'fabric-loom' version "${loom_version}" apply false
+    id 'com.github.johnrengelman.shadow' version "${shadow_version}" apply false
 }
