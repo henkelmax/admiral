@@ -1,7 +1,6 @@
 package de.maxhenkel.admiral.impl;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.tree.LiteralCommandNode;
 import de.maxhenkel.admiral.annotations.Command;
 
 import javax.annotation.Nullable;
@@ -17,22 +16,17 @@ public class AdmiralClass<S> {
     private final ArgumentRegistryImpl argumentRegistry;
     private final CommandDispatcher<S> dispatcher;
     private final Class<?> clazz;
-    private final List<AdmiralMethod<S>> methods;
-    private final List<LiteralCommandNode<S>> commands;
     @Nullable
     private Object instance;
-    @Nullable
-    private Command classAnnotation;
+    private Command[] classAnnotations;
 
     public AdmiralClass(ArgumentRegistryImpl argumentRegistry, CommandDispatcher<S> dispatcher, Class<?> clazz) {
         this.argumentRegistry = argumentRegistry;
         this.dispatcher = dispatcher;
         this.clazz = clazz;
-        this.methods = new ArrayList<>();
-        this.commands = new ArrayList<>();
     }
 
-    public List<LiteralCommandNode<S>> register() {
+    public void register() {
         if (registered) {
             throw new IllegalStateException("Already registered");
         }
@@ -43,21 +37,15 @@ public class AdmiralClass<S> {
         } catch (Exception e) {
             throw new IllegalStateException(String.format("Class %s does not have a no-arguments constructor", clazz.getSimpleName()), e);
         }
-        classAnnotation = clazz.getDeclaredAnnotation(Command.class);
+        classAnnotations = clazz.getDeclaredAnnotationsByType(Command.class);
 
         Method[] declaredMethods = clazz.getDeclaredMethods();
 
         for (Method method : declaredMethods) {
             AdmiralMethod<S> admiralMethod = new AdmiralMethod<>(this, method);
-            LiteralCommandNode<S> register = admiralMethod.register();
-            if (register != null) {
-                methods.add(admiralMethod);
-                commands.add(register);
-            }
-            // Ignore methods without @Command annotation
+            admiralMethod.register();
         }
         registered = true;
-        return commands;
     }
 
     public Class<?> getClazz() {
@@ -77,16 +65,12 @@ public class AdmiralClass<S> {
         return instance;
     }
 
-    @Nullable
-    public Command getClassAnnotation() {
-        return classAnnotation;
-    }
-
-    public List<String> getPath() {
-        if (classAnnotation == null) {
-            return new ArrayList<>();
+    public List<List<String>> getPaths() {
+        List<List<String>> paths = new ArrayList<>();
+        for (Command command : classAnnotations) {
+            paths.add(new ArrayList<>(Arrays.asList(command.value())));
         }
-        return new ArrayList<>(Arrays.asList(classAnnotation.value()));
+        return paths;
     }
 
 }

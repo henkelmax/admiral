@@ -1,13 +1,10 @@
 package de.maxhenkel.admiral.annotations;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
-//TODO Add support for multiple annotations for aliases
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
+@Repeatable(Commands.class)
 public @interface Command {
 
     String[] value() default {};

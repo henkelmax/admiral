@@ -9,12 +9,12 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import de.maxhenkel.admiral.annotations.Command;
 
-import javax.annotation.Nullable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AdmiralMethod<S> {
 
@@ -22,6 +22,7 @@ public class AdmiralMethod<S> {
     private final AdmiralClass<S> admiralClass;
     private final Method method;
     private final List<MethodParameter<S, ?, ?>> parameters;
+    private Command[] methodAnnotations;
 
     public AdmiralMethod(AdmiralClass<S> admiralClass, Method method) {
         this.admiralClass = admiralClass;
@@ -29,17 +30,23 @@ public class AdmiralMethod<S> {
         this.parameters = new ArrayList<>();
     }
 
-    @Nullable
-    public LiteralCommandNode<S> register() {
+    public void register() {
         if (registered) {
             throw new IllegalStateException("Already registered");
         }
-        Command commandAnnotation = method.getDeclaredAnnotation(Command.class);
-        if (commandAnnotation == null) {
-            return null;
+        parameters.addAll(collectParameters());
+        methodAnnotations = method.getDeclaredAnnotationsByType(Command.class);
+
+        for (List<String> path : getPaths()) {
+            handleCommand(path);
+        }
+    }
+
+    private LiteralCommandNode<S> handleCommand(List<String> path) {
+        if (path.isEmpty()) {
+            throw new IllegalStateException("Can't create command without arguments");
         }
 
-        parameters.addAll(collectParameters());
         ArgumentBuilder<S, ?> last = null;
         AdmiralParameter<S, ?, ?> lastParameter = null;
         for (int i = parameters.size() - 1; i >= 0; i--) {
@@ -57,12 +64,6 @@ public class AdmiralMethod<S> {
             }
             last = argument;
             lastParameter = admiralParameter;
-        }
-
-        List<String> path = getPath();
-
-        if (path.isEmpty()) {
-            throw new IllegalStateException("Can't create command without arguments");
         }
 
         for (int i = path.size() - 1; i >= 0; i--) {
@@ -138,19 +139,24 @@ public class AdmiralMethod<S> {
         return parameters;
     }
 
-    private List<String> getPath() {
-        List<String> path = admiralClass.getPath();
-        Command methodAnnotation = getMethodAnnotation();
-        if (methodAnnotation != null) {
-            path.addAll(Arrays.asList(methodAnnotation.value()));
+    private List<List<String>> getPaths() {
+        List<List<String>> paths = new ArrayList<>();
+        List<List<String>> classPaths = admiralClass.getPaths();
+        List<List<String>> methodPaths = Arrays.stream(methodAnnotations).map(command -> new ArrayList<>(Arrays.asList(command.value()))).collect(Collectors.toList());
+        for (List<String> classPath : classPaths) {
+            for (List<String> methodPath : methodPaths) {
+                List<String> path = new ArrayList<>(classPath);
+                path.addAll(methodPath);
+                paths.add(path);
+            }
         }
-        //TODO Do we want to process methods with no annotation?
-        return path;
-    }
-
-    @Nullable
-    public Command getMethodAnnotation() {
-        return method.getDeclaredAnnotation(Command.class);
+        if (classPaths.isEmpty()) {
+            paths.addAll(methodPaths);
+        }
+        if (methodPaths.isEmpty()) {
+            paths.addAll(classPaths);
+        }
+        return paths;
     }
 
     public CommandDispatcher<S> getDispatcher() {
@@ -159,9 +165,5 @@ public class AdmiralMethod<S> {
 
     public AdmiralClass<S> getAdmiralClass() {
         return admiralClass;
-    }
-
-    public Method getMethod() {
-        return method;
     }
 }

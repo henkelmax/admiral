@@ -6,6 +6,7 @@ import de.maxhenkel.admiral.impl.MinecraftArgumentTypes;
 public class MinecraftAdmiral {
 
     public static <S> Builder<S> builder(CommandDispatcher<S> dispatcher) {
+        MinecraftArgumentTypes.register();
         return new Builder<>(dispatcher);
     }
 
@@ -13,7 +14,6 @@ public class MinecraftAdmiral {
 
         protected Builder(CommandDispatcher<S> dispatcher) {
             super(dispatcher);
-            MinecraftArgumentTypes.register();
         }
 
     }

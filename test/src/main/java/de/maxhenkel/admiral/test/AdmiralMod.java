@@ -1,9 +1,7 @@
 package de.maxhenkel.admiral.test;
 
 import de.maxhenkel.admiral.MinecraftAdmiral;
-import de.maxhenkel.admiral.test.commands.ExampleCommands;
-import de.maxhenkel.admiral.test.commands.IntegerCommands;
-import de.maxhenkel.admiral.test.commands.PlayerCommands;
+import de.maxhenkel.admiral.test.commands.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import org.apache.logging.log4j.LogManager;
@@ -18,7 +16,14 @@ public class AdmiralMod implements ModInitializer {
     public void onInitialize() {
         LOGGER.info("Initializing Admiral test mod");
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
-            MinecraftAdmiral.builder(dispatcher).addCommandClasses(ExampleCommands.class, IntegerCommands.class, PlayerCommands.class).build();
+            MinecraftAdmiral.builder(dispatcher).addCommandClasses(
+                    ExampleCommands.class,
+                    IntegerCommands.class,
+                    PlayerCommands.class,
+                    AliasCommands.class,
+                    NoClassAnnotationCommands.class,
+                    NoMethodAnnotationCommands.class
+            ).build();
         });
     }
 }
