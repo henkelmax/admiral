@@ -9,6 +9,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import de.maxhenkel.admiral.annotations.Command;
 import de.maxhenkel.admiral.annotations.RequiresPermission;
+import de.maxhenkel.admiral.impl.logging.Log;
 import de.maxhenkel.admiral.permissions.PermissionManager;
 
 import javax.annotation.Nullable;
@@ -17,6 +18,7 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class AdmiralMethod<S> {
@@ -138,8 +140,7 @@ public class AdmiralMethod<S> {
             } else if (e.getCause() instanceof CommandSyntaxException) {
                 throw (CommandSyntaxException) e.getCause();
             }
-            // TODO remove
-            e.printStackTrace();
+            Log.LOGGER.log(Level.SEVERE, "Error while executing command", e);
             throw new RuntimeException(e);
         }
         return 0;

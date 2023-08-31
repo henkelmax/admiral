@@ -3,11 +3,16 @@ package de.maxhenkel.admiral;
 import com.mojang.brigadier.CommandDispatcher;
 import de.maxhenkel.admiral.impl.AdmiralImpl;
 import de.maxhenkel.admiral.impl.MinecraftArgumentTypes;
+import de.maxhenkel.admiral.impl.logging.MinecraftLogging;
 
 public class MinecraftAdmiral {
 
-    public static <S> Builder<S> builder(CommandDispatcher<S> dispatcher) {
+    static {
         MinecraftArgumentTypes.register();
+        MinecraftLogging.useMinecraftLogger();
+    }
+
+    public static <S> Builder<S> builder(CommandDispatcher<S> dispatcher) {
         return new Builder<>(dispatcher);
     }
 
