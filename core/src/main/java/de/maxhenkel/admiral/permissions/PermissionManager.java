@@ -8,7 +8,7 @@ import de.maxhenkel.admiral.Admiral;
  * <br/>
  * Must be registered with {@link Admiral.Builder#setPermissionManager(PermissionManager)}.
  *
- * @param <S> the command source
+ * @param <S> the command source type
  */
 public interface PermissionManager<S> {
 
