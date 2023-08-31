@@ -10,14 +10,23 @@ import de.maxhenkel.admiral.annotations.MinMax;
 import javax.annotation.Nullable;
 
 /**
+ * A wrapper for brigadier argument types.
+ * Wrappers inheriting this class do not need to be registered.
+ *
  * @param <S> the command source type
  * @param <A> the argument type of the brigadier argument
  * @param <T> the converted argument type
  */
 public abstract class ArgumentTypeWrapper<S, A, T> {
 
+    /**
+     * This value is set via reflection.
+     */
     private T value;
 
+    /**
+     * Wrappers always need a no-argument constructor.
+     */
     protected ArgumentTypeWrapper() {
 
     }
