@@ -1,5 +1,8 @@
 package de.maxhenkel.admiral.arguments;
 
+/**
+ * A wrapper for a simple string based argument.
+ */
 public class StringArgumentBase extends SimpleArgumentWrapper<String> implements CharSequence {
 
     public StringArgumentBase(String string) {
