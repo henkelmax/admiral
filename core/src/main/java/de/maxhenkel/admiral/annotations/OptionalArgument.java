@@ -1,6 +1,5 @@
 package de.maxhenkel.admiral.annotations;
 
-import javax.annotation.Nullable;
 import java.lang.annotation.*;
 
 /**
@@ -9,7 +8,6 @@ import java.lang.annotation.*;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
-@Nullable
 @Documented
 public @interface OptionalArgument {
 }
