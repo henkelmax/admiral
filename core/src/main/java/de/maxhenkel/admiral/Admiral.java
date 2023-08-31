@@ -2,6 +2,7 @@ package de.maxhenkel.admiral;
 
 import com.mojang.brigadier.CommandDispatcher;
 import de.maxhenkel.admiral.arguments.ArgumentRegistry;
+import de.maxhenkel.admiral.impl.AdmiralImpl;
 import de.maxhenkel.admiral.impl.ArgumentRegistryImpl;
 import de.maxhenkel.admiral.permissions.PermissionManager;
 
@@ -12,7 +13,21 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 
+/**
+ * @param <S> the command source type
+ */
 public class Admiral<S> {
+
+    /**
+     * Creates an admiral builder <b>without</b> Minecraft specific argument types.
+     *
+     * @param dispatcher the command dispatcher
+     * @param <S>        the command source type
+     * @return an admiral builder
+     */
+    public static <S> Admiral.Builder<S> builder(CommandDispatcher<S> dispatcher) {
+        return AdmiralImpl.builder(dispatcher);
+    }
 
     /**
      * @param <S> the command source type
