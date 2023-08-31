@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'maven-publish'
 }
 
 group = maven_group
@@ -8,6 +9,7 @@ archivesBaseName = archives_base_name
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+    withSourcesJar()
 }
 
 repositories {
@@ -20,6 +22,25 @@ dependencies {
     implementation "com.mojang:brigadier:${brigardier_version}"
 }
 
-java {
-    withSourcesJar()
+publishing {
+    publications {
+        admiralCore(MavenPublication) {
+            artifactId archives_base_name
+            artifact(jar.archivePath) {
+                builtBy build
+                classifier null
+            }
+            artifact sourcesJar
+        }
+    }
+    repositories {
+        maven {
+            name = 'henkelmax.public'
+            url = 'https://maven.maxhenkel.de/repository/public'
+            credentials {
+                username System.getenv('MAVEN_USERNAME')
+                password System.getenv('MAVEN_PASSWORD')
+            }
+        }
+    }
 }

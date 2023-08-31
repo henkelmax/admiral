@@ -1,10 +1,15 @@
 plugins {
+    id 'java'
+    id 'maven-publish'
     id 'fabric-loom'
     id 'com.github.johnrengelman.shadow'
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+    withSourcesJar()
+}
 
 group = maven_group
 archivesBaseName = archives_base_name
@@ -34,10 +39,6 @@ tasks.withType(JavaCompile).configureEach {
     it.options.release = 8
 }
 
-java {
-    withSourcesJar()
-}
-
 shadowJar {
     configurations = [project.configurations.shadow]
     archiveClassifier = 'shadow-dev'
@@ -50,4 +51,35 @@ shadowJar {
 remapJar {
     dependsOn shadowJar
     inputFile = shadowJar.archiveFile.get()
+}
+
+tasks.register('shadedSourcesJar', Jar) {
+    archiveClassifier = 'sources'
+    from sourceSets.main.allSource
+    from project(':core').sourceSets.main.allSource
+}
+tasks.shadedSourcesJar.dependsOn compileJava
+tasks.shadedSourcesJar.dependsOn shadowJar
+
+publishing {
+    publications {
+        admiralFabric(MavenPublication) {
+            artifactId archives_base_name
+            artifact(shadowJar) {
+                builtBy build
+                classifier null
+            }
+            artifact shadedSourcesJar
+        }
+    }
+    repositories {
+        maven {
+            name = 'henkelmax.public'
+            url = 'https://maven.maxhenkel.de/repository/public'
+            credentials {
+                username System.getenv('MAVEN_USERNAME')
+                password System.getenv('MAVEN_PASSWORD')
+            }
+        }
+    }
 }
