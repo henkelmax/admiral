@@ -1,12 +1,17 @@
 package de.maxhenkel.admiral.arguments;
 
-/**
- * A wrapper for Brigadier's greedy string argument.
- */
-public class GreedyString extends StringArgumentBase {
+import com.mojang.brigadier.arguments.ArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import de.maxhenkel.admiral.argumenttype.StringArgumentTypeBase;
 
-    public GreedyString(String string) {
-        super(string);
+/**
+ * A wrapper for {@link StringArgumentType#greedyString()}.
+ */
+public class GreedyString extends StringArgumentTypeBase {
+
+    @Override
+    protected ArgumentType<String> getArgumentType() {
+        return StringArgumentType.greedyString();
     }
 
 }

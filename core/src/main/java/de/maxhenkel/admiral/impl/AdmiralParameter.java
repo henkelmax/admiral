@@ -2,9 +2,9 @@ package de.maxhenkel.admiral.impl;
 
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import de.maxhenkel.admiral.annotations.Name;
 import de.maxhenkel.admiral.annotations.OptionalArgument;
-import de.maxhenkel.admiral.impl.arguments.ArgumentBase;
 
 import java.lang.reflect.Parameter;
 import java.util.Optional;
@@ -15,7 +15,7 @@ public class AdmiralParameter<S, A, T> {
     private final Parameter parameter;
     private final String name;
     private final Class<T> type;
-    private final ArgumentBase<A, T> argumentType;
+    private final AdmiralArgumentType<S, A, T> argumentType;
     private final boolean optional;
 
     public AdmiralParameter(AdmiralMethod<S> admiralMethod, Parameter parameter) {
@@ -27,9 +27,10 @@ public class AdmiralParameter<S, A, T> {
         } else {
             type = (Class<T>) parameter.getType();
         }
-        argumentType = admiralMethod.getAdmiralClass().getAdmiral().getArgumentRegistry().get(type);
-        if (argumentType == null) {
-            throw new IllegalStateException(String.format("ArgumentType %s not registered", type.getSimpleName()));
+        try {
+            argumentType = AdmiralArgumentType.fromClass(getAdmiral().getArgumentRegistry(), type);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
         optional = isOptional(parameter);
 
@@ -72,10 +73,12 @@ public class AdmiralParameter<S, A, T> {
     }
 
     public RequiredArgumentBuilder<S, A> toArgument() {
-        return RequiredArgumentBuilder.argument(name, argumentType.getArgumentType(this).get());
+        A minVal = AnnotationUtil.getMin(this);
+        A maxVal = AnnotationUtil.getMax(this);
+        return RequiredArgumentBuilder.argument(name, argumentType.getArgumentType(minVal, maxVal));
     }
 
-    public Class<T> getRawType() {
+    public Class<T> getParameterType() {
         return type;
     }
 
@@ -83,8 +86,8 @@ public class AdmiralParameter<S, A, T> {
         return argumentType.getArgumentTypeClass();
     }
 
-    public Object getValue(CommandContext<S> context) {
-        Object value = null;
+    public Object getValue(CommandContext<S> context) throws CommandSyntaxException {
+        A value = null;
         try {
             value = context.getArgument(name, argumentType.getArgumentTypeClass());
         } catch (IllegalArgumentException e) {
@@ -92,10 +95,11 @@ public class AdmiralParameter<S, A, T> {
                 throw e;
             }
         }
+        Object convertedValue = argumentType.convert(context, value);
         if (isJavaOptional(parameter)) {
-            return Optional.ofNullable(value);
+            return Optional.ofNullable(convertedValue);
         }
-        return argumentType.convert(context, (A) value);
+        return convertedValue;
     }
 
     public Parameter getParameter() {

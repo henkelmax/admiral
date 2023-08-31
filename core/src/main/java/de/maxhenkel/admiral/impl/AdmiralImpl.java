@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 
 public class AdmiralImpl<S> extends Admiral<S> {
 
-    private ArgumentRegistryImpl argumentRegistry;
+    private ArgumentTypeRegistryImpl argumentRegistry;
     private CommandDispatcher<S> dispatcher;
     @Nullable
     private PermissionManager<S> permissionManager;
@@ -21,7 +21,7 @@ public class AdmiralImpl<S> extends Admiral<S> {
         return new Builder<>(dispatcher);
     }
 
-    public ArgumentRegistryImpl getArgumentRegistry() {
+    public ArgumentTypeRegistryImpl getArgumentRegistry() {
         return argumentRegistry;
     }
 

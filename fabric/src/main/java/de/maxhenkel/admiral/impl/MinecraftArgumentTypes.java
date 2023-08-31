@@ -1,8 +1,9 @@
 package de.maxhenkel.admiral.impl;
 
-import de.maxhenkel.admiral.arguments.Player;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.selector.EntitySelector;
+import net.minecraft.server.level.ServerPlayer;
 
 public class MinecraftArgumentTypes {
 
@@ -12,12 +13,12 @@ public class MinecraftArgumentTypes {
         if (registered) {
             return;
         }
-        ArgumentRegistryImpl.addRegistrations(MinecraftArgumentTypes::registerInternal);
+        ArgumentTypeRegistryImpl.addRegistrations(MinecraftArgumentTypes::registerInternal);
         registered = true;
     }
 
-    private static void registerInternal(ArgumentRegistryImpl argumentRegistry) {
-        argumentRegistry.register(EntityArgument::player, EntitySelector.class, Player.class);
+    private static void registerInternal(ArgumentTypeRegistryImpl argumentRegistry) {
+        argumentRegistry.<CommandSourceStack, EntitySelector, ServerPlayer>register(EntityArgument::player, (context, value) -> value.findSinglePlayer(context.getSource()), ServerPlayer.class);
     }
 
 }

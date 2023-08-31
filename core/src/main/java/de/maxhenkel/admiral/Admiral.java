@@ -1,9 +1,9 @@
 package de.maxhenkel.admiral;
 
 import com.mojang.brigadier.CommandDispatcher;
-import de.maxhenkel.admiral.arguments.ArgumentRegistry;
+import de.maxhenkel.admiral.argumenttype.ArgumentTypeRegistry;
 import de.maxhenkel.admiral.impl.AdmiralImpl;
-import de.maxhenkel.admiral.impl.ArgumentRegistryImpl;
+import de.maxhenkel.admiral.impl.ArgumentTypeRegistryImpl;
 import de.maxhenkel.admiral.permissions.PermissionManager;
 
 import javax.annotation.Nullable;
@@ -34,14 +34,14 @@ public class Admiral<S> {
      */
     public static abstract class Builder<S> {
         protected final CommandDispatcher<S> dispatcher;
-        protected final ArgumentRegistryImpl argumentRegistry;
+        protected final ArgumentTypeRegistryImpl argumentRegistry;
         protected final List<Class<?>> classes;
         @Nullable
         protected PermissionManager<S> permissionManager;
 
         protected Builder(CommandDispatcher<S> dispatcher) {
             this.dispatcher = dispatcher;
-            this.argumentRegistry = new ArgumentRegistryImpl();
+            this.argumentRegistry = new ArgumentTypeRegistryImpl();
             this.classes = new ArrayList<>();
         }
 
@@ -71,7 +71,7 @@ public class Admiral<S> {
          * @param argumentRegistryConsumer a consumer that provides an argument registry to register custom arguments
          * @return this builder
          */
-        public Builder<S> addArgumentTypes(Consumer<ArgumentRegistry> argumentRegistryConsumer) {
+        public Builder<S> addArgumentTypes(Consumer<ArgumentTypeRegistry> argumentRegistryConsumer) {
             argumentRegistryConsumer.accept(argumentRegistry);
             return this;
         }
