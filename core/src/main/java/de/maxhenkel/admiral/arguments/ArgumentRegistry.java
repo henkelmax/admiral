@@ -1,4 +1,4 @@
-package de.maxhenkel.admiral;
+package de.maxhenkel.admiral.arguments;
 
 import com.mojang.brigadier.arguments.ArgumentType;
 

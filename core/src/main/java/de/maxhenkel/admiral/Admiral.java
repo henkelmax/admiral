@@ -1,6 +1,7 @@
 package de.maxhenkel.admiral;
 
 import com.mojang.brigadier.CommandDispatcher;
+import de.maxhenkel.admiral.arguments.ArgumentRegistry;
 import de.maxhenkel.admiral.impl.ArgumentRegistryImpl;
 import de.maxhenkel.admiral.permissions.PermissionManager;
 
