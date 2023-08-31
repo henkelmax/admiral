@@ -3,9 +3,13 @@ package de.maxhenkel.admiral.arguments;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.selector.EntitySelector;
 import net.minecraft.server.level.ServerPlayer;
 
+/**
+ * A wrapper for {@link EntityArgument#player()}.
+ */
 public class Player extends ArgumentWrapper<CommandSourceStack, EntitySelector, ServerPlayer> {
 
     public Player(CommandContext<CommandSourceStack> context, EntitySelector value) {
@@ -13,7 +17,7 @@ public class Player extends ArgumentWrapper<CommandSourceStack, EntitySelector, 
     }
 
     @Override
-    public ServerPlayer convert(EntitySelector value) throws CommandSyntaxException {
+    protected ServerPlayer convert(EntitySelector value) throws CommandSyntaxException {
         if (context == null) {
             throw new IllegalStateException("Context is null");
         }
