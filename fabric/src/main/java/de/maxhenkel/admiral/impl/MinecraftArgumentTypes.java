@@ -53,6 +53,7 @@ public class MinecraftArgumentTypes {
         argumentRegistry.register(ChatFormatting.class, ColorArgument::color);
         argumentRegistry.register(Component.class, ComponentArgument::textComponent);
         argumentRegistry.register(CompoundTag.class, CompoundTagArgument::compoundTag);
+        argumentRegistry.register(EntityAnchorArgument.Anchor.class, EntityAnchorArgument::anchor);
 
         argumentRegistry.<CommandSourceStack, ResourceLocation, ServerLevel>register(ServerLevel.class, DimensionArgument::dimension, (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : DimensionArgument.getDimension(context, name));
     }
