@@ -67,6 +67,7 @@ public class MinecraftArgumentTypes {
         argumentRegistry.register(NbtPathArgument.NbtPath.class, NbtPathArgument::nbtPath);
         argumentRegistry.register(Tag.class, NbtTagArgument::nbtTag);
         argumentRegistry.register(ObjectiveCriteria.class, ObjectiveCriteriaArgument::criteria);
+        argumentRegistry.register(OperationArgument.Operation.class, OperationArgument::operation);
 
         argumentRegistry.<CommandSourceStack, ResourceLocation, ServerLevel>register(ServerLevel.class, DimensionArgument::dimension, (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : DimensionArgument.getDimension(context, name));
         argumentRegistry.<CommandSourceStack, String, Objective>register(Objective.class, ObjectiveArgument::objective, (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ObjectiveArgument.getObjective(context, name));
