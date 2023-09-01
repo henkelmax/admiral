@@ -9,6 +9,14 @@ import java.util.Optional;
 @FunctionalInterface
 public interface OptionalArgumentTypeConverter<S, A, T> extends ArgumentTypeConverter<S, A, T> {
 
+    /**
+     * Converts the optional argument type to the desired type.
+     *
+     * @param context the command context
+     * @param value   the optional value
+     * @return the converted argument type or <code>null</code> if the object supplied to the command method should be <code>null</code>
+     * @throws CommandSyntaxException if the conversion fails
+     */
     @Nullable
     T convert(CommandContext<S> context, Optional<A> value) throws CommandSyntaxException;
 
