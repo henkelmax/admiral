@@ -2,6 +2,8 @@ package de.maxhenkel.admiral.impl;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import de.maxhenkel.admiral.arguments.GreedyString;
+import de.maxhenkel.admiral.arguments.Word;
 import de.maxhenkel.admiral.argumenttype.ArgumentTypeRegistry;
 import de.maxhenkel.admiral.argumenttype.ArgumentTypeConverter;
 import de.maxhenkel.admiral.argumenttype.ArgumentTypeSupplier;
@@ -36,6 +38,8 @@ public class ArgumentTypeRegistryImpl implements ArgumentTypeRegistry {
 
     private void registerDefault() {
         register(StringArgumentType::string, String.class);
+        register(StringArgumentType::greedyString, (context, value) -> new GreedyString(value), GreedyString.class);
+        register(StringArgumentType::word, (context, value) -> new Word(value), Word.class);
 
         register((RangedArgumentTypeSupplier<Integer>) (min, max) -> {
             if (min == null) {
