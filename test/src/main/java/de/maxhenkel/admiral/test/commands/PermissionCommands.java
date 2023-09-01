@@ -5,6 +5,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import de.maxhenkel.admiral.annotations.Command;
 import de.maxhenkel.admiral.annotations.OptionalArgument;
 import de.maxhenkel.admiral.annotations.RequiresPermission;
+import de.maxhenkel.admiral.annotations.RequiresPermissionLevel;
 import de.maxhenkel.admiral.test.AdmiralMod;
 import net.minecraft.commands.CommandSourceStack;
 
@@ -27,6 +28,18 @@ public class PermissionCommands {
     @RequiresPermission("admiral.test.perm3")
     public void perm3(CommandContext<CommandSourceStack> context, @OptionalArgument int test) throws CommandSyntaxException {
         AdmiralMod.LOGGER.info("perm3: {}", test);
+    }
+
+    @Command("perm4")
+    @RequiresPermissionLevel(2)
+    public void perm4(CommandContext<CommandSourceStack> context, @OptionalArgument int test) throws CommandSyntaxException {
+        AdmiralMod.LOGGER.info("perm4: {}", test);
+    }
+
+    @Command("perm5")
+    @RequiresPermissionLevel(0)
+    public void perm5(CommandContext<CommandSourceStack> context, @OptionalArgument int test) throws CommandSyntaxException {
+        AdmiralMod.LOGGER.info("perm5: {}", test);
     }
 
 }

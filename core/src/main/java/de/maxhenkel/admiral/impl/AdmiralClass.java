@@ -1,7 +1,8 @@
 package de.maxhenkel.admiral.impl;
 
 import de.maxhenkel.admiral.annotations.Command;
-import de.maxhenkel.admiral.annotations.RequiresPermission;
+import de.maxhenkel.admiral.impl.permissions.Permission;
+import de.maxhenkel.admiral.impl.permissions.PermissionAnnotationUtil;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Constructor;
@@ -15,10 +16,9 @@ public class AdmiralClass<S> {
     private boolean registered;
     private AdmiralImpl<S> admiral;
     private final Class<?> clazz;
-    @Nullable
     private Object instance;
     private List<Command> commands;
-    private List<RequiresPermission> requiredPermissions;
+    private List<Permission<S>> requiredPermissions;
 
     public AdmiralClass(AdmiralImpl<S> admiral, Class<?> clazz) {
         this.admiral = admiral;
@@ -37,7 +37,7 @@ public class AdmiralClass<S> {
             throw new IllegalStateException(String.format("Class %s does not have a no-arguments constructor", clazz.getSimpleName()), e);
         }
         commands = Arrays.asList(clazz.getDeclaredAnnotationsByType(Command.class));
-        requiredPermissions = Arrays.asList(clazz.getDeclaredAnnotationsByType(RequiresPermission.class));
+        requiredPermissions = PermissionAnnotationUtil.getPermissions(clazz);
 
         Method[] declaredMethods = clazz.getDeclaredMethods();
 
@@ -57,7 +57,7 @@ public class AdmiralClass<S> {
         return admiral;
     }
 
-    public List<RequiresPermission> getRequiredPermissions() {
+    public List<Permission<S>> getRequiredPermissions() {
         return requiredPermissions;
     }
 

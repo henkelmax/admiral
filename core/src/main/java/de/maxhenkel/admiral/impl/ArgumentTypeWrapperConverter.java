@@ -2,7 +2,6 @@ package de.maxhenkel.admiral.impl;
 
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import de.maxhenkel.admiral.argumenttype.ArgumentTypeConverter;
 import de.maxhenkel.admiral.argumenttype.ArgumentTypeSupplier;
 import de.maxhenkel.admiral.argumenttype.ArgumentTypeWrapper;
@@ -63,13 +62,7 @@ public class ArgumentTypeWrapperConverter {
                 value.set(wrapper, converted);
                 return wrapper;
             } catch (Exception e) {
-                if (e instanceof CommandSyntaxException) {
-                    throw (CommandSyntaxException) e;
-                }
-                if (e.getCause() instanceof CommandSyntaxException) {
-                    throw (CommandSyntaxException) e.getCause();
-                }
-                throw new RuntimeException(e);
+                throw ExceptionUtils.getAsCommandSyntaxException(e);
             }
         };
 

@@ -8,9 +8,11 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import de.maxhenkel.admiral.annotations.Command;
-import de.maxhenkel.admiral.annotations.RequiresPermission;
+import de.maxhenkel.admiral.impl.permissions.Permission;
+import de.maxhenkel.admiral.impl.permissions.PermissionAnnotationUtil;
 import de.maxhenkel.admiral.permissions.PermissionManager;
 
+import javax.annotation.Nullable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ public class AdmiralMethod<S> {
     private final Method method;
     private final List<MethodParameter<S, ?, ?>> parameters;
     private List<Command> commands;
-    private List<RequiresPermission> requiredPermissions;
+    private List<Permission<S>> requiredPermissions;
 
     public AdmiralMethod(AdmiralClass<S> admiralClass, Method method) {
         this.admiralClass = admiralClass;
@@ -40,7 +42,7 @@ public class AdmiralMethod<S> {
         }
         parameters.addAll(collectParameters());
         commands = Arrays.asList(method.getDeclaredAnnotationsByType(Command.class));
-        requiredPermissions = Arrays.asList(method.getDeclaredAnnotationsByType(RequiresPermission.class));
+        requiredPermissions = PermissionAnnotationUtil.getPermissions(method);
 
         for (List<String> path : getPaths()) {
             handleCommand(path);
@@ -94,8 +96,8 @@ public class AdmiralMethod<S> {
         return getDispatcher().register((LiteralArgumentBuilder<S>) last);
     }
 
-    private List<RequiresPermission> getRequiredPermissions() {
-        List<RequiresPermission> permissions = new ArrayList<>();
+    private List<Permission<S>> getRequiredPermissions() {
+        List<Permission<S>> permissions = new ArrayList<>();
         permissions.addAll(admiralClass.getRequiredPermissions());
         permissions.addAll(requiredPermissions);
         return permissions;
@@ -107,11 +109,8 @@ public class AdmiralMethod<S> {
 
     private void permission(ArgumentBuilder<S, ?> builder) {
         builder.requires(source -> {
-            PermissionManager<S> permissionManager = getAdmiral().getPermissionManager();
-            if (permissionManager == null) {
-                return true;
-            }
-            return getRequiredPermissions().stream().allMatch(requiresPermission -> permissionManager.hasPermission(source, requiresPermission.value()));
+            @Nullable PermissionManager<S> permissionManager = getAdmiral().getPermissionManager();
+            return getRequiredPermissions().stream().allMatch(p -> p.hasPermission(source, permissionManager));
         });
     }
 
@@ -137,13 +136,8 @@ public class AdmiralMethod<S> {
             }
             // TODO Command result object
         } catch (Exception e) {
-            if (e instanceof CommandSyntaxException) {
-                throw (CommandSyntaxException) e;
-            } else if (e.getCause() instanceof CommandSyntaxException) {
-                throw (CommandSyntaxException) e.getCause();
-            }
             Log.LOGGER.log(Level.SEVERE, "Error while executing command", e);
-            throw new RuntimeException(e);
+            throw ExceptionUtils.getAsCommandSyntaxException(e);
         }
         return 0;
     }
