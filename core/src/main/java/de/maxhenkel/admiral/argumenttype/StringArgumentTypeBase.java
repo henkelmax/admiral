@@ -25,8 +25,4 @@ public abstract class StringArgumentTypeBase extends SimpleArgumentTypeWrapper<S
         return get();
     }
 
-    @Override
-    protected Class<String> getArgumentTypeClass() {
-        return String.class;
-    }
 }

@@ -49,11 +49,6 @@ public abstract class ArgumentTypeWrapper<S, A, T> {
     protected abstract T convert(CommandContext<S> context, @Nullable A value) throws CommandSyntaxException;
 
     /**
-     * @return the class of the argument type
-     */
-    protected abstract Class<A> getArgumentTypeClass();
-
-    /**
      * @return the argument type
      */
     protected abstract ArgumentType<A> getArgumentType();

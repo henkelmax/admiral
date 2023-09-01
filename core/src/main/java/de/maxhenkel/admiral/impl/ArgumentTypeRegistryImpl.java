@@ -58,13 +58,15 @@ public class ArgumentTypeRegistryImpl implements ArgumentTypeRegistry {
         return (ArgumentTypeConverter<S, A, T>) argumentTypeConverterMap.get(clazz);
     }
 
-    public <S, A, T> void register(ArgumentTypeSupplier<A> argumentType, @Nullable ArgumentTypeConverter<S, A, T> argumentTypeConverter, Class<T> argumentTypeClass) {
-        argumentTypeMap.put(argumentTypeClass, argumentType);
+    @Override
+    public <S, A, T> void register(ArgumentTypeSupplier<A> argumentType, @Nullable ArgumentTypeConverter<S, A, T> argumentTypeConverter, Class<T> customTypeClass) {
+        argumentTypeMap.put(customTypeClass, argumentType);
         if (argumentTypeConverter != null) {
-            argumentTypeConverterMap.put(argumentTypeClass, argumentTypeConverter);
+            argumentTypeConverterMap.put(customTypeClass, argumentTypeConverter);
         }
     }
 
+    @Override
     public <A> void register(ArgumentTypeSupplier<A> argumentType, Class<A> argumentTypeClass) {
         register(argumentType, null, argumentTypeClass);
     }

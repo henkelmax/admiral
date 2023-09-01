@@ -20,11 +20,6 @@ public class Player extends ArgumentTypeWrapper<CommandSourceStack, EntitySelect
     }
 
     @Override
-    protected Class<EntitySelector> getArgumentTypeClass() {
-        return EntitySelector.class;
-    }
-
-    @Override
     protected ArgumentType<EntitySelector> getArgumentType() {
         return EntityArgument.player();
     }
