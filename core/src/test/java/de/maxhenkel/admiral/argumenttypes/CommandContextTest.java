@@ -17,21 +17,19 @@ public class CommandContextTest {
     @Test
     @DisplayName("Context injection")
     public void contextInjection() throws CommandSyntaxException {
-        MockedStatic<CommandContextCommands> staticMock = mockStatic(CommandContextCommands.class);
+        try (MockedStatic<CommandContextCommands> staticMock = mockStatic(CommandContextCommands.class)) {
+            ArgumentCaptor<CommandContext<?>> commandContextCaptor = ArgumentCaptor.forClass(CommandContext.class);
+            ArgumentCaptor<String> stringCaptor = ArgumentCaptor.forClass(String.class);
 
-        ArgumentCaptor<CommandContext<?>> commandContextCaptor = ArgumentCaptor.forClass(CommandContext.class);
-        ArgumentCaptor<String> stringCaptor = ArgumentCaptor.forClass(String.class);
+            when(CommandContextCommands.string(commandContextCaptor.capture(), stringCaptor.capture(), commandContextCaptor.capture())).thenReturn(1);
 
-        when(CommandContextCommands.string(commandContextCaptor.capture(), stringCaptor.capture(), commandContextCaptor.capture())).thenReturn(1);
+            TestUtils.executeCommand("context test", CommandContextCommands.class);
 
-        TestUtils.executeCommand("context test", CommandContextCommands.class);
+            staticMock.verify(() -> CommandContextCommands.string(any(), any(), any()), times(1));
 
-        staticMock.verify(() -> CommandContextCommands.string(any(), any(), any()), times(1));
-
-        assertEquals("test", stringCaptor.getValue());
-        assertEquals(2, commandContextCaptor.getAllValues().size());
-
-        staticMock.close();
+            assertEquals("test", stringCaptor.getValue());
+            assertEquals(2, commandContextCaptor.getAllValues().size());
+        }
     }
 
     private static class CommandContextCommands {

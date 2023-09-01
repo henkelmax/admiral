@@ -35,13 +35,13 @@ public class StringTest {
     }
 
     private void testInputOutput(String command, String expected) throws CommandSyntaxException {
-        MockedStatic<StringCommands> staticMock = mockStatic(StringCommands.class);
-        ArgumentCaptor<String> stringCaptor = ArgumentCaptor.forClass(String.class);
-        when(StringCommands.string(stringCaptor.capture())).thenReturn(1);
-        TestUtils.executeCommand(command, StringCommands.class);
-        staticMock.verify(() -> StringCommands.string(any()), times(1));
-        assertEquals(expected, stringCaptor.getValue());
-        staticMock.close();
+        try (MockedStatic<StringCommands> staticMock = mockStatic(StringCommands.class)) {
+            ArgumentCaptor<String> stringCaptor = ArgumentCaptor.forClass(String.class);
+            when(StringCommands.string(stringCaptor.capture())).thenReturn(1);
+            TestUtils.executeCommand(command, StringCommands.class);
+            staticMock.verify(() -> StringCommands.string(any()), times(1));
+            assertEquals(expected, stringCaptor.getValue());
+        }
     }
 
     @Test
@@ -57,13 +57,13 @@ public class StringTest {
     }
 
     private void testInputOutputOptional(String command, String expected) throws CommandSyntaxException {
-        MockedStatic<StringCommands> staticMock = mockStatic(StringCommands.class);
-        ArgumentCaptor<String> stringCaptor = ArgumentCaptor.forClass(String.class);
-        when(StringCommands.optionalString(stringCaptor.capture())).thenReturn(1);
-        TestUtils.executeCommand(command, StringCommands.class);
-        staticMock.verify(() -> StringCommands.optionalString(any()), times(1));
-        assertEquals(expected, stringCaptor.getValue());
-        staticMock.close();
+        try (MockedStatic<StringCommands> staticMock = mockStatic(StringCommands.class)) {
+            ArgumentCaptor<String> stringCaptor = ArgumentCaptor.forClass(String.class);
+            when(StringCommands.optionalString(stringCaptor.capture())).thenReturn(1);
+            TestUtils.executeCommand(command, StringCommands.class);
+            staticMock.verify(() -> StringCommands.optionalString(any()), times(1));
+            assertEquals(expected, stringCaptor.getValue());
+        }
     }
 
     @Test
@@ -79,13 +79,13 @@ public class StringTest {
     }
 
     private void testInputOutputJavaOptional(String command, Optional<String> expected) throws CommandSyntaxException {
-        MockedStatic<StringCommands> staticMock = mockStatic(StringCommands.class);
-        ArgumentCaptor<Optional<String>> stringCaptor = ArgumentCaptor.forClass(Optional.class);
-        when(StringCommands.javaOptionalString(stringCaptor.capture())).thenReturn(1);
-        TestUtils.executeCommand(command, StringCommands.class);
-        staticMock.verify(() -> StringCommands.javaOptionalString(any()), times(1));
-        assertEquals(expected, stringCaptor.getValue());
-        staticMock.close();
+        try (MockedStatic<StringCommands> staticMock = mockStatic(StringCommands.class)) {
+            ArgumentCaptor<Optional<String>> stringCaptor = ArgumentCaptor.forClass(Optional.class);
+            when(StringCommands.javaOptionalString(stringCaptor.capture())).thenReturn(1);
+            TestUtils.executeCommand(command, StringCommands.class);
+            staticMock.verify(() -> StringCommands.javaOptionalString(any()), times(1));
+            assertEquals(expected, stringCaptor.getValue());
+        }
     }
 
     @Command("string")
