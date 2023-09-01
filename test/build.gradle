@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'fabric-loom'
+    id 'com.github.johnrengelman.shadow'
 }
 
 java {
@@ -24,7 +25,9 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
 
     implementation project(':core')
+    shadow project(':core')
     implementation project(path: ':fabric', configuration: 'namedElements')
+    shadow project(path: ':fabric', configuration: 'namedElements')
 
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
 }
@@ -41,12 +44,16 @@ tasks.withType(JavaCompile).configureEach {
     it.options.release = 17
 }
 
-java {
-    withSourcesJar()
+shadowJar {
+    configurations = [project.configurations.shadow]
+    archiveClassifier = 'shadow-dev'
+    dependencies {
+        exclude(dependency('com.google.code.findbugs:jsr305'))
+        exclude(dependency('com.mojang:brigadier'))
+    }
 }
 
-jar {
-    from('LICENSE') {
-        rename { "${it}_${archivesBaseName}" }
-    }
+remapJar {
+    dependsOn shadowJar
+    inputFile = shadowJar.archiveFile.get()
 }
