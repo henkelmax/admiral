@@ -15,6 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.GameType;
 
 import java.util.List;
 
@@ -54,6 +55,7 @@ public class MinecraftArgumentTypes {
         argumentRegistry.register(Component.class, ComponentArgument::textComponent);
         argumentRegistry.register(CompoundTag.class, CompoundTagArgument::compoundTag);
         argumentRegistry.register(EntityAnchorArgument.Anchor.class, EntityAnchorArgument::anchor);
+        argumentRegistry.register(GameType.class, GameModeArgument::gameMode);
 
         argumentRegistry.<CommandSourceStack, ResourceLocation, ServerLevel>register(ServerLevel.class, DimensionArgument::dimension, (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : DimensionArgument.getDimension(context, name));
     }
