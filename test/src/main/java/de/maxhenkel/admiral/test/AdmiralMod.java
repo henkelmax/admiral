@@ -6,6 +6,7 @@ import de.maxhenkel.admiral.argumenttype.OptionalArgumentTypeConverter;
 import de.maxhenkel.admiral.test.commands.*;
 import de.maxhenkel.admiral.test.types.NonWrapperDouble;
 import de.maxhenkel.admiral.test.types.NonWrapperOptionalDouble;
+import de.maxhenkel.admiral.test.types.WrapperDouble;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import org.apache.logging.log4j.LogManager;
@@ -42,6 +43,7 @@ public class AdmiralMod implements ModInitializer {
                     .addArgumentTypes(argumentRegistry -> {
                         argumentRegistry.register(DoubleArgumentType::doubleArg, (context, value) -> new NonWrapperDouble(value), NonWrapperDouble.class);
                         argumentRegistry.register(DoubleArgumentType::doubleArg, (OptionalArgumentTypeConverter<Object, Double, NonWrapperOptionalDouble>) (context, value) -> new NonWrapperOptionalDouble(value.orElse(null)), NonWrapperOptionalDouble.class);
+                        argumentRegistry.register(WrapperDouble.class);
                     })
                     .build();
         });

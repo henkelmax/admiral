@@ -11,7 +11,6 @@ import javax.annotation.Nullable;
 
 /**
  * A wrapper for brigadier argument types.
- * Wrappers inheriting this class do not need to be registered.
  *
  * @param <S> the command source type
  * @param <A> the argument type of the brigadier argument
@@ -64,4 +63,11 @@ public abstract class ArgumentTypeWrapper<S, A, T> {
         return getArgumentType();
     }
 
+    @Override
+    public String toString() {
+        if (value == null) {
+            return super.toString();
+        }
+        return value.toString();
+    }
 }

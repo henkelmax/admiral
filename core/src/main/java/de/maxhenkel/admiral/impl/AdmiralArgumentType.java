@@ -4,40 +4,18 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import de.maxhenkel.admiral.argumenttype.ArgumentTypeWrapper;
 import de.maxhenkel.admiral.argumenttype.ArgumentTypeConverter;
 import de.maxhenkel.admiral.argumenttype.ArgumentTypeSupplier;
 import de.maxhenkel.admiral.argumenttype.RangedArgumentTypeSupplier;
 
 import javax.annotation.Nullable;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 public class AdmiralArgumentType<S, A, T> {
 
-    public static final Method getArgumentType;
-    public static final Method convert;
-    public static final Field value;
-
-    static {
-        try {
-            getArgumentType = ArgumentTypeWrapper.class.getDeclaredMethod("getArgumentType", Object.class, Object.class);
-            getArgumentType.setAccessible(true);
-            convert = ArgumentTypeWrapper.class.getDeclaredMethod("convert", CommandContext.class, Object.class);
-            convert.setAccessible(true);
-            value = ArgumentTypeWrapper.class.getDeclaredField("value");
-            value.setAccessible(true);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private Class<T> parameterClass;
     private ArgumentTypeSupplier<A> argumentType;
     private Class<A> argumentTypeClass;
-    @Nullable
-    private Constructor<T> wrapperConstructor;
     @Nullable
     private ArgumentTypeConverter<S, A, T> converter;
 
@@ -45,10 +23,7 @@ public class AdmiralArgumentType<S, A, T> {
 
     }
 
-    public static <S, A, T> AdmiralArgumentType<S, A, T> fromClass(ArgumentTypeRegistryImpl registry, Class<T> parameterClass) throws Exception {
-        if (ArgumentTypeWrapper.class.isAssignableFrom(parameterClass)) {
-            return fromWrapper(parameterClass);
-        }
+    public static <S, A, T> AdmiralArgumentType<S, A, T> fromClass(ArgumentTypeRegistryImpl registry, Class<T> parameterClass) {
         ArgumentTypeSupplier<A> argumentTypeSupplier = registry.getType(parameterClass);
         if (argumentTypeSupplier == null) {
             throw new IllegalStateException(String.format("ArgumentType %s not registered", parameterClass.getSimpleName()));
@@ -58,27 +33,6 @@ public class AdmiralArgumentType<S, A, T> {
         argumentType.argumentType = argumentTypeSupplier;
         argumentType.argumentTypeClass = getArgumentTypeClass(argumentType.argumentType.get());
         argumentType.converter = registry.getConverter(parameterClass);
-        return argumentType;
-    }
-
-    private static <S, A, T> AdmiralArgumentType<S, A, T> fromWrapper(Class<T> clazz) throws Exception {
-        Constructor<T> constructor = clazz.getDeclaredConstructor();
-        constructor.setAccessible(true);
-        ArgumentTypeWrapper<S, A, T> wrapper = (ArgumentTypeWrapper<S, A, T>) constructor.newInstance();
-
-        AdmiralArgumentType<S, A, T> argumentType = new AdmiralArgumentType<>();
-
-        argumentType.parameterClass = clazz;
-        argumentType.argumentType = (RangedArgumentTypeSupplier<A>) (min, max) -> {
-            try {
-                return (ArgumentType<A>) getArgumentType.invoke(wrapper, min, max);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        };
-        argumentType.argumentTypeClass = getArgumentTypeClass(argumentType.argumentType.get());
-        argumentType.wrapperConstructor = constructor;
-
         return argumentType;
     }
 
@@ -99,32 +53,13 @@ public class AdmiralArgumentType<S, A, T> {
 
     @Nullable
     public Object convert(CommandContext<S> context, @Nullable A argumentTypeValue) throws CommandSyntaxException {
-        if (wrapperConstructor == null) {
-            if (argumentTypeValue == null && parameterClass.isPrimitive()) {
-                return defaultValue(parameterClass);
-            }
-            if (converter != null) {
-                return converter.convertRaw(context, argumentTypeValue);
-            }
-            return argumentTypeValue;
+        if (argumentTypeValue == null && parameterClass.isPrimitive()) {
+            return defaultValue(parameterClass);
         }
-        try {
-            ArgumentTypeWrapper<S, A, T> wrapper = (ArgumentTypeWrapper<S, A, T>) wrapperConstructor.newInstance();
-            Object converted = convert.invoke(wrapper, context, argumentTypeValue);
-            if (converted == null) {
-                return null;
-            }
-            value.set(wrapper, converted);
-            return wrapper;
-        } catch (Exception e) {
-            if (e instanceof CommandSyntaxException) {
-                throw (CommandSyntaxException) e;
-            }
-            if (e.getCause() instanceof CommandSyntaxException) {
-                throw (CommandSyntaxException) e.getCause();
-            }
-            throw new RuntimeException(e);
+        if (converter != null) {
+            return converter.convertRaw(context, argumentTypeValue);
         }
+        return argumentTypeValue;
     }
 
     public static Object defaultValue(Class<?> type) {

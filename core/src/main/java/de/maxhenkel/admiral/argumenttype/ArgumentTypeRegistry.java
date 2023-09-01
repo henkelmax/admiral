@@ -25,4 +25,14 @@ public interface ArgumentTypeRegistry {
      */
     <A> void register(ArgumentTypeSupplier<A> argumentType, Class<A> argumentTypeClass);
 
+    /**
+     * Registers an argument type
+     *
+     * @param argumentTypeWrapperClass your wrapper class that extends {@link ArgumentTypeWrapper}
+     * @param <S>                      the command source type
+     * @param <A>                      the argument type of the brigadier argument
+     * @param <T>                      the converted argument type
+     */
+    <S, A, T> void register(Class<? extends ArgumentTypeWrapper<S, A, T>> argumentTypeWrapperClass);
+
 }

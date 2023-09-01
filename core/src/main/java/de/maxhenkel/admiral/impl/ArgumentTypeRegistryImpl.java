@@ -4,10 +4,7 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import de.maxhenkel.admiral.arguments.GreedyString;
 import de.maxhenkel.admiral.arguments.Word;
-import de.maxhenkel.admiral.argumenttype.ArgumentTypeRegistry;
-import de.maxhenkel.admiral.argumenttype.ArgumentTypeConverter;
-import de.maxhenkel.admiral.argumenttype.ArgumentTypeSupplier;
-import de.maxhenkel.admiral.argumenttype.RangedArgumentTypeSupplier;
+import de.maxhenkel.admiral.argumenttype.*;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -73,6 +70,11 @@ public class ArgumentTypeRegistryImpl implements ArgumentTypeRegistry {
     @Override
     public <A> void register(ArgumentTypeSupplier<A> argumentType, Class<A> argumentTypeClass) {
         register(argumentType, null, argumentTypeClass);
+    }
+
+    @Override
+    public <S, A, T> void register(Class<? extends ArgumentTypeWrapper<S, A, T>> argumentTypeWrapperClass) {
+        ArgumentTypeWrapperConverter.register(this, argumentTypeWrapperClass);
     }
 
     public <A> void register(ArgumentTypeSupplier<A> argumentType, Class<A>... argumentTypeClass) {

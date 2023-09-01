@@ -31,13 +31,8 @@ public class AdmiralParameter<S, A, T> {
         } else {
             type = (Class<T>) parameter.getType();
         }
-        try {
-            argumentType = AdmiralArgumentType.fromClass(getAdmiral().getArgumentRegistry(), type);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        argumentType = AdmiralArgumentType.fromClass(getAdmiral().getArgumentRegistry(), type);
         optional = isOptional(parameter);
-
     }
 
     private static String getArgumentName(Parameter parameter) {
