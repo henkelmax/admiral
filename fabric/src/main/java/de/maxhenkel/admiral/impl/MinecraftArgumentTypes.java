@@ -19,6 +19,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.scores.Objective;
@@ -92,6 +93,11 @@ public class MinecraftArgumentTypes {
                 EntityReference.class,
                 (ContextArgumentTypeSupplier<CommandBuildContext, EntityType<?>>) ctx -> (ArgumentType) ResourceArgument.resource(ctx, Registries.ENTITY_TYPE),
                 (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : new EntityReference(ResourceArgument.getEntityType(context, name))
+        );
+        argumentRegistry.<CommandSourceStack, CommandBuildContext, Attribute, AttributeReference>register(
+                AttributeReference.class,
+                (ContextArgumentTypeSupplier<CommandBuildContext, Attribute>) ctx -> (ArgumentType) ResourceArgument.resource(ctx, Registries.ATTRIBUTE),
+                (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : new AttributeReference(ResourceArgument.getAttribute(context, name))
         );
     }
 

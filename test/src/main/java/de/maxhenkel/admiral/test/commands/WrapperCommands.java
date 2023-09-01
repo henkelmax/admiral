@@ -2,6 +2,7 @@ package de.maxhenkel.admiral.test.commands;
 
 import de.maxhenkel.admiral.annotations.Command;
 import de.maxhenkel.admiral.annotations.OptionalArgument;
+import de.maxhenkel.admiral.arguments.AttributeReference;
 import de.maxhenkel.admiral.arguments.EntityReference;
 import de.maxhenkel.admiral.arguments.Word;
 import de.maxhenkel.admiral.test.AdmiralMod;
@@ -39,8 +40,13 @@ public class WrapperCommands {
     }
 
     @Command("entityreference")
-    public void test4(EntityReference ref) {
+    public void entityreference(EntityReference ref) {
         AdmiralMod.LOGGER.info("entityreference: {}", ref);
+    }
+
+    @Command("attributereference")
+    public void attributereference(AttributeReference ref) {
+        AdmiralMod.LOGGER.info("attributereference: {}", ref);
     }
 
 }
