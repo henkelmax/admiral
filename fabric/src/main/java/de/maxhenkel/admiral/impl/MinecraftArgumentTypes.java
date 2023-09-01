@@ -51,6 +51,7 @@ public class MinecraftArgumentTypes {
         argumentRegistry.<CommandSourceStack, EntitySelector, OptionalEntities>register(OptionalEntities.class, EntityArgument::entities, (context, value) -> new OptionalEntities(value.findEntities(context.getSource())));
         argumentRegistry.<CommandSourceStack, EntitySelector, OptionalPlayers>register(OptionalPlayers.class, EntityArgument::players, (context, value) -> new OptionalPlayers(value.findPlayers(context.getSource())));
 
+        argumentRegistry.register(AngleArgument.SingleAngle.class, AngleArgument::angle);
         argumentRegistry.register(ChatFormatting.class, ColorArgument::color);
         argumentRegistry.register(Component.class, ComponentArgument::textComponent);
         argumentRegistry.register(CompoundTag.class, CompoundTagArgument::compoundTag);
