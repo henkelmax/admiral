@@ -12,7 +12,7 @@ public class TestUtils {
 
     public static void executeCommand(String command, Class<?> commandClass, PermissionManager<Object> permissionManager) throws CommandSyntaxException {
         CommandDispatcher<Object> dispatcher = new CommandDispatcher<>();
-        MinecraftAdmiral.builder(dispatcher).addCommandClasses(commandClass).setPermissionManager(permissionManager).build();
+        Admiral.builder(dispatcher).addCommandClasses(commandClass).setPermissionManager(permissionManager).build();
         dispatcher.execute(command, new Object());
     }
 
