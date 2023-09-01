@@ -13,6 +13,7 @@ import java.lang.reflect.Method;
 
 public class AdmiralArgumentType<S, A, T> {
 
+    private AdmiralParameter<S, A, T> admiralParameter;
     private Class<T> parameterClass;
     private ArgumentTypeSupplier<A> argumentType;
     private Class<A> argumentTypeClass;
@@ -23,12 +24,14 @@ public class AdmiralArgumentType<S, A, T> {
 
     }
 
-    public static <S, A, T> AdmiralArgumentType<S, A, T> fromClass(ArgumentTypeRegistryImpl registry, Class<T> parameterClass) {
+    public static <S, A, T> AdmiralArgumentType<S, A, T> fromClass(AdmiralParameter<S, A, T> admiralParameter, Class<T> parameterClass) {
+        ArgumentTypeRegistryImpl registry = admiralParameter.getAdmiral().getArgumentRegistry();
         ArgumentTypeSupplier<A> argumentTypeSupplier = registry.getType(parameterClass);
         if (argumentTypeSupplier == null) {
             throw new IllegalStateException(String.format("ArgumentType %s not registered", parameterClass.getSimpleName()));
         }
         AdmiralArgumentType<S, A, T> argumentType = new AdmiralArgumentType<>();
+        argumentType.admiralParameter = admiralParameter;
         argumentType.parameterClass = parameterClass;
         argumentType.argumentType = argumentTypeSupplier;
         argumentType.argumentTypeClass = getArgumentTypeClass(argumentType.argumentType.get());
@@ -57,7 +60,7 @@ public class AdmiralArgumentType<S, A, T> {
             return defaultValue(parameterClass);
         }
         if (converter != null) {
-            return converter.convertRaw(context, argumentTypeValue);
+            return converter.convertRaw(context, admiralParameter.getName(), argumentTypeValue);
         }
         return argumentTypeValue;
     }

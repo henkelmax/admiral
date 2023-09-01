@@ -36,6 +36,20 @@ public interface ArgumentTypeConverter<S, A, T> {
      * Converts the argument type to the desired type.
      *
      * @param context the command context
+     * @param name    the name of the argument
+     * @param value   the argument type value or <code>null</code> if the argument is optional
+     * @return the converted argument type or <code>null</code> if the object supplied to the command method should be <code>null</code>
+     * @throws CommandSyntaxException if the conversion fails
+     */
+    @Nullable
+    default T convertRaw(CommandContext<S> context, String name, @Nullable A value) throws CommandSyntaxException {
+        return convertRaw(context, value);
+    }
+
+    /**
+     * Converts the argument type to the desired type.
+     *
+     * @param context the command context
      * @param value   the argument type value
      * @return the converted argument type
      * @throws CommandSyntaxException if the conversion fails

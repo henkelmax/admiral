@@ -4,15 +4,15 @@ import de.maxhenkel.admiral.arguments.Entities;
 import de.maxhenkel.admiral.arguments.OptionalEntities;
 import de.maxhenkel.admiral.arguments.OptionalPlayers;
 import de.maxhenkel.admiral.arguments.Players;
+import de.maxhenkel.admiral.argumenttype.RawArgumentTypeConverter;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.arguments.ColorArgument;
-import net.minecraft.commands.arguments.ComponentArgument;
-import net.minecraft.commands.arguments.CompoundTagArgument;
-import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.commands.arguments.*;
 import net.minecraft.commands.arguments.selector.EntitySelector;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 
@@ -53,6 +53,8 @@ public class MinecraftArgumentTypes {
         argumentRegistry.register(ChatFormatting.class, ColorArgument::color);
         argumentRegistry.register(Component.class, ComponentArgument::textComponent);
         argumentRegistry.register(CompoundTag.class, CompoundTagArgument::compoundTag);
+
+        argumentRegistry.<CommandSourceStack, ResourceLocation, ServerLevel>register(ServerLevel.class, DimensionArgument::dimension, (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : DimensionArgument.getDimension(context, name));
     }
 
 }

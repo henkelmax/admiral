@@ -31,7 +31,7 @@ public class AdmiralParameter<S, A, T> {
         } else {
             type = (Class<T>) parameter.getType();
         }
-        argumentType = AdmiralArgumentType.fromClass(getAdmiral().getArgumentRegistry(), type);
+        argumentType = AdmiralArgumentType.fromClass(this, type);
         optional = isOptional(parameter);
     }
 
