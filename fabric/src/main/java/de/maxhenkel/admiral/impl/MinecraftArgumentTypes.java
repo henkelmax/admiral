@@ -16,6 +16,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.levelgen.Heightmap;
 
 import java.util.List;
 
@@ -58,6 +59,7 @@ public class MinecraftArgumentTypes {
         argumentRegistry.register(EntityAnchorArgument.Anchor.class, EntityAnchorArgument::anchor);
         argumentRegistry.register(GameType.class, GameModeArgument::gameMode);
         argumentRegistry.register(GameProfileArgument.Result.class, GameProfileArgument::gameProfile);
+        argumentRegistry.register(Heightmap.Types.class, HeightmapTypeArgument::heightmap);
 
         argumentRegistry.<CommandSourceStack, ResourceLocation, ServerLevel>register(ServerLevel.class, DimensionArgument::dimension, (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : DimensionArgument.getDimension(context, name));
     }
