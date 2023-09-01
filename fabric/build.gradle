@@ -11,6 +11,10 @@ java {
     withSourcesJar()
 }
 
+test {
+    useJUnitPlatform()
+}
+
 group = maven_group
 archivesBaseName = archives_base_name
 
@@ -32,6 +36,11 @@ dependencies {
     shadow project(':core')
 
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+    testImplementation 'org.mockito:mockito-core:5.5.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.5.0'
 }
 
 tasks.withType(JavaCompile).configureEach {
