@@ -16,7 +16,7 @@ public class ArgumentTypeRegistryImpl implements ArgumentTypeRegistry {
 
     private static final List<Consumer<ArgumentTypeRegistryImpl>> DEFAULT_REGISTRATIONS = new ArrayList<>();
 
-    private final Map<Class<?>, ArgumentTypeSupplier<?>> argumentTypeMap;
+    private final Map<Class<?>, ArgumentTypeSupplier<?, ?>> argumentTypeMap;
     private final Map<Class<?>, ArgumentTypeConverter<?, ?, ?>> argumentTypeConverterMap;
 
     public ArgumentTypeRegistryImpl() {
@@ -37,7 +37,7 @@ public class ArgumentTypeRegistryImpl implements ArgumentTypeRegistry {
         register(GreedyString.class, StringArgumentType::greedyString, (context, value) -> new GreedyString(value));
         register(Word.class, StringArgumentType::word, (context, value) -> new Word(value));
 
-        register((RangedArgumentTypeSupplier<Long>) (min, max) -> {
+        register((RangedArgumentTypeSupplier<?, Long>) (min, max) -> {
             if (min == null) {
                 min = Long.MIN_VALUE;
             }
@@ -46,7 +46,7 @@ public class ArgumentTypeRegistryImpl implements ArgumentTypeRegistry {
             }
             return LongArgumentType.longArg(min, max);
         }, Long.class, long.class);
-        register((RangedArgumentTypeSupplier<Integer>) (min, max) -> {
+        register((RangedArgumentTypeSupplier<?, Integer>) (min, max) -> {
             if (min == null) {
                 min = Integer.MIN_VALUE;
             }
@@ -55,7 +55,7 @@ public class ArgumentTypeRegistryImpl implements ArgumentTypeRegistry {
             }
             return IntegerArgumentType.integer(min, max);
         }, Integer.class, int.class);
-        register((RangedArgumentTypeSupplier<Double>) (min, max) -> {
+        register((RangedArgumentTypeSupplier<?, Double>) (min, max) -> {
             if (min == null) {
                 min = Double.MIN_VALUE;
             }
@@ -64,7 +64,7 @@ public class ArgumentTypeRegistryImpl implements ArgumentTypeRegistry {
             }
             return DoubleArgumentType.doubleArg(min, max);
         }, Double.class, double.class);
-        register((RangedArgumentTypeSupplier<Float>) (min, max) -> {
+        register((RangedArgumentTypeSupplier<?, Float>) (min, max) -> {
             if (min == null) {
                 min = Float.MIN_VALUE;
             }
@@ -78,8 +78,8 @@ public class ArgumentTypeRegistryImpl implements ArgumentTypeRegistry {
     }
 
     @Nullable
-    public <A, T> ArgumentTypeSupplier<A> getType(Class<T> clazz) {
-        return (ArgumentTypeSupplier<A>) argumentTypeMap.get(clazz);
+    public <C, A, T> ArgumentTypeSupplier<C, A> getType(Class<T> clazz) {
+        return (ArgumentTypeSupplier<C, A>) argumentTypeMap.get(clazz);
     }
 
     @Nullable
@@ -88,7 +88,7 @@ public class ArgumentTypeRegistryImpl implements ArgumentTypeRegistry {
     }
 
     @Override
-    public <S, A, T> void register(Class<T> customTypeClass, ArgumentTypeSupplier<A> argumentType, @Nullable ArgumentTypeConverter<S, A, T> argumentTypeConverter) {
+    public <S, C, A, T> void register(Class<T> customTypeClass, ArgumentTypeSupplier<C, A> argumentType, @Nullable ArgumentTypeConverter<S, A, T> argumentTypeConverter) {
         argumentTypeMap.put(customTypeClass, argumentType);
         if (argumentTypeConverter != null) {
             argumentTypeConverterMap.put(customTypeClass, argumentTypeConverter);
@@ -96,16 +96,11 @@ public class ArgumentTypeRegistryImpl implements ArgumentTypeRegistry {
     }
 
     @Override
-    public <A> void register(Class<A> argumentTypeClass, ArgumentTypeSupplier<A> argumentType) {
+    public <C, A> void register(Class<A> argumentTypeClass, ArgumentTypeSupplier<C, A> argumentType) {
         register(argumentTypeClass, argumentType, null);
     }
 
-    @Override
-    public <S, A, T> void register(Class<? extends ArgumentTypeWrapper<S, A, T>> argumentTypeWrapperClass) {
-        ArgumentTypeWrapperConverter.register(this, argumentTypeWrapperClass);
-    }
-
-    public <A> void register(ArgumentTypeSupplier<A> argumentType, Class<A>... argumentTypeClass) {
+    public <C, A> void register(ArgumentTypeSupplier<C, A> argumentType, Class<A>... argumentTypeClass) {
         for (Class<A> clazz : argumentTypeClass) {
             register(clazz, argumentType, null);
         }

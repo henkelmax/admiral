@@ -6,7 +6,6 @@ import de.maxhenkel.admiral.argumenttype.OptionalArgumentTypeConverter;
 import de.maxhenkel.admiral.test.commands.*;
 import de.maxhenkel.admiral.test.types.NonWrapperDouble;
 import de.maxhenkel.admiral.test.types.NonWrapperOptionalDouble;
-import de.maxhenkel.admiral.test.types.WrapperDouble;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import org.apache.logging.log4j.LogManager;
@@ -21,7 +20,7 @@ public class AdmiralMod implements ModInitializer {
     public void onInitialize() {
         LOGGER.info("Initializing Admiral test mod");
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
-            MinecraftAdmiral.builder(dispatcher)
+            MinecraftAdmiral.builder(dispatcher, registryAccess)
                     .addCommandClasses(
                             ExampleCommands.class,
                             IntegerCommands.class,
@@ -31,7 +30,8 @@ public class AdmiralMod implements ModInitializer {
                             NoMethodAnnotationCommands.class,
                             PermissionCommands.class,
                             WrapperCommands.class,
-                            LevelCommands.class
+                            LevelCommands.class,
+                            ParticleCommands.class
                     ).setPermissionManager((source, permission) -> {
                         if (permission.equals("admiral.test.perm1")) {
                             return true;
@@ -44,7 +44,6 @@ public class AdmiralMod implements ModInitializer {
                     .addArgumentTypes(argumentRegistry -> {
                         argumentRegistry.register(NonWrapperDouble.class, DoubleArgumentType::doubleArg, (context, value) -> new NonWrapperDouble(value));
                         argumentRegistry.register(NonWrapperOptionalDouble.class, DoubleArgumentType::doubleArg, (OptionalArgumentTypeConverter<Object, Double, NonWrapperOptionalDouble>) (context, value) -> new NonWrapperOptionalDouble(value.orElse(null)));
-                        argumentRegistry.register(WrapperDouble.class);
                     })
                     .build();
         });

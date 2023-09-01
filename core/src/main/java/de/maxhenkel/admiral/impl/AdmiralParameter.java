@@ -9,9 +9,9 @@ import javax.annotation.Nullable;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
 
-public class AdmiralParameter<S, A, T> {
+public class AdmiralParameter<S, C, A, T> {
 
-    private final AdmiralMethod<S> admiralMethod;
+    private final AdmiralMethod<S, C> admiralMethod;
     private final Parameter parameter;
     private final String name;
     /**
@@ -19,10 +19,10 @@ public class AdmiralParameter<S, A, T> {
      * If the parameter is an optional, the type of the optional is used.
      */
     private final Class<T> type;
-    private final AdmiralArgumentType<S, A, T> argumentType;
+    private final AdmiralArgumentType<S, C, A, T> argumentType;
     private final boolean optional;
 
-    public AdmiralParameter(AdmiralMethod<S> admiralMethod, Parameter parameter) {
+    public AdmiralParameter(AdmiralMethod<S, C> admiralMethod, Parameter parameter) {
         this.admiralMethod = admiralMethod;
         this.parameter = parameter;
         name = getArgumentName(parameter);
@@ -51,19 +51,19 @@ public class AdmiralParameter<S, A, T> {
         return Optional.class.isAssignableFrom(parameter.getType());
     }
 
-    public AdmiralArgumentType<S, A, T> getArgumentType() {
+    public AdmiralArgumentType<S, C, A, T> getArgumentType() {
         return argumentType;
     }
 
-    public AdmiralMethod<S> getAdmiralMethod() {
+    public AdmiralMethod<S, C> getAdmiralMethod() {
         return admiralMethod;
     }
 
-    public AdmiralClass<S> getAdmiralClass() {
+    public AdmiralClass<S, C> getAdmiralClass() {
         return admiralMethod.getAdmiralClass();
     }
 
-    public AdmiralImpl<S> getAdmiral() {
+    public AdmiralImpl<S, C> getAdmiral() {
         return admiralMethod.getAdmiralClass().getAdmiral();
     }
 

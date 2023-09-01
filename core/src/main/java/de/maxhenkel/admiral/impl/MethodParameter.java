@@ -3,19 +3,19 @@ package de.maxhenkel.admiral.impl;
 import javax.annotation.Nullable;
 import java.lang.reflect.Parameter;
 
-public class MethodParameter<S, A, T> {
+public class MethodParameter<S, C, A, T> {
 
     private final Parameter parameter;
     @Nullable
-    private final AdmiralParameter<S, A, T> admiralParameter;
+    private final AdmiralParameter<S, C, A, T> admiralParameter;
 
 
-    public MethodParameter(Parameter parameter, @Nullable AdmiralParameter<S, A, T> admiralParameter) {
+    public MethodParameter(Parameter parameter, @Nullable AdmiralParameter<S, C, A, T> admiralParameter) {
         this.parameter = parameter;
         this.admiralParameter = admiralParameter;
     }
 
-    public MethodParameter(AdmiralMethod<S> method, Parameter parameter) {
+    public MethodParameter(AdmiralMethod<S, C> method, Parameter parameter) {
         this(parameter, new AdmiralParameter<>(method, parameter));
     }
 
@@ -28,7 +28,7 @@ public class MethodParameter<S, A, T> {
     }
 
     @Nullable
-    public AdmiralParameter<S, A, T> getAdmiralParameter() {
+    public AdmiralParameter<S, C, A, T> getAdmiralParameter() {
         return admiralParameter;
     }
 }

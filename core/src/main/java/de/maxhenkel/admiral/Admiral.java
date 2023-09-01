@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 /**
  * @param <S> the command source type
  */
-public class Admiral<S> {
+public class Admiral<S, C> {
 
     /**
      * Creates an admiral builder <b>without</b> Minecraft specific argument types.
@@ -25,22 +25,25 @@ public class Admiral<S> {
      * @param <S>        the command source type
      * @return an admiral builder
      */
-    public static <S> Admiral.Builder<S> builder(CommandDispatcher<S> dispatcher) {
-        return AdmiralImpl.builder(dispatcher);
+    public static <S, C> Admiral.Builder<S, C> builder(CommandDispatcher<S> dispatcher) {
+        return AdmiralImpl.builder(dispatcher, null);
     }
 
     /**
      * @param <S> the command source type
      */
-    public static abstract class Builder<S> {
+    public static abstract class Builder<S, C> {
         protected final CommandDispatcher<S> dispatcher;
+        @Nullable
+        protected final C commandBuildContext;
         protected final ArgumentTypeRegistryImpl argumentRegistry;
         protected final List<Class<?>> classes;
         @Nullable
         protected PermissionManager<S> permissionManager;
 
-        protected Builder(CommandDispatcher<S> dispatcher) {
+        protected Builder(CommandDispatcher<S> dispatcher, @Nullable C commandBuildContext) {
             this.dispatcher = dispatcher;
+            this.commandBuildContext = commandBuildContext;
             this.argumentRegistry = new ArgumentTypeRegistryImpl();
             this.classes = new ArrayList<>();
         }
@@ -51,7 +54,7 @@ public class Admiral<S> {
          * @param classCollection a collection of classes to register
          * @return this builder
          */
-        public Builder<S> addCommandClasses(Collection<Class<?>> classCollection) {
+        public Builder<S, C> addCommandClasses(Collection<Class<?>> classCollection) {
             classes.addAll(classCollection);
             return this;
         }
@@ -62,7 +65,7 @@ public class Admiral<S> {
          * @param classArray an array of classes to register
          * @return this builder
          */
-        public Builder<S> addCommandClasses(Class<?>... classArray) {
+        public Builder<S, C> addCommandClasses(Class<?>... classArray) {
             classes.addAll(Arrays.asList(classArray));
             return this;
         }
@@ -71,7 +74,7 @@ public class Admiral<S> {
          * @param argumentRegistryConsumer a consumer that provides an argument registry to register custom arguments
          * @return this builder
          */
-        public Builder<S> addArgumentTypes(Consumer<ArgumentTypeRegistry> argumentRegistryConsumer) {
+        public Builder<S, C> addArgumentTypes(Consumer<ArgumentTypeRegistry> argumentRegistryConsumer) {
             argumentRegistryConsumer.accept(argumentRegistry);
             return this;
         }
@@ -82,7 +85,7 @@ public class Admiral<S> {
          * @param permissionManager the permission manager
          * @return this builder
          */
-        public Builder<S> setPermissionManager(PermissionManager<S> permissionManager) {
+        public Builder<S, C> setPermissionManager(PermissionManager<S> permissionManager) {
             this.permissionManager = permissionManager;
             return this;
         }
@@ -92,7 +95,7 @@ public class Admiral<S> {
          *
          * @return an admiral instance
          */
-        public abstract Admiral<S> build();
+        public abstract Admiral<S, C> build();
 
     }
 

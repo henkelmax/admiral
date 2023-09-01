@@ -6,10 +6,12 @@ import de.maxhenkel.admiral.permissions.PermissionManager;
 
 import javax.annotation.Nullable;
 
-public class AdmiralImpl<S> extends Admiral<S> {
+public class AdmiralImpl<S, C> extends Admiral<S, C> {
 
     private ArgumentTypeRegistryImpl argumentRegistry;
     private CommandDispatcher<S> dispatcher;
+    @Nullable
+    private C commandBuildContext;
     @Nullable
     private PermissionManager<S> permissionManager;
 
@@ -17,8 +19,8 @@ public class AdmiralImpl<S> extends Admiral<S> {
 
     }
 
-    public static <S> Builder<S> builder(CommandDispatcher<S> dispatcher) {
-        return new Builder<>(dispatcher);
+    public static <S, C> Builder<S, C> builder(CommandDispatcher<S> dispatcher, @Nullable C commandBuildContext) {
+        return new Builder<>(dispatcher, commandBuildContext);
     }
 
     public ArgumentTypeRegistryImpl getArgumentRegistry() {
@@ -30,23 +32,30 @@ public class AdmiralImpl<S> extends Admiral<S> {
     }
 
     @Nullable
+    public C getCommandBuildContext() {
+        return commandBuildContext;
+    }
+
+    @Nullable
     public PermissionManager<S> getPermissionManager() {
         return permissionManager;
     }
 
-    public static class Builder<S> extends Admiral.Builder<S> {
-        protected Builder(CommandDispatcher<S> dispatcher) {
-            super(dispatcher);
+    public static class Builder<S, C> extends Admiral.Builder<S, C> {
+
+        protected Builder(CommandDispatcher<S> dispatcher, @Nullable C commandBuildContext) {
+            super(dispatcher, commandBuildContext);
         }
 
         @Override
-        public AdmiralImpl<S> build() {
-            AdmiralImpl<S> admiral = new AdmiralImpl<>();
+        public AdmiralImpl<S, C> build() {
+            AdmiralImpl<S, C> admiral = new AdmiralImpl<>();
             admiral.argumentRegistry = argumentRegistry;
             admiral.dispatcher = dispatcher;
+            admiral.commandBuildContext = commandBuildContext;
             admiral.permissionManager = permissionManager;
             for (Class<?> c : classes) {
-                AdmiralClass<S> admiralClass = new AdmiralClass<>(admiral, c);
+                AdmiralClass<S, C> admiralClass = new AdmiralClass<>(admiral, c);
                 admiralClass.register();
             }
             return admiral;

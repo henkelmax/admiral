@@ -21,16 +21,16 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
-public class AdmiralMethod<S> {
+public class AdmiralMethod<S, C> {
 
     private boolean registered;
-    private final AdmiralClass<S> admiralClass;
+    private final AdmiralClass<S, C> admiralClass;
     private final Method method;
-    private final List<MethodParameter<S, ?, ?>> parameters;
+    private final List<MethodParameter<S, C, ?, ?>> parameters;
     private List<Command> commands;
     private List<Permission<S>> requiredPermissions;
 
-    public AdmiralMethod(AdmiralClass<S> admiralClass, Method method) {
+    public AdmiralMethod(AdmiralClass<S, C> admiralClass, Method method) {
         this.admiralClass = admiralClass;
         this.method = method;
         this.parameters = new ArrayList<>();
@@ -55,13 +55,13 @@ public class AdmiralMethod<S> {
         }
 
         ArgumentBuilder<S, ?> last = null;
-        AdmiralParameter<S, ?, ?> lastParameter = null;
+        AdmiralParameter<S, C, ?, ?> lastParameter = null;
         for (int i = parameters.size() - 1; i >= 0; i--) {
-            MethodParameter<S, ?, ?> methodParameter = parameters.get(i);
+            MethodParameter<S, C, ?, ?> methodParameter = parameters.get(i);
             if (methodParameter.getAdmiralParameter() == null) {
                 continue;
             }
-            AdmiralParameter<S, ?, ?> admiralParameter = methodParameter.getAdmiralParameter();
+            AdmiralParameter<S, C, ?, ?> admiralParameter = methodParameter.getAdmiralParameter();
             RequiredArgumentBuilder<S, ?> argument = admiralParameter.toArgument();
             if (last != null) {
                 argument.then(last);
@@ -118,9 +118,9 @@ public class AdmiralMethod<S> {
         try {
             Object[] args = new Object[parameters.size()];
             for (int i = 0; i < parameters.size(); i++) {
-                MethodParameter<S, ?, ?> methodParameter = parameters.get(i);
+                MethodParameter<S, C, ?, ?> methodParameter = parameters.get(i);
                 Parameter parameter = methodParameter.getParameter();
-                AdmiralParameter<S, ?, ?> admiralParameter = methodParameter.getAdmiralParameter();
+                AdmiralParameter<S, C, ?, ?> admiralParameter = methodParameter.getAdmiralParameter();
                 if (admiralParameter == null) {
                     if (parameter.getType().isAssignableFrom(CommandContext.class)) {
                         args[i] = context;
@@ -142,16 +142,16 @@ public class AdmiralMethod<S> {
         return 0;
     }
 
-    private List<MethodParameter<S, ?, ?>> collectParameters() {
+    private List<MethodParameter<S, C, ?, ?>> collectParameters() {
         List<Parameter> list = Arrays.asList(method.getParameters());
-        List<MethodParameter<S, ?, ?>> parameters = new ArrayList<>(list.size());
+        List<MethodParameter<S, C, ?, ?>> parameters = new ArrayList<>(list.size());
         boolean wasOptional = false;
         for (Parameter parameter : list) {
             if (parameter.getType().isAssignableFrom(CommandContext.class)) {
                 parameters.add(new MethodParameter<>(parameter));
                 continue;
             }
-            AdmiralParameter<S, ?, ?> admiralParameter = new AdmiralParameter<>(this, parameter);
+            AdmiralParameter<S, C, ?, ?> admiralParameter = new AdmiralParameter<>(this, parameter);
             parameters.add(new MethodParameter<>(parameter, admiralParameter));
             if (!admiralParameter.isOptional() && wasOptional) {
                 throw new IllegalStateException("Optional parameters must be at the end of the parameter list");
@@ -186,11 +186,11 @@ public class AdmiralMethod<S> {
         return admiralClass.getAdmiral().getDispatcher();
     }
 
-    public AdmiralClass<S> getAdmiralClass() {
+    public AdmiralClass<S, C> getAdmiralClass() {
         return admiralClass;
     }
 
-    public AdmiralImpl<S> getAdmiral() {
+    public AdmiralImpl<S, C> getAdmiral() {
         return admiralClass.getAdmiral();
     }
 }

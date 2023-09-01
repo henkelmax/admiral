@@ -6,7 +6,6 @@ import de.maxhenkel.admiral.arguments.Word;
 import de.maxhenkel.admiral.test.AdmiralMod;
 import de.maxhenkel.admiral.test.types.NonWrapperDouble;
 import de.maxhenkel.admiral.test.types.NonWrapperOptionalDouble;
-import de.maxhenkel.admiral.test.types.WrapperDouble;
 
 import java.util.Optional;
 
@@ -36,16 +35,6 @@ public class WrapperCommands {
     @Command("nonwrapperoptionaldouble")
     public void test4(@OptionalArgument NonWrapperOptionalDouble d) {
         AdmiralMod.LOGGER.info("nonwrapperoptionaldouble: {}", d.getValue().map(String::valueOf).orElse("N/A"));
-    }
-
-    @Command("wrapperoptionaldouble")
-    public void test5(@OptionalArgument WrapperDouble d) {
-        AdmiralMod.LOGGER.info("wrapperoptionaldouble: {}", d);
-    }
-
-    @Command("wrapperdouble")
-    public void test6(WrapperDouble d) {
-        AdmiralMod.LOGGER.info("wrapperdouble: {}", d);
     }
 
 }

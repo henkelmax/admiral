@@ -11,16 +11,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class AdmiralClass<S> {
+public class AdmiralClass<S, C> {
 
     private boolean registered;
-    private AdmiralImpl<S> admiral;
+    private AdmiralImpl<S, C> admiral;
     private final Class<?> clazz;
     private Object instance;
     private List<Command> commands;
     private List<Permission<S>> requiredPermissions;
 
-    public AdmiralClass(AdmiralImpl<S> admiral, Class<?> clazz) {
+    public AdmiralClass(AdmiralImpl<S, C> admiral, Class<?> clazz) {
         this.admiral = admiral;
         this.clazz = clazz;
     }
@@ -43,7 +43,7 @@ public class AdmiralClass<S> {
 
         for (Method method : declaredMethods) {
             method.setAccessible(true);
-            AdmiralMethod<S> admiralMethod = new AdmiralMethod<>(this, method);
+            AdmiralMethod<S, C> admiralMethod = new AdmiralMethod<>(this, method);
             admiralMethod.register();
         }
         registered = true;
@@ -53,7 +53,7 @@ public class AdmiralClass<S> {
         return clazz;
     }
 
-    public AdmiralImpl<S> getAdmiral() {
+    public AdmiralImpl<S, C> getAdmiral() {
         return admiral;
     }
 

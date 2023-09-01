@@ -11,11 +11,11 @@ import de.maxhenkel.admiral.argumenttype.RangedArgumentTypeSupplier;
 import javax.annotation.Nullable;
 import java.lang.reflect.Method;
 
-public class AdmiralArgumentType<S, A, T> {
+public class AdmiralArgumentType<S, C, A, T> {
 
-    private AdmiralParameter<S, A, T> admiralParameter;
+    private AdmiralParameter<S, C, A, T> admiralParameter;
     private Class<T> parameterClass;
-    private ArgumentTypeSupplier<A> argumentType;
+    private ArgumentTypeSupplier<C, A> argumentType;
     private Class<A> argumentTypeClass;
     @Nullable
     private ArgumentTypeConverter<S, A, T> converter;
@@ -24,17 +24,17 @@ public class AdmiralArgumentType<S, A, T> {
 
     }
 
-    public static <S, A, T> AdmiralArgumentType<S, A, T> fromClass(AdmiralParameter<S, A, T> admiralParameter, Class<T> parameterClass) {
+    public static <S, C, A, T> AdmiralArgumentType<S, C, A, T> fromClass(AdmiralParameter<S, C, A, T> admiralParameter, Class<T> parameterClass) {
         ArgumentTypeRegistryImpl registry = admiralParameter.getAdmiral().getArgumentRegistry();
-        ArgumentTypeSupplier<A> argumentTypeSupplier = registry.getType(parameterClass);
+        ArgumentTypeSupplier<C, A> argumentTypeSupplier = registry.getType(parameterClass);
         if (argumentTypeSupplier == null) {
             throw new IllegalStateException(String.format("ArgumentType %s not registered", parameterClass.getSimpleName()));
         }
-        AdmiralArgumentType<S, A, T> argumentType = new AdmiralArgumentType<>();
+        AdmiralArgumentType<S, C, A, T> argumentType = new AdmiralArgumentType<>();
         argumentType.admiralParameter = admiralParameter;
         argumentType.parameterClass = parameterClass;
         argumentType.argumentType = argumentTypeSupplier;
-        argumentType.argumentTypeClass = getArgumentTypeClass(argumentType.argumentType.get());
+        argumentType.argumentTypeClass = getArgumentTypeClass(argumentType.argumentType.get(admiralParameter.getAdmiral().getCommandBuildContext()));
         argumentType.converter = registry.getConverter(parameterClass);
         return argumentType;
     }
@@ -47,11 +47,15 @@ public class AdmiralArgumentType<S, A, T> {
         return argumentTypeClass;
     }
 
+    public AdmiralImpl<S, C> getAdmiral() {
+        return admiralParameter.getAdmiral();
+    }
+
     public ArgumentType<A> getArgumentType(@Nullable A min, @Nullable A max) {
         if (argumentType instanceof RangedArgumentTypeSupplier) {
-            return ((RangedArgumentTypeSupplier<A>) argumentType).getRanged(min, max);
+            return ((RangedArgumentTypeSupplier<C, A>) argumentType).getRanged(getAdmiral().getCommandBuildContext(), min, max);
         }
-        return argumentType.get();
+        return argumentType.get(getAdmiral().getCommandBuildContext());
     }
 
     @Nullable
