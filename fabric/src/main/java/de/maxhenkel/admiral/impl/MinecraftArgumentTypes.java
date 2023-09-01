@@ -56,6 +56,7 @@ public class MinecraftArgumentTypes {
         argumentRegistry.register(CompoundTag.class, CompoundTagArgument::compoundTag);
         argumentRegistry.register(EntityAnchorArgument.Anchor.class, EntityAnchorArgument::anchor);
         argumentRegistry.register(GameType.class, GameModeArgument::gameMode);
+        argumentRegistry.register(GameProfileArgument.Result.class, GameProfileArgument::gameProfile);
 
         argumentRegistry.<CommandSourceStack, ResourceLocation, ServerLevel>register(ServerLevel.class, DimensionArgument::dimension, (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : DimensionArgument.getDimension(context, name));
     }
