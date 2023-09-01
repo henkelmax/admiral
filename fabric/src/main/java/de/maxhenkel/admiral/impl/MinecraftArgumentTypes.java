@@ -60,6 +60,7 @@ public class MinecraftArgumentTypes {
         argumentRegistry.register(GameType.class, GameModeArgument::gameMode);
         argumentRegistry.register(GameProfileArgument.Result.class, GameProfileArgument::gameProfile);
         argumentRegistry.register(Heightmap.Types.class, HeightmapTypeArgument::heightmap);
+        argumentRegistry.register(MessageArgument.Message.class, MessageArgument::message);
 
         argumentRegistry.<CommandSourceStack, ResourceLocation, ServerLevel>register(ServerLevel.class, DimensionArgument::dimension, (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : DimensionArgument.getDimension(context, name));
     }
