@@ -12,6 +12,10 @@ java {
     withSourcesJar()
 }
 
+test {
+    useJUnitPlatform()
+}
+
 repositories {
     mavenCentral()
     maven { url = 'https://libraries.minecraft.net' }
@@ -20,6 +24,11 @@ repositories {
 dependencies {
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
     implementation "com.mojang:brigadier:${brigardier_version}"
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junit_version}"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:${junit_version}"
+    testImplementation "org.mockito:mockito-core:${mockito_version}"
+    testImplementation "org.mockito:mockito-junit-jupiter:${mockito_version}"
 }
 
 publishing {

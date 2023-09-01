@@ -37,10 +37,10 @@ dependencies {
 
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
-    testImplementation 'org.mockito:mockito-core:5.5.0'
-    testImplementation 'org.mockito:mockito-junit-jupiter:5.5.0'
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junit_version}"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:${junit_version}"
+    testImplementation "org.mockito:mockito-core:${mockito_version}"
+    testImplementation "org.mockito:mockito-junit-jupiter:${mockito_version}"
 }
 
 tasks.withType(JavaCompile).configureEach {
