@@ -11,6 +11,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.MockedStatic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -60,11 +61,40 @@ public class PermissionTest {
         staticMock.close();
     }
 
+    @Test
+    @DisplayName("No permission manager")
+    public void noPermissionManager() {
+        MockedStatic<PermissionCommands> staticMock = mockStatic(PermissionCommands.class);
+
+        TestPermissionManager permissionManager = mock(TestPermissionManager.class);
+        when(permissionManager.hasPermission(any(), any())).thenReturn(false);
+
+        assertThrowsExactly(CommandSyntaxException.class, () -> {
+            TestUtils.executeCommand("permission_annotation", PermissionCommands.class, permissionManager);
+        });
+
+        staticMock.verify(PermissionCommands::permissionAnnotation, times(0));
+
+        staticMock.close();
+    }
+
+    @Test
+    @DisplayName("No permission")
+    public void noPermission() throws CommandSyntaxException {
+        MockedStatic<PermissionCommands> staticMock = mockStatic(PermissionCommands.class);
+
+        TestUtils.executeCommand("permission_annotation", PermissionCommands.class);
+
+        staticMock.verify(PermissionCommands::permissionAnnotation, times(1));
+
+        staticMock.close();
+    }
+
     private static class TestPermissionManager implements PermissionManager<Object> {
 
         @Override
         public boolean hasPermission(Object source, String permission) {
-            return true;
+            throw new IllegalStateException("Not implemented");
         }
 
     }
