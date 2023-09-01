@@ -4,16 +4,38 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import de.maxhenkel.admiral.permissions.PermissionManager;
 
+import javax.annotation.Nullable;
+
 public class TestUtils {
 
     public static void executeCommand(String command, Class<?> commandClass) throws CommandSyntaxException {
-        executeCommand(command, commandClass, null);
+        executeCommand(command, commandClass, Integer.MAX_VALUE, null);
     }
 
-    public static void executeCommand(String command, Class<?> commandClass, PermissionManager<Object> permissionManager) throws CommandSyntaxException {
-        CommandDispatcher<Object> dispatcher = new CommandDispatcher<>();
+    public static void executeCommand(String command, Class<?> commandClass, int permissionLevel) throws CommandSyntaxException {
+        executeCommand(command, commandClass, permissionLevel, null);
+    }
+
+    public static void executeCommand(String command, Class<?> commandClass, PermissionManager<Source> permissionManager) throws CommandSyntaxException {
+        executeCommand(command, commandClass, Integer.MAX_VALUE, permissionManager);
+    }
+
+    public static void executeCommand(String command, Class<?> commandClass, int permissionLevel, @Nullable PermissionManager<Source> permissionManager) throws CommandSyntaxException {
+        CommandDispatcher<Source> dispatcher = new CommandDispatcher<>();
         Admiral.builder(dispatcher).addCommandClasses(commandClass).setPermissionManager(permissionManager).build();
-        dispatcher.execute(command, new Object());
+        dispatcher.execute(command, new Source(permissionLevel));
+    }
+
+    public static class Source {
+        private final int permissionLevel;
+
+        public Source(int permissionLevel) {
+            this.permissionLevel = permissionLevel;
+        }
+
+        public boolean hasPermission(int level) {
+            return permissionLevel >= level;
+        }
     }
 
 }
