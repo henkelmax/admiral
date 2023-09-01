@@ -8,11 +8,11 @@ import java.util.Collection;
 
 /**
  * A wrapper for {@link EntityArgument#players()}.
- * The command fails if no players are found.
+ * The command succeeds even if no players are found.
  */
-public class Players extends ArrayList<ServerPlayer> {
+public class OptionalPlayers extends ArrayList<ServerPlayer> {
 
-    public Players(Collection<ServerPlayer> players) {
+    public OptionalPlayers(Collection<ServerPlayer> players) {
         super(players);
     }
 
