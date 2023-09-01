@@ -1,7 +1,6 @@
 package de.maxhenkel.admiral.impl;
 
-import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.arguments.*;
 import de.maxhenkel.admiral.arguments.GreedyString;
 import de.maxhenkel.admiral.arguments.Word;
 import de.maxhenkel.admiral.argumenttype.*;
@@ -38,6 +37,15 @@ public class ArgumentTypeRegistryImpl implements ArgumentTypeRegistry {
         register(GreedyString.class, StringArgumentType::greedyString, (context, value) -> new GreedyString(value));
         register(Word.class, StringArgumentType::word, (context, value) -> new Word(value));
 
+        register((RangedArgumentTypeSupplier<Long>) (min, max) -> {
+            if (min == null) {
+                min = Long.MIN_VALUE;
+            }
+            if (max == null) {
+                max = Long.MAX_VALUE;
+            }
+            return LongArgumentType.longArg(min, max);
+        }, Long.class, long.class);
         register((RangedArgumentTypeSupplier<Integer>) (min, max) -> {
             if (min == null) {
                 min = Integer.MIN_VALUE;
@@ -47,6 +55,26 @@ public class ArgumentTypeRegistryImpl implements ArgumentTypeRegistry {
             }
             return IntegerArgumentType.integer(min, max);
         }, Integer.class, int.class);
+        register((RangedArgumentTypeSupplier<Double>) (min, max) -> {
+            if (min == null) {
+                min = Double.MIN_VALUE;
+            }
+            if (max == null) {
+                max = Double.MAX_VALUE;
+            }
+            return DoubleArgumentType.doubleArg(min, max);
+        }, Double.class, double.class);
+        register((RangedArgumentTypeSupplier<Float>) (min, max) -> {
+            if (min == null) {
+                min = Float.MIN_VALUE;
+            }
+            if (max == null) {
+                max = Float.MAX_VALUE;
+            }
+            return FloatArgumentType.floatArg(min, max);
+        }, Float.class, float.class);
+
+        register(BoolArgumentType::bool, Boolean.class, boolean.class);
     }
 
     @Nullable
