@@ -39,6 +39,7 @@ public class AdmiralClass<S> {
         Method[] declaredMethods = clazz.getDeclaredMethods();
 
         for (Method method : declaredMethods) {
+            method.setAccessible(true);
             AdmiralMethod<S> admiralMethod = new AdmiralMethod<>(this, method);
             admiralMethod.register();
         }
