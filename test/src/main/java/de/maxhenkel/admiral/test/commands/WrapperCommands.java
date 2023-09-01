@@ -2,6 +2,7 @@ package de.maxhenkel.admiral.test.commands;
 
 import de.maxhenkel.admiral.annotations.Command;
 import de.maxhenkel.admiral.annotations.OptionalArgument;
+import de.maxhenkel.admiral.arguments.EntityReference;
 import de.maxhenkel.admiral.arguments.Word;
 import de.maxhenkel.admiral.test.AdmiralMod;
 import de.maxhenkel.admiral.test.types.NonWrapperDouble;
@@ -35,6 +36,11 @@ public class WrapperCommands {
     @Command("nonwrapperoptionaldouble")
     public void test4(@OptionalArgument NonWrapperOptionalDouble d) {
         AdmiralMod.LOGGER.info("nonwrapperoptionaldouble: {}", d.getValue().map(String::valueOf).orElse("N/A"));
+    }
+
+    @Command("entityreference")
+    public void test4(EntityReference ref) {
+        AdmiralMod.LOGGER.info("entityreference: {}", ref);
     }
 
 }

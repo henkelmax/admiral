@@ -1,9 +1,7 @@
 package de.maxhenkel.admiral.impl;
 
-import de.maxhenkel.admiral.arguments.Entities;
-import de.maxhenkel.admiral.arguments.OptionalEntities;
-import de.maxhenkel.admiral.arguments.OptionalPlayers;
-import de.maxhenkel.admiral.arguments.Players;
+import com.mojang.brigadier.arguments.ArgumentType;
+import de.maxhenkel.admiral.arguments.*;
 import de.maxhenkel.admiral.argumenttype.ContextArgumentTypeSupplier;
 import de.maxhenkel.admiral.argumenttype.RawArgumentTypeConverter;
 import net.minecraft.ChatFormatting;
@@ -12,6 +10,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.*;
 import net.minecraft.commands.arguments.selector.EntitySelector;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -19,6 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.scores.Objective;
@@ -72,10 +72,27 @@ public class MinecraftArgumentTypes {
         argumentRegistry.register(ObjectiveCriteria.class, ObjectiveCriteriaArgument::criteria);
         argumentRegistry.register(OperationArgument.Operation.class, OperationArgument::operation);
 
-        argumentRegistry.register(ParticleOptions.class, (ContextArgumentTypeSupplier<CommandBuildContext, ParticleOptions>) ctx -> ctx == null ? null : ParticleArgument.particle(ctx));
+        argumentRegistry.register(
+                ParticleOptions.class,
+                (ContextArgumentTypeSupplier<CommandBuildContext, ParticleOptions>) ctx -> ctx == null ? null : ParticleArgument.particle(ctx)
+        );
 
-        argumentRegistry.<CommandSourceStack, CommandBuildContext, ResourceLocation, ServerLevel>register(ServerLevel.class, DimensionArgument::dimension, (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : DimensionArgument.getDimension(context, name));
-        argumentRegistry.<CommandSourceStack, CommandBuildContext, String, Objective>register(Objective.class, ObjectiveArgument::objective, (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ObjectiveArgument.getObjective(context, name));
+        argumentRegistry.<CommandSourceStack, CommandBuildContext, ResourceLocation, ServerLevel>register(
+                ServerLevel.class,
+                DimensionArgument::dimension,
+                (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : DimensionArgument.getDimension(context, name)
+        );
+        argumentRegistry.<CommandSourceStack, CommandBuildContext, String, Objective>register(
+                Objective.class,
+                ObjectiveArgument::objective,
+                (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ObjectiveArgument.getObjective(context, name)
+        );
+
+        argumentRegistry.<CommandSourceStack, CommandBuildContext, EntityType<?>, EntityReference>register(
+                EntityReference.class,
+                (ContextArgumentTypeSupplier<CommandBuildContext, EntityType<?>>) ctx -> (ArgumentType) ResourceArgument.resource(ctx, Registries.ENTITY_TYPE),
+                (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : new EntityReference(ResourceArgument.getEntityType(context, name))
+        );
     }
 
 }
