@@ -19,6 +19,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.scores.Objective;
+import net.minecraft.world.scores.criteria.ObjectiveCriteria;
 
 import java.util.List;
 
@@ -65,6 +66,7 @@ public class MinecraftArgumentTypes {
         argumentRegistry.register(MessageArgument.Message.class, MessageArgument::message);
         argumentRegistry.register(NbtPathArgument.NbtPath.class, NbtPathArgument::nbtPath);
         argumentRegistry.register(Tag.class, NbtTagArgument::nbtTag);
+        argumentRegistry.register(ObjectiveCriteria.class, ObjectiveCriteriaArgument::criteria);
 
         argumentRegistry.<CommandSourceStack, ResourceLocation, ServerLevel>register(ServerLevel.class, DimensionArgument::dimension, (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : DimensionArgument.getDimension(context, name));
         argumentRegistry.<CommandSourceStack, String, Objective>register(Objective.class, ObjectiveArgument::objective, (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ObjectiveArgument.getObjective(context, name));
