@@ -19,8 +19,8 @@ public class MinecraftArgumentTypes {
     }
 
     private static void registerInternal(ArgumentTypeRegistryImpl argumentRegistry) {
-        argumentRegistry.<CommandSourceStack, EntitySelector, ServerPlayer>register(EntityArgument::player, (context, value) -> value.findSinglePlayer(context.getSource()), ServerPlayer.class);
-        argumentRegistry.<CommandSourceStack, EntitySelector, Players>register(EntityArgument::players, (context, value) -> new Players(value.findPlayers(context.getSource())), Players.class);
+        argumentRegistry.<CommandSourceStack, EntitySelector, ServerPlayer>register(ServerPlayer.class, EntityArgument::player, (context, value) -> value.findSinglePlayer(context.getSource()));
+        argumentRegistry.<CommandSourceStack, EntitySelector, Players>register(Players.class, EntityArgument::players, (context, value) -> new Players(value.findPlayers(context.getSource())));
     }
 
 }

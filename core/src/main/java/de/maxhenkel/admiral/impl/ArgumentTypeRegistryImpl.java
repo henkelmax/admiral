@@ -34,9 +34,9 @@ public class ArgumentTypeRegistryImpl implements ArgumentTypeRegistry {
     }
 
     private void registerDefault() {
-        register(StringArgumentType::string, String.class);
-        register(StringArgumentType::greedyString, (context, value) -> new GreedyString(value), GreedyString.class);
-        register(StringArgumentType::word, (context, value) -> new Word(value), Word.class);
+        register(String.class, StringArgumentType::string);
+        register(GreedyString.class, StringArgumentType::greedyString, (context, value) -> new GreedyString(value));
+        register(Word.class, StringArgumentType::word, (context, value) -> new Word(value));
 
         register((RangedArgumentTypeSupplier<Integer>) (min, max) -> {
             if (min == null) {
@@ -60,7 +60,7 @@ public class ArgumentTypeRegistryImpl implements ArgumentTypeRegistry {
     }
 
     @Override
-    public <S, A, T> void register(ArgumentTypeSupplier<A> argumentType, @Nullable ArgumentTypeConverter<S, A, T> argumentTypeConverter, Class<T> customTypeClass) {
+    public <S, A, T> void register(Class<T> customTypeClass, ArgumentTypeSupplier<A> argumentType, @Nullable ArgumentTypeConverter<S, A, T> argumentTypeConverter) {
         argumentTypeMap.put(customTypeClass, argumentType);
         if (argumentTypeConverter != null) {
             argumentTypeConverterMap.put(customTypeClass, argumentTypeConverter);
@@ -68,8 +68,8 @@ public class ArgumentTypeRegistryImpl implements ArgumentTypeRegistry {
     }
 
     @Override
-    public <A> void register(ArgumentTypeSupplier<A> argumentType, Class<A> argumentTypeClass) {
-        register(argumentType, null, argumentTypeClass);
+    public <A> void register(Class<A> argumentTypeClass, ArgumentTypeSupplier<A> argumentType) {
+        register(argumentTypeClass, argumentType, null);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class ArgumentTypeRegistryImpl implements ArgumentTypeRegistry {
 
     public <A> void register(ArgumentTypeSupplier<A> argumentType, Class<A>... argumentTypeClass) {
         for (Class<A> clazz : argumentTypeClass) {
-            register(argumentType, null, clazz);
+            register(clazz, argumentType, null);
         }
     }
 

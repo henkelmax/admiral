@@ -41,8 +41,8 @@ public class AdmiralMod implements ModInitializer {
                         }
                     })
                     .addArgumentTypes(argumentRegistry -> {
-                        argumentRegistry.register(DoubleArgumentType::doubleArg, (context, value) -> new NonWrapperDouble(value), NonWrapperDouble.class);
-                        argumentRegistry.register(DoubleArgumentType::doubleArg, (OptionalArgumentTypeConverter<Object, Double, NonWrapperOptionalDouble>) (context, value) -> new NonWrapperOptionalDouble(value.orElse(null)), NonWrapperOptionalDouble.class);
+                        argumentRegistry.register(NonWrapperDouble.class, DoubleArgumentType::doubleArg, (context, value) -> new NonWrapperDouble(value));
+                        argumentRegistry.register(NonWrapperOptionalDouble.class, DoubleArgumentType::doubleArg, (OptionalArgumentTypeConverter<Object, Double, NonWrapperOptionalDouble>) (context, value) -> new NonWrapperOptionalDouble(value.orElse(null)));
                         argumentRegistry.register(WrapperDouble.class);
                     })
                     .build();

@@ -73,7 +73,7 @@ public class ArgumentTypeWrapperConverter {
             }
         };
 
-        registry.register(argumentTypeSupplier, converter, argumentTypeWrapperClass);
+        registry.register(argumentTypeWrapperClass, argumentTypeSupplier, converter);
     }
 
 }
