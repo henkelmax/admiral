@@ -1,4 +1,4 @@
-package de.maxhenkel.admiral.impl.logging;
+package de.maxhenkel.admiral.impl;
 
 import java.util.logging.Logger;
 

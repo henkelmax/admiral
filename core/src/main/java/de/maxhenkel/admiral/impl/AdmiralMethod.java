@@ -9,7 +9,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import de.maxhenkel.admiral.annotations.Command;
 import de.maxhenkel.admiral.annotations.RequiresPermission;
-import de.maxhenkel.admiral.impl.logging.Log;
 import de.maxhenkel.admiral.permissions.PermissionManager;
 
 import javax.annotation.Nullable;

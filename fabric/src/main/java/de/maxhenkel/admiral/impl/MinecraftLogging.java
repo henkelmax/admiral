@@ -1,4 +1,4 @@
-package de.maxhenkel.admiral.impl.logging;
+package de.maxhenkel.admiral.impl;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;

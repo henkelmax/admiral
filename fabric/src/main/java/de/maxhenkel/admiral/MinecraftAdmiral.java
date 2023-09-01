@@ -3,7 +3,7 @@ package de.maxhenkel.admiral;
 import com.mojang.brigadier.CommandDispatcher;
 import de.maxhenkel.admiral.impl.AdmiralImpl;
 import de.maxhenkel.admiral.impl.MinecraftArgumentTypes;
-import de.maxhenkel.admiral.impl.logging.MinecraftLogging;
+import de.maxhenkel.admiral.impl.MinecraftLogging;
 
 public class MinecraftAdmiral {
 
