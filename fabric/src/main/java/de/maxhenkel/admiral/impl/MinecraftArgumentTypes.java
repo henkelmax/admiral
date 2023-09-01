@@ -7,8 +7,10 @@ import de.maxhenkel.admiral.arguments.Players;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.ColorArgument;
+import net.minecraft.commands.arguments.ComponentArgument;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.selector.EntitySelector;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 
@@ -47,6 +49,7 @@ public class MinecraftArgumentTypes {
         argumentRegistry.<CommandSourceStack, EntitySelector, OptionalPlayers>register(OptionalPlayers.class, EntityArgument::players, (context, value) -> new OptionalPlayers(value.findPlayers(context.getSource())));
 
         argumentRegistry.register(ChatFormatting.class, ColorArgument::color);
+        argumentRegistry.register(Component.class, ComponentArgument::textComponent);
     }
 
 }
