@@ -11,7 +11,6 @@ import de.maxhenkel.admiral.annotations.Command;
 import de.maxhenkel.admiral.annotations.RequiresPermission;
 import de.maxhenkel.admiral.permissions.PermissionManager;
 
-import javax.annotation.Nullable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -26,9 +25,8 @@ public class AdmiralMethod<S> {
     private final AdmiralClass<S> admiralClass;
     private final Method method;
     private final List<MethodParameter<S, ?, ?>> parameters;
-    private Command[] methodAnnotations;
-    @Nullable
-    private RequiresPermission requiredPermission;
+    private List<Command> commands;
+    private List<RequiresPermission> requiredPermissions;
 
     public AdmiralMethod(AdmiralClass<S> admiralClass, Method method) {
         this.admiralClass = admiralClass;
@@ -41,8 +39,8 @@ public class AdmiralMethod<S> {
             throw new IllegalStateException("Already registered");
         }
         parameters.addAll(collectParameters());
-        methodAnnotations = method.getDeclaredAnnotationsByType(Command.class);
-        requiredPermission = method.getDeclaredAnnotation(RequiresPermission.class);
+        commands = Arrays.asList(method.getDeclaredAnnotationsByType(Command.class));
+        requiredPermissions = Arrays.asList(method.getDeclaredAnnotationsByType(RequiresPermission.class));
 
         for (List<String> path : getPaths()) {
             handleCommand(path);
@@ -96,20 +94,25 @@ public class AdmiralMethod<S> {
         return getDispatcher().register((LiteralArgumentBuilder<S>) last);
     }
 
+    private List<RequiresPermission> getRequiredPermissions() {
+        List<RequiresPermission> permissions = new ArrayList<>();
+        permissions.addAll(admiralClass.getRequiredPermissions());
+        permissions.addAll(requiredPermissions);
+        return permissions;
+    }
+
     private void execute(ArgumentBuilder<S, ?> builder) {
         builder.executes(this::onExecute);
     }
 
     private void permission(ArgumentBuilder<S, ?> builder) {
-        if (requiredPermission != null) {
-            builder.requires(source -> {
-                PermissionManager<S> permissionManager = getAdmiral().getPermissionManager();
-                if (permissionManager == null) {
-                    return false;
-                }
-                return permissionManager.hasPermission(source, requiredPermission.value());
-            });
-        }
+        builder.requires(source -> {
+            PermissionManager<S> permissionManager = getAdmiral().getPermissionManager();
+            if (permissionManager == null) {
+                return true;
+            }
+            return getRequiredPermissions().stream().allMatch(requiresPermission -> permissionManager.hasPermission(source, requiresPermission.value()));
+        });
     }
 
     private int onExecute(CommandContext<S> context) throws CommandSyntaxException {
@@ -168,7 +171,7 @@ public class AdmiralMethod<S> {
     private List<List<String>> getPaths() {
         List<List<String>> paths = new ArrayList<>();
         List<List<String>> classPaths = admiralClass.getPaths();
-        List<List<String>> methodPaths = Arrays.stream(methodAnnotations).map(command -> new ArrayList<>(Arrays.asList(command.value()))).collect(Collectors.toList());
+        List<List<String>> methodPaths = commands.stream().map(command -> new ArrayList<>(Arrays.asList(command.value()))).collect(Collectors.toList());
         for (List<String> classPath : classPaths) {
             for (List<String> methodPath : methodPaths) {
                 List<String> path = new ArrayList<>(classPath);
