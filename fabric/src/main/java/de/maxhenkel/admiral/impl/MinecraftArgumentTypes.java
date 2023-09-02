@@ -38,8 +38,8 @@ import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.scores.Objective;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
-import org.jetbrains.annotations.Nullable;
 
+import java.util.UUID;
 import java.util.function.Supplier;
 
 public class MinecraftArgumentTypes {
@@ -84,6 +84,7 @@ public class MinecraftArgumentTypes {
         argumentRegistry.register(ResourceLocation.class, ResourceLocationArgument::id);
         argumentRegistry.register(Mirror.class, TemplateMirrorArgument::templateMirror);
         argumentRegistry.register(Rotation.class, TemplateRotationArgument::templateRotation);
+        argumentRegistry.register(UUID.class, UuidArgument::uuid);
 
         argumentRegistry.register(
                 ParticleOptions.class,

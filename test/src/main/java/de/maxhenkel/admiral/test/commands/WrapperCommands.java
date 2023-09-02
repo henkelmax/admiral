@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Command("wrapper")
 public class WrapperCommands {
@@ -108,6 +109,11 @@ public class WrapperCommands {
     @Command("mintime")
     public void mintime(@Min("100") Time ref) {
         AdmiralMod.LOGGER.info("mintime: {}", ref);
+    }
+
+    @Command("uuid")
+    public void uuid(UUID ref) {
+        AdmiralMod.LOGGER.info("uuid: {}", ref);
     }
 
 }
