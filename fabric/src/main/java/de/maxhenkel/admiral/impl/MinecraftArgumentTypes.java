@@ -9,6 +9,7 @@ import de.maxhenkel.admiral.argumenttype.ContextArgumentTypeSupplier;
 import de.maxhenkel.admiral.argumenttype.RawArgumentTypeConverter;
 import de.maxhenkel.admiral.impl.arguments.ReferenceBase;
 import de.maxhenkel.admiral.impl.arguments.ResourceOrTagBase;
+import de.maxhenkel.admiral.impl.arguments.ResourceOrTagKeyBase;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.commands.CommandBuildContext;
@@ -172,13 +173,22 @@ public class MinecraftArgumentTypes {
 
         registerResourceOrTag(argumentRegistry, BiomeResourceOrTag.class, () -> Registries.BIOME, (ctx, name) -> new BiomeResourceOrTag(ResourceOrTagArgument.getResourceOrTag(ctx, name, Registries.BIOME)));
         registerResourceOrTag(argumentRegistry, PoiTypeResourceOrTag.class, () -> Registries.POINT_OF_INTEREST_TYPE, (ctx, name) -> new PoiTypeResourceOrTag(ResourceOrTagArgument.getResourceOrTag(ctx, name, Registries.POINT_OF_INTEREST_TYPE)));
-        registerResourceOrTag(argumentRegistry, StructureResourceOrTag.class, () -> Registries.STRUCTURE, (ctx, name) -> new StructureResourceOrTag(ResourceOrTagArgument.getResourceOrTag(ctx, name, Registries.STRUCTURE)));
+
+        registerResourceOrTagKey(argumentRegistry, StructureResourceOrTagKey.class, () -> Registries.STRUCTURE, (ctx, name) -> new StructureResourceOrTagKey(ResourceOrTagKeyArgument.getResourceOrTagKey(ctx, name, Registries.STRUCTURE, DynamicExceptionTypes.ERROR_STRUCTURE_INVALID)));
     }
 
     private static <T extends ResourceOrTagBase<R>, R> void registerResourceOrTag(ArgumentTypeRegistryImpl argumentRegistry, Class<T> clazz, Supplier<ResourceKey<Registry<R>>> registrySupplier, CommandBiFunction<CommandContext<CommandSourceStack>, String, T> referenceSupplier) {
         argumentRegistry.register(
                 clazz,
                 (ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, R>) ctx -> (ArgumentType) ResourceOrTagArgument.resourceOrTag(ctx, registrySupplier.get()),
+                (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : referenceSupplier.apply(context, name)
+        );
+    }
+
+    private static <T extends ResourceOrTagKeyBase<R>, R> void registerResourceOrTagKey(ArgumentTypeRegistryImpl argumentRegistry, Class<T> clazz, Supplier<ResourceKey<Registry<R>>> registrySupplier, CommandBiFunction<CommandContext<CommandSourceStack>, String, T> referenceSupplier) {
+        argumentRegistry.register(
+                clazz,
+                (ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, R>) ctx -> (ArgumentType) ResourceOrTagKeyArgument.resourceOrTagKey(registrySupplier.get()),
                 (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : referenceSupplier.apply(context, name)
         );
     }
