@@ -88,7 +88,7 @@ public class AdmiralArgumentType<S, C, A, T> {
 
     public static <T extends ArgumentType<A>, A> Class<A> getArgumentTypeClass(T argumentType) {
         try {
-            Method parse = argumentType.getClass().getDeclaredMethod("parse", StringReader.class);
+            Method parse = argumentType.getClass().getMethod("parse", StringReader.class);
             parse.setAccessible(true);
             return (Class<A>) parse.getReturnType();
         } catch (NoSuchMethodException e) {
