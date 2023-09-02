@@ -3,14 +3,23 @@ package de.maxhenkel.admiral.impl;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.commands.AdvancementCommands;
+import net.minecraft.server.commands.ExecuteCommand;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
-public class AdvancementSuggestionProvider {
+public class ReflectionSuggestionProviders {
 
     public static SuggestionProvider<CommandSourceStack> getAdvancementSuggestions() {
-        Field[] declaredFields = AdvancementCommands.class.getDeclaredFields();
+        return getFromClass(AdvancementCommands.class);
+    }
+
+    public static SuggestionProvider<CommandSourceStack> getPredicateSuggestions() {
+        return getFromClass(ExecuteCommand.class);
+    }
+
+    private static SuggestionProvider<CommandSourceStack> getFromClass(Class<?> clazz) {
+        Field[] declaredFields = clazz.getDeclaredFields();
 
         for (Field field : declaredFields) {
             if (field.getType() != SuggestionProvider.class) {
@@ -26,7 +35,7 @@ public class AdvancementSuggestionProvider {
                 throw new RuntimeException(e);
             }
         }
-        throw new IllegalStateException("Could not find advancement suggestions");
+        throw new IllegalStateException(String.format("Could not find suggestion provider in class %s", clazz.getSimpleName()));
     }
 
 
