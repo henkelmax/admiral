@@ -129,7 +129,7 @@ public class MinecraftArgumentTypes {
                 (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ResourceLocationArgument.getRecipe(context, name)
         );
         argumentRegistry.register(
-                LootItemCondition.class,
+                Predicate.class,
                 new ArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, ResourceLocation>() {
                     @Override
                     public ArgumentType<ResourceLocation> get() {

@@ -1,11 +1,11 @@
 package de.maxhenkel.admiral.test.commands;
 
 import de.maxhenkel.admiral.annotations.Command;
+import de.maxhenkel.admiral.arguments.Predicate;
 import de.maxhenkel.admiral.test.AdmiralMod;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
 @Command("resourcelocation")
 public class ResourceLocationCommands {
@@ -25,9 +25,9 @@ public class ResourceLocationCommands {
         AdmiralMod.LOGGER.info("recipe: {}", value);
     }
 
-    @Command("lootitemcondition")
-    public void lootitemcondition(LootItemCondition value) {
-        AdmiralMod.LOGGER.info("lootitemcondition: {}", value);
+    @Command("predicate")
+    public void predicate(Predicate value) {
+        AdmiralMod.LOGGER.info("predicate: {}", value);
     }
 
 }
