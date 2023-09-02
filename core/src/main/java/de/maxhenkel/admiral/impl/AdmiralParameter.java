@@ -76,7 +76,7 @@ public class AdmiralParameter<S, C, A, T> {
     }
 
     public RequiredArgumentBuilder<S, A> toArgument() {
-        return RequiredArgumentBuilder.argument(name, argumentType.getArgumentType(getMin(), getMax()));
+        return RequiredArgumentBuilder.<S, A>argument(name, argumentType.getArgumentType(getMin(), getMax())).suggests(argumentType.getSuggestionProvider());
     }
 
     public Object getValue(CommandContext<S> context) throws CommandSyntaxException {

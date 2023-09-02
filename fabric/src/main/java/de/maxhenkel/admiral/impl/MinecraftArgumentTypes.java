@@ -2,11 +2,14 @@ package de.maxhenkel.admiral.impl;
 
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.suggestion.SuggestionProvider;
 import de.maxhenkel.admiral.arguments.*;
+import de.maxhenkel.admiral.argumenttype.ArgumentTypeSupplier;
 import de.maxhenkel.admiral.argumenttype.ContextArgumentTypeSupplier;
 import de.maxhenkel.admiral.argumenttype.RawArgumentTypeConverter;
 import de.maxhenkel.admiral.impl.arguments.ReferenceBase;
 import net.minecraft.ChatFormatting;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.*;
@@ -79,7 +82,7 @@ public class MinecraftArgumentTypes {
 
         argumentRegistry.register(
                 ParticleOptions.class,
-                (ContextArgumentTypeSupplier<CommandBuildContext, ParticleOptions>) ctx -> ctx == null ? null : ParticleArgument.particle(ctx)
+                (ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, ParticleOptions>) ctx -> ctx == null ? null : ParticleArgument.particle(ctx)
         );
 
         argumentRegistry.<CommandSourceStack, CommandBuildContext, ResourceLocation, ServerLevel>register(
@@ -91,6 +94,21 @@ public class MinecraftArgumentTypes {
                 Objective.class,
                 ObjectiveArgument::objective,
                 (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ObjectiveArgument.getObjective(context, name)
+        );
+        argumentRegistry.register(
+                Advancement.class,
+                new ArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, ResourceLocation>() {
+                    @Override
+                    public ArgumentType<ResourceLocation> get() {
+                        return ResourceLocationArgument.id();
+                    }
+
+                    @Override
+                    public SuggestionProvider<CommandSourceStack> getSuggestionProvider() {
+                        return AdvancementSuggestionProvider.getAdvancementSuggestions();
+                    }
+                },
+                (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ResourceLocationArgument.getAdvancement(context, name)
         );
 
         registerResourceReference(argumentRegistry, AttributeReference.class, () -> Registries.ATTRIBUTE, (ctx, name) -> new AttributeReference(ResourceArgument.getAttribute(ctx, name)));
@@ -106,7 +124,7 @@ public class MinecraftArgumentTypes {
     private static <T extends ReferenceBase<R>, R> void registerResourceReference(ArgumentTypeRegistryImpl argumentRegistry, Class<T> clazz, Supplier<ResourceKey<Registry<R>>> registrySupplier, CommandBiFunction<CommandContext<CommandSourceStack>, String, T> referenceSupplier) {
         argumentRegistry.<CommandSourceStack, CommandBuildContext, R, T>register(
                 clazz,
-                (ContextArgumentTypeSupplier<CommandBuildContext, R>) ctx -> (ArgumentType) ResourceArgument.resource(ctx, registrySupplier.get()),
+                (ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, R>) ctx -> (ArgumentType) ResourceArgument.resource(ctx, registrySupplier.get()),
                 (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : referenceSupplier.apply(context, name)
         );
     }
@@ -114,7 +132,7 @@ public class MinecraftArgumentTypes {
     private static <T extends ReferenceBase<R>, R> void registerResourceKeyReference(ArgumentTypeRegistryImpl argumentRegistry, Class<T> clazz, Supplier<ResourceKey<Registry<R>>> registrySupplier, CommandBiFunction<CommandContext<CommandSourceStack>, String, T> referenceSupplier) {
         argumentRegistry.<CommandSourceStack, CommandBuildContext, R, T>register(
                 clazz,
-                (ContextArgumentTypeSupplier<CommandBuildContext, R>) ctx -> (ArgumentType) ResourceKeyArgument.key(registrySupplier.get()),
+                (ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, R>) ctx -> (ArgumentType) ResourceKeyArgument.key(registrySupplier.get()),
                 (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : referenceSupplier.apply(context, name)
         );
     }

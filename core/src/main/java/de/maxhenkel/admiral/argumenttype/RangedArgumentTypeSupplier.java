@@ -5,7 +5,7 @@ import com.mojang.brigadier.arguments.ArgumentType;
 import javax.annotation.Nullable;
 
 @FunctionalInterface
-public interface RangedArgumentTypeSupplier<C, A> extends ArgumentTypeSupplier<C, A> {
+public interface RangedArgumentTypeSupplier<S, C, A> extends ArgumentTypeSupplier<S, C, A> {
 
     /**
      * @param commandBuildContext the command build context

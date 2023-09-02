@@ -4,7 +4,7 @@ import com.mojang.brigadier.arguments.ArgumentType;
 
 import javax.annotation.Nullable;
 
-public interface ContextArgumentTypeSupplier<C, A> extends ArgumentTypeSupplier<C, A> {
+public interface ContextArgumentTypeSupplier<S, C, A> extends ArgumentTypeSupplier<S, C, A> {
 
     @Override
     default ArgumentType<A> get() {

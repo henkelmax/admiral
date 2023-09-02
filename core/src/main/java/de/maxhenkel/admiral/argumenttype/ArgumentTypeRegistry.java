@@ -14,7 +14,7 @@ public interface ArgumentTypeRegistry {
      * @param <A>                   the argument type of the brigadier argument
      * @param <T>                   the converted argument type
      */
-    <S, C, A, T> void register(Class<T> customTypeClass, ArgumentTypeSupplier<C, A> argumentType, @Nullable ArgumentTypeConverter<S, A, T> argumentTypeConverter);
+    <S, C, A, T> void register(Class<T> customTypeClass, ArgumentTypeSupplier<S, C, A> argumentType, @Nullable ArgumentTypeConverter<S, A, T> argumentTypeConverter);
 
     /**
      * Registers an argument type
@@ -23,6 +23,6 @@ public interface ArgumentTypeRegistry {
      * @param argumentType      the argument type. Use {@link RangedArgumentTypeSupplier} if the argument type is ranged
      * @param <A>               the argument type of the brigadier argument
      */
-    <C, A> void register(Class<A> argumentTypeClass, ArgumentTypeSupplier<C, A> argumentType);
+    <S, C, A> void register(Class<A> argumentTypeClass, ArgumentTypeSupplier<S, C, A> argumentType);
 
 }

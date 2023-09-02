@@ -4,6 +4,7 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.suggestion.SuggestionProvider;
 import de.maxhenkel.admiral.argumenttype.ArgumentTypeConverter;
 import de.maxhenkel.admiral.argumenttype.ArgumentTypeSupplier;
 import de.maxhenkel.admiral.argumenttype.RangedArgumentTypeSupplier;
@@ -15,7 +16,7 @@ public class AdmiralArgumentType<S, C, A, T> {
 
     private AdmiralParameter<S, C, A, T> admiralParameter;
     private Class<T> parameterClass;
-    private ArgumentTypeSupplier<C, A> argumentType;
+    private ArgumentTypeSupplier<S, C, A> argumentType;
     private Class<A> argumentTypeClass;
     @Nullable
     private ArgumentTypeConverter<S, A, T> converter;
@@ -26,7 +27,7 @@ public class AdmiralArgumentType<S, C, A, T> {
 
     public static <S, C, A, T> AdmiralArgumentType<S, C, A, T> fromClass(AdmiralParameter<S, C, A, T> admiralParameter, Class<T> parameterClass) {
         ArgumentTypeRegistryImpl registry = admiralParameter.getAdmiral().getArgumentRegistry();
-        ArgumentTypeSupplier<C, A> argumentTypeSupplier = registry.getType(parameterClass);
+        ArgumentTypeSupplier<S, C, A> argumentTypeSupplier = registry.getType(parameterClass);
         if (argumentTypeSupplier == null) {
             throw new IllegalStateException(String.format("ArgumentType %s not registered", parameterClass.getSimpleName()));
         }
@@ -53,9 +54,13 @@ public class AdmiralArgumentType<S, C, A, T> {
 
     public ArgumentType<A> getArgumentType(@Nullable A min, @Nullable A max) {
         if (argumentType instanceof RangedArgumentTypeSupplier) {
-            return ((RangedArgumentTypeSupplier<C, A>) argumentType).getRanged(getAdmiral().getCommandBuildContext(), min, max);
+            return ((RangedArgumentTypeSupplier<S, C, A>) argumentType).getRanged(getAdmiral().getCommandBuildContext(), min, max);
         }
         return argumentType.get(getAdmiral().getCommandBuildContext());
+    }
+
+    public SuggestionProvider<S> getSuggestionProvider() {
+        return argumentType.getSuggestionProvider();
     }
 
     @Nullable
