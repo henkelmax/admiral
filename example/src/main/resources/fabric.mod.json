@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "admiral_test",
+  "id": "admiral_example",
   "version": "1.0.0",
-  "name": "Admiral Test",
-  "description": "Admiral",
+  "name": "Admiral Example",
+  "description": "Examples for Admiral",
   "environment": "*",
   "entrypoints": {
     "main": [
