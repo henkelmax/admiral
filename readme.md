@@ -1,6 +1,6 @@
 # Admiral
 
-An annotation based command handling library for Brigadier.
+An annotation based command registration library for Brigadier.
 
 ## Usage
 
