@@ -6,4 +6,4 @@ pluginManagement {
 }
 
 rootProject.name = 'admiral'
-include('core', 'fabric', 'test')
+include('core', 'minecraft', 'test')

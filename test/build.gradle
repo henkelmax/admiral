@@ -26,8 +26,8 @@ dependencies {
 
     implementation project(':core')
     shadow project(':core')
-    implementation project(path: ':fabric', configuration: 'namedElements')
-    shadow project(path: ':fabric', configuration: 'namedElements')
+    implementation project(path: ':minecraft', configuration: 'namedElements')
+    shadow project(path: ':minecraft', configuration: 'namedElements')
 
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
 }
