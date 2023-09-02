@@ -30,6 +30,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
@@ -77,6 +79,8 @@ public class MinecraftArgumentTypes {
         argumentRegistry.register(ObjectiveCriteria.class, ObjectiveCriteriaArgument::criteria);
         argumentRegistry.register(OperationArgument.Operation.class, OperationArgument::operation);
         argumentRegistry.register(ResourceLocation.class, ResourceLocationArgument::id);
+        argumentRegistry.register(Mirror.class, TemplateMirrorArgument::templateMirror);
+        argumentRegistry.register(Rotation.class, TemplateRotationArgument::templateRotation);
 
         argumentRegistry.register(
                 ParticleOptions.class,

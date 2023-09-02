@@ -6,6 +6,8 @@ import de.maxhenkel.admiral.arguments.*;
 import de.maxhenkel.admiral.test.AdmiralMod;
 import de.maxhenkel.admiral.test.types.NonWrapperDouble;
 import de.maxhenkel.admiral.test.types.NonWrapperOptionalDouble;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 
 import java.util.Optional;
 
@@ -85,6 +87,16 @@ public class WrapperCommands {
     @Command("team")
     public void team(Team ref) {
         AdmiralMod.LOGGER.info("team: {}", ref);
+    }
+
+    @Command("mirror")
+    public void mirror(Mirror ref) {
+        AdmiralMod.LOGGER.info("mirror: {}", ref);
+    }
+
+    @Command("rotation")
+    public void rotation(Rotation ref) {
+        AdmiralMod.LOGGER.info("rotation: {}", ref);
     }
 
 }
