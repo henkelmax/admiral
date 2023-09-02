@@ -1,6 +1,7 @@
 package de.maxhenkel.admiral.test.commands;
 
 import de.maxhenkel.admiral.annotations.Command;
+import de.maxhenkel.admiral.arguments.BiomeResourceOrTag;
 import de.maxhenkel.admiral.test.AdmiralMod;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.resources.ResourceLocation;
@@ -34,6 +35,11 @@ public class ResourceLocationCommands {
     @Command("lootitemfunction")
     public void lootitemfunction(LootItemFunction value) {
         AdmiralMod.LOGGER.info("lootitemfunction: {}", value);
+    }
+
+    @Command("biomeresourceortag")
+    public void biomeresourceortag(BiomeResourceOrTag value) {
+        AdmiralMod.LOGGER.info("biomeresourceortag: {}", value);
     }
 
 }
