@@ -7,9 +7,9 @@ import de.maxhenkel.admiral.impl.permissions.PermissionAnnotationUtil;
 import javax.annotation.Nullable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AdmiralClass<S, C> {
 
@@ -70,11 +70,7 @@ public class AdmiralClass<S, C> {
     }
 
     public List<List<String>> getPaths() {
-        List<List<String>> paths = new ArrayList<>();
-        for (Command command : commands) {
-            paths.add(new ArrayList<>(Arrays.asList(command.value())));
-        }
-        return paths;
+        return commands.stream().map(command -> Arrays.asList(command.value())).collect(Collectors.toList());
     }
 
 }

@@ -53,6 +53,20 @@ public class CommandPathTest {
         }
     }
 
+    @Test
+    @DisplayName("Path")
+    public void path() {
+        try (MockedStatic<CommandPathCommands3> staticMock = mockStatic(CommandPathCommands3.class)) {
+            ArgumentCaptor<CommandContext> contextCaptor = ArgumentCaptor.forClass(CommandContext.class);
+
+            when(CommandPathCommands3.path(contextCaptor.capture())).thenReturn(1);
+
+            assertThrowsExactly(CommandSyntaxException.class, () -> TestUtils.executeCommand("test", CommandPathCommands3.class));
+
+            staticMock.verify(() -> CommandPathCommands3.path(any()), times(0));
+        }
+    }
+
     @Command("test")
     private static class CommandPathCommands {
 
@@ -72,6 +86,16 @@ public class CommandPathTest {
 
         @Command("int")
         public static int integer(int integer) {
+            return 1;
+        }
+
+    }
+
+    @Command("test")
+    private static class CommandPathCommands3 {
+
+        @Command("path")
+        public static int path(CommandContext<?> context) {
             return 1;
         }
 

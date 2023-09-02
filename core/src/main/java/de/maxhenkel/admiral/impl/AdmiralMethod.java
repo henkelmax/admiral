@@ -80,7 +80,7 @@ public class AdmiralMethod<S, C> {
             if (last != null) {
                 literal.then(last);
             }
-            if (lastParameter == null || lastParameter.isOptional() && firstPass) {
+            if ((lastParameter == null || lastParameter.isOptional()) && firstPass) {
                 permission(literal);
                 execute(literal);
             }
