@@ -43,6 +43,9 @@ public class AdmiralClass<S, C> {
 
         for (Method method : declaredMethods) {
             method.setAccessible(true);
+            if (method.getDeclaredAnnotationsByType(Command.class).length == 0) {
+                continue;
+            }
             AdmiralMethod<S, C> admiralMethod = new AdmiralMethod<>(this, method);
             admiralMethod.register();
         }

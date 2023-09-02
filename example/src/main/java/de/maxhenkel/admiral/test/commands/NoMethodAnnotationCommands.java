@@ -11,6 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 @Command("class2")
 public class NoMethodAnnotationCommands {
 
+    @Command
     public void player(CommandContext<CommandSourceStack> context, ServerPlayer player) throws CommandSyntaxException {
         AdmiralMod.LOGGER.info("Example alias command test: {}", player);
     }

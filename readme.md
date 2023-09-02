@@ -45,6 +45,7 @@ public class MyCommands {
      * The bool argument is optional and has to be a boolean.
      * After using an optional argument, all following arguments have to be optional as well.
      */
+    @Command()
     public void example(@MinMax(min = "10", max = "20") int number, @Min("0") long longNumber, Optional<Double> optionalDouble, @OptionalArgument Boolean bool) {
         System.out.println(number);
         System.out.println(longNumber);
