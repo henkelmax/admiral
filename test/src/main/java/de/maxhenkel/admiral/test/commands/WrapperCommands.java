@@ -1,6 +1,7 @@
 package de.maxhenkel.admiral.test.commands;
 
 import de.maxhenkel.admiral.annotations.Command;
+import de.maxhenkel.admiral.annotations.Min;
 import de.maxhenkel.admiral.annotations.OptionalArgument;
 import de.maxhenkel.admiral.arguments.*;
 import de.maxhenkel.admiral.test.AdmiralMod;
@@ -97,6 +98,16 @@ public class WrapperCommands {
     @Command("rotation")
     public void rotation(Rotation ref) {
         AdmiralMod.LOGGER.info("rotation: {}", ref);
+    }
+
+    @Command("time")
+    public void time(Time ref) {
+        AdmiralMod.LOGGER.info("time: {}", ref);
+    }
+
+    @Command("mintime")
+    public void mintime(@Min("100") Time ref) {
+        AdmiralMod.LOGGER.info("mintime: {}", ref);
     }
 
 }

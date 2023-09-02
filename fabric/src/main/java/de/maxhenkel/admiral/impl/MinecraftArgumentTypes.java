@@ -6,6 +6,7 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 import de.maxhenkel.admiral.arguments.*;
 import de.maxhenkel.admiral.argumenttype.ArgumentTypeSupplier;
 import de.maxhenkel.admiral.argumenttype.ContextArgumentTypeSupplier;
+import de.maxhenkel.admiral.argumenttype.RangedArgumentTypeSupplier;
 import de.maxhenkel.admiral.argumenttype.RawArgumentTypeConverter;
 import de.maxhenkel.admiral.impl.arguments.ReferenceBase;
 import de.maxhenkel.admiral.impl.arguments.ResourceOrTagBase;
@@ -37,6 +38,7 @@ import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.scores.Objective;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
@@ -64,6 +66,7 @@ public class MinecraftArgumentTypes {
         argumentRegistry.<CommandSourceStack, CommandBuildContext, ScoreHolderArgument.Result, ScoreHolders>register(ScoreHolders.class, ScoreHolderArgument::scoreHolders, (context, value) -> new ScoreHolders(value));
         argumentRegistry.<CommandSourceStack, CommandBuildContext, Integer, Slot>register(Slot.class, SlotArgument::slot, (context, value) -> new Slot(value));
         argumentRegistry.<CommandSourceStack, CommandBuildContext, String, Team>register(Team.class, TeamArgument::team, (context, value) -> new Team(value));
+        argumentRegistry.register(Time.class, (RangedArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, Integer>) (min, max) -> TimeArgument.time(min == null ? 0 : min), (context, value) -> new Time(value));
 
         argumentRegistry.register(AngleArgument.SingleAngle.class, AngleArgument::angle);
         argumentRegistry.register(ChatFormatting.class, ColorArgument::color);
