@@ -2,9 +2,7 @@ package de.maxhenkel.admiral.test.commands;
 
 import de.maxhenkel.admiral.annotations.Command;
 import de.maxhenkel.admiral.annotations.OptionalArgument;
-import de.maxhenkel.admiral.arguments.AttributeReference;
-import de.maxhenkel.admiral.arguments.EntityReference;
-import de.maxhenkel.admiral.arguments.Word;
+import de.maxhenkel.admiral.arguments.*;
 import de.maxhenkel.admiral.test.AdmiralMod;
 import de.maxhenkel.admiral.test.types.NonWrapperDouble;
 import de.maxhenkel.admiral.test.types.NonWrapperOptionalDouble;
@@ -47,6 +45,21 @@ public class WrapperCommands {
     @Command("attributereference")
     public void attributereference(AttributeReference ref) {
         AdmiralMod.LOGGER.info("attributereference: {}", ref);
+    }
+
+    @Command("configuredfeaturereference")
+    public void configuredfeaturereference(ConfiguredFeatureReference ref) {
+        AdmiralMod.LOGGER.info("configuredfeaturereference: {}", ref);
+    }
+
+    @Command("structurereference")
+    public void structurereference(StructureReference ref) {
+        AdmiralMod.LOGGER.info("structurereference: {}", ref);
+    }
+
+    @Command("structuretemplatepoolreference")
+    public void structuretemplatepoolreference(StructureTemplatePoolReference ref) {
+        AdmiralMod.LOGGER.info("structuretemplatepoolreference: {}", ref);
     }
 
 }
