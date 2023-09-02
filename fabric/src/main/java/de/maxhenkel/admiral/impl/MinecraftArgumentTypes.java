@@ -171,6 +171,7 @@ public class MinecraftArgumentTypes {
         registerResourceKeyReference(argumentRegistry, StructureTemplatePoolReference.class, () -> Registries.TEMPLATE_POOL, (ctx, name) -> new StructureTemplatePoolReference(ResourceKeyArgument.getStructureTemplatePool(ctx, name)));
 
         registerResourceOrTag(argumentRegistry, BiomeResourceOrTag.class, () -> Registries.BIOME, (ctx, name) -> new BiomeResourceOrTag(ResourceOrTagArgument.getResourceOrTag(ctx, name, Registries.BIOME)));
+        registerResourceOrTag(argumentRegistry, PoiTypeResourceOrTag.class, () -> Registries.POINT_OF_INTEREST_TYPE, (ctx, name) -> new PoiTypeResourceOrTag(ResourceOrTagArgument.getResourceOrTag(ctx, name, Registries.POINT_OF_INTEREST_TYPE)));
     }
 
     private static <T extends ResourceOrTagBase<R>, R> void registerResourceOrTag(ArgumentTypeRegistryImpl argumentRegistry, Class<T> clazz, Supplier<ResourceKey<Registry<R>>> registrySupplier, CommandBiFunction<CommandContext<CommandSourceStack>, String, T> referenceSupplier) {

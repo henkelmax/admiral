@@ -2,6 +2,7 @@ package de.maxhenkel.admiral.test.commands;
 
 import de.maxhenkel.admiral.annotations.Command;
 import de.maxhenkel.admiral.arguments.BiomeResourceOrTag;
+import de.maxhenkel.admiral.arguments.PoiTypeResourceOrTag;
 import de.maxhenkel.admiral.test.AdmiralMod;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.resources.ResourceLocation;
@@ -40,6 +41,11 @@ public class ResourceLocationCommands {
     @Command("biomeresourceortag")
     public void biomeresourceortag(BiomeResourceOrTag value) {
         AdmiralMod.LOGGER.info("biomeresourceortag: {}", value);
+    }
+
+    @Command("poityperesourceortag")
+    public void poityperesourceortag(PoiTypeResourceOrTag value) {
+        AdmiralMod.LOGGER.info("poityperesourceortag: {}", value);
     }
 
 }
