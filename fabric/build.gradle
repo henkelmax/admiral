@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'maven-publish'
     id 'fabric-loom'
     id 'com.github.johnrengelman.shadow'
 }
@@ -8,6 +9,9 @@ java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 }
+
+group = maven_group
+archivesBaseName = archives_base_name
 
 repositories {
     mavenCentral()
@@ -22,7 +26,6 @@ dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     mappings loom.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:${loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
 
     implementation project(':core')
     shadow project(':core')
@@ -30,13 +33,6 @@ dependencies {
     shadow project(path: ':minecraft', configuration: 'namedElements')
 
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
-}
-
-processResources {
-    filesMatching('fabric.mod.json') {
-        expand 'version': version,
-                'loader_version': loader_version
-    }
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -56,4 +52,26 @@ shadowJar {
 remapJar {
     dependsOn shadowJar
     inputFile = shadowJar.archiveFile.get()
+}
+
+publishing {
+    publications {
+        admiralFabric(MavenPublication) {
+            artifactId archives_base_name
+            artifact(remapJar) {
+                builtBy build
+                classifier null
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = 'henkelmax.public'
+            url = 'https://maven.maxhenkel.de/repository/public'
+            credentials {
+                username System.getenv('MAVEN_USERNAME')
+                password System.getenv('MAVEN_PASSWORD')
+            }
+        }
+    }
 }
