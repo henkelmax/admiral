@@ -1,31 +1,34 @@
 package de.maxhenkel.admiral.impl;
 
 import com.mojang.brigadier.arguments.ArgumentType;
+import com.mojang.brigadier.context.CommandContext;
 import de.maxhenkel.admiral.arguments.*;
 import de.maxhenkel.admiral.argumenttype.ContextArgumentTypeSupplier;
 import de.maxhenkel.admiral.argumenttype.RawArgumentTypeConverter;
+import de.maxhenkel.admiral.impl.arguments.ReferenceBase;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.*;
 import net.minecraft.commands.arguments.selector.EntitySelector;
+import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.scores.Objective;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public class MinecraftArgumentTypes {
 
@@ -89,15 +92,16 @@ public class MinecraftArgumentTypes {
                 (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ObjectiveArgument.getObjective(context, name)
         );
 
-        argumentRegistry.<CommandSourceStack, CommandBuildContext, EntityType<?>, EntityReference>register(
-                EntityReference.class,
-                (ContextArgumentTypeSupplier<CommandBuildContext, EntityType<?>>) ctx -> (ArgumentType) ResourceArgument.resource(ctx, Registries.ENTITY_TYPE),
-                (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : new EntityReference(ResourceArgument.getEntityType(context, name))
-        );
-        argumentRegistry.<CommandSourceStack, CommandBuildContext, Attribute, AttributeReference>register(
-                AttributeReference.class,
-                (ContextArgumentTypeSupplier<CommandBuildContext, Attribute>) ctx -> (ArgumentType) ResourceArgument.resource(ctx, Registries.ATTRIBUTE),
-                (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : new AttributeReference(ResourceArgument.getAttribute(context, name))
+        registerReference(argumentRegistry, EntityReference.class, () -> Registries.ENTITY_TYPE, (ctx, name) -> new EntityReference(ResourceArgument.getEntityType(ctx, name)));
+        registerReference(argumentRegistry, AttributeReference.class, () -> Registries.ATTRIBUTE, (ctx, name) -> new AttributeReference(ResourceArgument.getAttribute(ctx, name)));
+        registerReference(argumentRegistry, ConfiguredFeatureReference.class, () -> Registries.CONFIGURED_FEATURE, (ctx, name) -> new ConfiguredFeatureReference(ResourceArgument.getConfiguredFeature(ctx, name)));
+    }
+
+    private static <T extends ReferenceBase<R>, R> void registerReference(ArgumentTypeRegistryImpl argumentRegistry, Class<T> clazz, Supplier<ResourceKey<Registry<R>>> registrySupplier, CommandBiFunction<CommandContext<CommandSourceStack>, String, T> referenceSupplier) {
+        argumentRegistry.<CommandSourceStack, CommandBuildContext, R, T>register(
+                clazz,
+                (ContextArgumentTypeSupplier<CommandBuildContext, R>) ctx -> (ArgumentType) ResourceArgument.resource(ctx, registrySupplier.get()),
+                (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : referenceSupplier.apply(context, name)
         );
     }
 
