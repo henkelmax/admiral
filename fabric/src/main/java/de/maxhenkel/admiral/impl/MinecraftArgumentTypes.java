@@ -70,6 +70,7 @@ public class MinecraftArgumentTypes {
         });
         argumentRegistry.<CommandSourceStack, CommandBuildContext, EntitySelector, OptionalEntities>register(OptionalEntities.class, EntityArgument::entities, (context, value) -> new OptionalEntities(value.findEntities(context.getSource())));
         argumentRegistry.<CommandSourceStack, CommandBuildContext, EntitySelector, OptionalPlayers>register(OptionalPlayers.class, EntityArgument::players, (context, value) -> new OptionalPlayers(value.findPlayers(context.getSource())));
+        argumentRegistry.<CommandSourceStack, CommandBuildContext, Integer, ScoreboardSlot>register(ScoreboardSlot.class, ScoreboardSlotArgument::displaySlot, (context, value) -> new ScoreboardSlot(value));
 
         argumentRegistry.register(AngleArgument.SingleAngle.class, AngleArgument::angle);
         argumentRegistry.register(ChatFormatting.class, ColorArgument::color);

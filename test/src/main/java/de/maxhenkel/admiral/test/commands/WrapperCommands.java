@@ -62,4 +62,9 @@ public class WrapperCommands {
         AdmiralMod.LOGGER.info("structuretemplatepoolreference: {}", ref);
     }
 
+    @Command("scoreboardslot")
+    public void scoreboardslot(ScoreboardSlot ref) {
+        AdmiralMod.LOGGER.info("scoreboardslot: {}", ref);
+    }
+
 }
