@@ -36,7 +36,6 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.scores.Objective;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
 
-import java.util.List;
 import java.util.function.Supplier;
 
 public class MinecraftArgumentTypes {
@@ -54,20 +53,8 @@ public class MinecraftArgumentTypes {
     private static void registerInternal(ArgumentTypeRegistryImpl argumentRegistry) {
         argumentRegistry.<CommandSourceStack, CommandBuildContext, EntitySelector, Entity>register(Entity.class, EntityArgument::entity, (context, value) -> value.findSingleEntity(context.getSource()));
         argumentRegistry.<CommandSourceStack, CommandBuildContext, EntitySelector, ServerPlayer>register(ServerPlayer.class, EntityArgument::player, (context, value) -> value.findSinglePlayer(context.getSource()));
-        argumentRegistry.<CommandSourceStack, CommandBuildContext, EntitySelector, Entities>register(Entities.class, EntityArgument::entities, (context, value) -> {
-            List<? extends Entity> entities = value.findEntities(context.getSource());
-            if (entities.isEmpty()) {
-                throw EntityArgument.NO_ENTITIES_FOUND.create();
-            }
-            return new Entities<>(entities);
-        });
-        argumentRegistry.<CommandSourceStack, CommandBuildContext, EntitySelector, Players>register(Players.class, EntityArgument::players, (context, value) -> {
-            List<ServerPlayer> players = value.findPlayers(context.getSource());
-            if (players.isEmpty()) {
-                throw EntityArgument.NO_PLAYERS_FOUND.create();
-            }
-            return new Players(players);
-        });
+        argumentRegistry.<CommandSourceStack, CommandBuildContext, EntitySelector, Entities>register(Entities.class, EntityArgument::entities, (RawArgumentTypeConverter) (context, name, value) -> new Entities<>(EntityArgument.getEntities(context, name)));
+        argumentRegistry.<CommandSourceStack, CommandBuildContext, EntitySelector, Players>register(Players.class, EntityArgument::players, (RawArgumentTypeConverter) (context, name, value) -> new Players(EntityArgument.getPlayers(context, name)));
         argumentRegistry.<CommandSourceStack, CommandBuildContext, EntitySelector, OptionalEntities>register(OptionalEntities.class, EntityArgument::entities, (context, value) -> new OptionalEntities(value.findEntities(context.getSource())));
         argumentRegistry.<CommandSourceStack, CommandBuildContext, EntitySelector, OptionalPlayers>register(OptionalPlayers.class, EntityArgument::players, (context, value) -> new OptionalPlayers(value.findPlayers(context.getSource())));
         argumentRegistry.<CommandSourceStack, CommandBuildContext, Integer, ScoreboardSlot>register(ScoreboardSlot.class, ScoreboardSlotArgument::displaySlot, (context, value) -> new ScoreboardSlot(value));
