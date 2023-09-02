@@ -75,6 +75,7 @@ public class MinecraftArgumentTypes {
         argumentRegistry.register(Tag.class, NbtTagArgument::nbtTag);
         argumentRegistry.register(ObjectiveCriteria.class, ObjectiveCriteriaArgument::criteria);
         argumentRegistry.register(OperationArgument.Operation.class, OperationArgument::operation);
+        argumentRegistry.register(ResourceLocation.class, ResourceLocationArgument::id);
 
         argumentRegistry.register(
                 ParticleOptions.class,
