@@ -77,4 +77,9 @@ public class WrapperCommands {
         AdmiralMod.LOGGER.info("scoreholders: {}", ref);
     }
 
+    @Command("slot")
+    public void slot(Slot ref) {
+        AdmiralMod.LOGGER.info("slot: {}", ref);
+    }
+
 }
