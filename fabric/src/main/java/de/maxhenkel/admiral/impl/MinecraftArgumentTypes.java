@@ -61,6 +61,7 @@ public class MinecraftArgumentTypes {
         argumentRegistry.<CommandSourceStack, CommandBuildContext, ScoreHolderArgument.Result, ScoreHolder>register(ScoreHolder.class, ScoreHolderArgument::scoreHolder, (context, value) -> new ScoreHolder(value));
         argumentRegistry.<CommandSourceStack, CommandBuildContext, ScoreHolderArgument.Result, ScoreHolders>register(ScoreHolders.class, ScoreHolderArgument::scoreHolders, (context, value) -> new ScoreHolders(value));
         argumentRegistry.<CommandSourceStack, CommandBuildContext, Integer, Slot>register(Slot.class, SlotArgument::slot, (context, value) -> new Slot(value));
+        argumentRegistry.<CommandSourceStack, CommandBuildContext, String, Team>register(Team.class, TeamArgument::team, (context, value) -> new Team(value));
 
         argumentRegistry.register(AngleArgument.SingleAngle.class, AngleArgument::angle);
         argumentRegistry.register(ChatFormatting.class, ColorArgument::color);

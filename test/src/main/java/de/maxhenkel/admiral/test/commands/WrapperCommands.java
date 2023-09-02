@@ -82,4 +82,9 @@ public class WrapperCommands {
         AdmiralMod.LOGGER.info("slot: {}", ref);
     }
 
+    @Command("team")
+    public void team(Team ref) {
+        AdmiralMod.LOGGER.info("team: {}", ref);
+    }
+
 }
