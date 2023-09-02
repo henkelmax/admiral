@@ -29,6 +29,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.scores.Objective;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
@@ -129,7 +130,7 @@ public class MinecraftArgumentTypes {
                 (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ResourceLocationArgument.getRecipe(context, name)
         );
         argumentRegistry.register(
-                Predicate.class,
+                LootItemCondition.class,
                 new ArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, ResourceLocation>() {
                     @Override
                     public ArgumentType<ResourceLocation> get() {
@@ -142,6 +143,21 @@ public class MinecraftArgumentTypes {
                     }
                 },
                 (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ResourceLocationArgument.getPredicate(context, name)
+        );
+        argumentRegistry.register(
+                LootItemFunction.class,
+                new ArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, ResourceLocation>() {
+                    @Override
+                    public ArgumentType<ResourceLocation> get() {
+                        return ResourceLocationArgument.id();
+                    }
+
+                    @Override
+                    public SuggestionProvider<CommandSourceStack> getSuggestionProvider() {
+                        return ReflectionSuggestionProviders.getLootItemSuggestions();
+                    }
+                },
+                (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ResourceLocationArgument.getItemModifier(context, name)
         );
 
         registerResourceReference(argumentRegistry, AttributeReference.class, () -> Registries.ATTRIBUTE, (ctx, name) -> new AttributeReference(ResourceArgument.getAttribute(ctx, name)));

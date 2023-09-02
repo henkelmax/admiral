@@ -4,6 +4,7 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.commands.AdvancementCommands;
 import net.minecraft.server.commands.ExecuteCommand;
+import net.minecraft.server.commands.ItemCommands;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -16,6 +17,10 @@ public class ReflectionSuggestionProviders {
 
     public static SuggestionProvider<CommandSourceStack> getPredicateSuggestions() {
         return getFromClass(ExecuteCommand.class);
+    }
+
+    public static SuggestionProvider<CommandSourceStack> getLootItemSuggestions() {
+        return getFromClass(ItemCommands.class);
     }
 
     private static SuggestionProvider<CommandSourceStack> getFromClass(Class<?> clazz) {
