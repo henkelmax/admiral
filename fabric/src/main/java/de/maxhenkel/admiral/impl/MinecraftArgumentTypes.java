@@ -14,6 +14,7 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.*;
 import net.minecraft.commands.arguments.selector.EntitySelector;
+import net.minecraft.commands.synchronization.SuggestionProviders;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.Registries;
@@ -25,6 +26,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.scores.Objective;
@@ -109,6 +111,21 @@ public class MinecraftArgumentTypes {
                     }
                 },
                 (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ResourceLocationArgument.getAdvancement(context, name)
+        );
+        argumentRegistry.register(
+                Recipe.class,
+                new ArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, ResourceLocation>() {
+                    @Override
+                    public ArgumentType<ResourceLocation> get() {
+                        return ResourceLocationArgument.id();
+                    }
+
+                    @Override
+                    public SuggestionProvider<CommandSourceStack> getSuggestionProvider() {
+                        return SuggestionProviders.ALL_RECIPES;
+                    }
+                },
+                (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ResourceLocationArgument.getRecipe(context, name)
         );
 
         registerResourceReference(argumentRegistry, AttributeReference.class, () -> Registries.ATTRIBUTE, (ctx, name) -> new AttributeReference(ResourceArgument.getAttribute(ctx, name)));

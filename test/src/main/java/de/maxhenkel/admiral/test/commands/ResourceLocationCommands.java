@@ -4,6 +4,7 @@ import de.maxhenkel.admiral.annotations.Command;
 import de.maxhenkel.admiral.test.AdmiralMod;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.Recipe;
 
 @Command("resourcelocation")
 public class ResourceLocationCommands {
@@ -16,6 +17,11 @@ public class ResourceLocationCommands {
     @Command("advancement")
     public void advancement(Advancement value) {
         AdmiralMod.LOGGER.info("advancement: {}", value);
+    }
+
+    @Command("recipe")
+    public void recipe(Recipe<?> value) {
+        AdmiralMod.LOGGER.info("recipe: {}", value);
     }
 
 }
