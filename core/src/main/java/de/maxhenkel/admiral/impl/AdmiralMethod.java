@@ -135,11 +135,11 @@ public class AdmiralMethod<S, C> {
                 return (int) result;
             }
             // TODO Command result object
+            return 1;
         } catch (Exception e) {
             Log.LOGGER.log(Level.SEVERE, "Error while executing command", e);
             throw ExceptionUtils.getAsCommandSyntaxException(e);
         }
-        return 0;
     }
 
     private List<MethodParameter<S, C, ?, ?>> collectParameters() {
