@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "id": "admiral",
+  "version": "${version}",
+  "name": "Admiral",
+  "description": "Admiral for Fabric",
+  "environment": "*"
+}

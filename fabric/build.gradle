@@ -34,6 +34,12 @@ dependencies {
     compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
 }
 
+processResources {
+    filesMatching('fabric.mod.json') {
+        expand 'version': version
+    }
+}
+
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = 'UTF-8'
     it.options.release = 17
