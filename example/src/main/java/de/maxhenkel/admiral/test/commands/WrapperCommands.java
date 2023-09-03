@@ -8,6 +8,7 @@ import de.maxhenkel.admiral.test.AdmiralMod;
 import de.maxhenkel.admiral.test.types.NonWrapperDouble;
 import de.maxhenkel.admiral.test.types.NonWrapperOptionalDouble;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ColumnPos;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.phys.Vec2;
@@ -157,6 +158,11 @@ public class WrapperCommands {
     @Command("loadedblockpos")
     public void loadedblockpos(LoadedBlockPos ref) {
         AdmiralMod.LOGGER.info("loadedblockpos: {}", ref);
+    }
+
+    @Command("columnpos")
+    public void columnpos(ColumnPos ref) {
+        AdmiralMod.LOGGER.info("columnpos: {}", ref);
     }
 
 }

@@ -29,6 +29,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ColumnPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -76,6 +77,10 @@ public class MinecraftArgumentTypes {
         argumentRegistry.<CommandSourceStack, CommandBuildContext, Coordinates, BlockPos>register(BlockPos.class, BlockPosArgument::blockPos, (context, value) -> value.getBlockPos(context.getSource()));
         argumentRegistry.<CommandSourceStack, CommandBuildContext, Coordinates, LoadedBlockPos>register(LoadedBlockPos.class, BlockPosArgument::blockPos, (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : new LoadedBlockPos(BlockPosArgument.getLoadedBlockPos(context, name)));
         argumentRegistry.<CommandSourceStack, CommandBuildContext, Coordinates, SpawnableBlockPos>register(SpawnableBlockPos.class, BlockPosArgument::blockPos, (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : new SpawnableBlockPos(BlockPosArgument.getSpawnablePos(context, name)));
+        argumentRegistry.<CommandSourceStack, CommandBuildContext, Coordinates, ColumnPos>register(ColumnPos.class, ColumnPosArgument::columnPos, (context, value) -> {
+            BlockPos blockPos = value.getBlockPos(context.getSource());
+            return new ColumnPos(blockPos.getX(), blockPos.getZ());
+        });
         argumentRegistry.<CommandSourceStack, CommandBuildContext, EnumSet<Direction.Axis>, Swizzle>register(Swizzle.class, SwizzleArgument::swizzle, (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : new Swizzle(SwizzleArgument.getSwizzle(context, name)));
         argumentRegistry.<CommandSourceStack, CommandBuildContext, Coordinates, Vec2>register(Vec2.class, Vec2Argument::vec2, (context, value) -> {
             Vec3 position = value.getPosition(context.getSource());
