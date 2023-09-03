@@ -5,6 +5,7 @@ An annotation based command registration library for Brigadier.
 ## Usage
 
 Registering your command class:
+
 ``` java
 CommandDispatcher<CommandSourceStack> dispatcher = ...;
 CommandBuildContext commandBuildContext  = ...;
@@ -13,6 +14,7 @@ MinecraftAdmiral.builder(dispatcher, commandBuildContext).addCommandClasses(MyCo
 ```
 
 Defining your command class:
+
 ``` java
 @Command("example")
 public class MyCommands {
@@ -78,7 +80,6 @@ public class MyCommands {
 }
 ```
 
-
 ## Supported Argument Types
 
 ### Core
@@ -96,52 +97,54 @@ public class MyCommands {
 
 ### Minecraft
 
-| Class                            | Argument Type                                | Comment                      |
-|----------------------------------|----------------------------------------------|------------------------------|
-| `Entity`                         | `EntityArgument::entity`                     |                              |
-| `ServerPlayer`                   | `EntityArgument::player`                     |                              |
-| `Entities`                       | `EntityArgument::entities`                   | Fails if no entity was found |
-| `Players`                        | `EntityArgument::players`                    | Fails if no player was found |
-| `OptionalEntities`               | `EntityArgument::entities`                   |                              |
-| `OptionalPlayers`                | `EntityArgument::players`                    |                              |
-| `ScoreboardSlot`                 | `ScoreboardSlotArgument::displaySlot`        |                              |
-| `ScoreHolder`                    | `ScoreHolderArgument::scoreHolder`           |                              |
-| `ScoreHolders`                   | `ScoreHolderArgument::scoreHolders`          |                              |
-| `Slot`                           | `SlotArgument::slot`                         |                              |
-| `Team`                           | `TeamArgument::team`                         |                              |
-| `Time`                           | `TimeArgument::time`                         | Can have `@Min`              |
-| `AngleArgument.SingleAngle`      | `AngleArgument::angle`                       |                              |
-| `ChatFormatting`                 | `ColorArgument::color`                       |                              |
-| `Component`                      | `ComponentArgument::textComponent`           |                              |
-| `CompoundTag`                    | `CompoundTagArgument::compoundTag`           |                              |
-| `EntityAnchorArgument.Anchor`    | `EntityAnchorArgument::anchor`               |                              |
-| `GameType`                       | `GameModeArgument::gameMode`                 |                              |
-| `GameProfileArgument.Result`     | `GameProfileArgument::gameProfile`           |                              |
-| `Heightmap.Types`                | `HeightmapTypeArgument::heightmap`           |                              |
-| `MessageArgument.Message`        | `MessageArgument::message`                   |                              |
-| `NbtPathArgument.NbtPath`        | `NbtPathArgument::nbtPath`                   |                              |
-| `Tag`                            | `NbtTagArgument::nbtTag`                     |                              |
-| `ObjectiveCriteria`              | `ObjectiveCriteriaArgument::criteria`        |                              |
-| `OperationArgument.Operation`    | `OperationArgument::operation`               |                              |
-| `ResourceLocation`               | `ResourceLocationArgument::id`               |                              |
-| `Mirror`                         | `TemplateMirrorArgument::templateMirror`     |                              |
-| `Rotation`                       | `TemplateRotationArgument::templateRotation` |                              |
-| `UUID`                           | `UuidArgument::uuid`                         |                              |
-| `ParticleOptions`                | `ParticleArgument::particle`                 |                              |
-| `ServerLevel`                    | `DimensionArgument::dimension`               |                              |
-| `Objective`                      | `ObjectiveArgument::objective`               |                              |
-| `Advancement`                    | `ResourceLocationArgument::id`               |                              |
-| `Recipe`                         | `ResourceLocationArgument::id`               |                              |
-| `LootItemCondition`              | `ResourceLocationArgument::id`               |                              |
-| `LootItemFunction`               | `ResourceLocationArgument::id`               |                              |
-| `AttributeReference`             | `ResourceOrTagArgument::resourceOrTag`       |                              |
-| `EntityReference`                | `ResourceOrTagArgument::resourceOrTag`       |                              |
-| `SummonableEntityReference`      | `ResourceOrTagArgument::resourceOrTag`       |                              |
-| `MobEffectReference`             | `ResourceOrTagArgument::resourceOrTag`       |                              |
-| `EnchantmentReference`           | `ResourceOrTagArgument::resourceOrTag`       |                              |
-| `ConfiguredFeatureReference`     | `ResourceKeyArgument::key`                   |                              |
-| `StructureReference`             | `ResourceKeyArgument::key`                   |                              |
-| `StructureTemplatePoolReference` | `ResourceKeyArgument::key`                   |                              |
-| `BiomeResourceOrTag`             | `ResourceOrTagArgument::resourceOrTag`       |                              |
-| `PoiTypeResourceOrTag`           | `ResourceOrTagArgument::resourceOrTag`       |                              |
-| `StructureResourceOrTagKey`      | `ResourceOrTagKeyArgument::resourceOrTagKey` |                              |
+| Class                            | Argument Type                                | Comment                                |
+|----------------------------------|----------------------------------------------|----------------------------------------|
+| `Entity`                         | `EntityArgument::entity`                     |                                        |
+| `ServerPlayer`                   | `EntityArgument::player`                     |                                        |
+| `Entities`                       | `EntityArgument::entities`                   | Fails if no entity was found           |
+| `Players`                        | `EntityArgument::players`                    | Fails if no player was found           |
+| `OptionalEntities`               | `EntityArgument::entities`                   |                                        |
+| `OptionalPlayers`                | `EntityArgument::players`                    |                                        |
+| `ScoreboardSlot`                 | `ScoreboardSlotArgument::displaySlot`        |                                        |
+| `ScoreHolder`                    | `ScoreHolderArgument::scoreHolder`           |                                        |
+| `ScoreHolders`                   | `ScoreHolderArgument::scoreHolders`          |                                        |
+| `Slot`                           | `SlotArgument::slot`                         |                                        |
+| `Team`                           | `TeamArgument::team`                         |                                        |
+| `Time`                           | `TimeArgument::time`                         | Can have `@Min`                        |
+| `Vec3`                           | `Vec3Argument::vec3`                         |                                        |
+| `UncenteredVec3`                 | `Vec3Argument::vec3`                         | Does not center the X and Z coordinate |
+| `AngleArgument.SingleAngle`      | `AngleArgument::angle`                       |                                        |
+| `ChatFormatting`                 | `ColorArgument::color`                       |                                        |
+| `Component`                      | `ComponentArgument::textComponent`           |                                        |
+| `CompoundTag`                    | `CompoundTagArgument::compoundTag`           |                                        |
+| `EntityAnchorArgument.Anchor`    | `EntityAnchorArgument::anchor`               |                                        |
+| `GameType`                       | `GameModeArgument::gameMode`                 |                                        |
+| `GameProfileArgument.Result`     | `GameProfileArgument::gameProfile`           |                                        |
+| `Heightmap.Types`                | `HeightmapTypeArgument::heightmap`           |                                        |
+| `MessageArgument.Message`        | `MessageArgument::message`                   |                                        |
+| `NbtPathArgument.NbtPath`        | `NbtPathArgument::nbtPath`                   |                                        |
+| `Tag`                            | `NbtTagArgument::nbtTag`                     |                                        |
+| `ObjectiveCriteria`              | `ObjectiveCriteriaArgument::criteria`        |                                        |
+| `OperationArgument.Operation`    | `OperationArgument::operation`               |                                        |
+| `ResourceLocation`               | `ResourceLocationArgument::id`               |                                        |
+| `Mirror`                         | `TemplateMirrorArgument::templateMirror`     |                                        |
+| `Rotation`                       | `TemplateRotationArgument::templateRotation` |                                        |
+| `UUID`                           | `UuidArgument::uuid`                         |                                        |
+| `ParticleOptions`                | `ParticleArgument::particle`                 |                                        |
+| `ServerLevel`                    | `DimensionArgument::dimension`               |                                        |
+| `Objective`                      | `ObjectiveArgument::objective`               |                                        |
+| `Advancement`                    | `ResourceLocationArgument::id`               |                                        |
+| `Recipe`                         | `ResourceLocationArgument::id`               |                                        |
+| `LootItemCondition`              | `ResourceLocationArgument::id`               |                                        |
+| `LootItemFunction`               | `ResourceLocationArgument::id`               |                                        |
+| `AttributeReference`             | `ResourceOrTagArgument::resourceOrTag`       |                                        |
+| `EntityReference`                | `ResourceOrTagArgument::resourceOrTag`       |                                        |
+| `SummonableEntityReference`      | `ResourceOrTagArgument::resourceOrTag`       |                                        |
+| `MobEffectReference`             | `ResourceOrTagArgument::resourceOrTag`       |                                        |
+| `EnchantmentReference`           | `ResourceOrTagArgument::resourceOrTag`       |                                        |
+| `ConfiguredFeatureReference`     | `ResourceKeyArgument::key`                   |                                        |
+| `StructureReference`             | `ResourceKeyArgument::key`                   |                                        |
+| `StructureTemplatePoolReference` | `ResourceKeyArgument::key`                   |                                        |
+| `BiomeResourceOrTag`             | `ResourceOrTagArgument::resourceOrTag`       |                                        |
+| `PoiTypeResourceOrTag`           | `ResourceOrTagArgument::resourceOrTag`       |                                        |
+| `StructureResourceOrTagKey`      | `ResourceOrTagKeyArgument::resourceOrTagKey` |                                        |

@@ -9,6 +9,7 @@ import de.maxhenkel.admiral.test.types.NonWrapperDouble;
 import de.maxhenkel.admiral.test.types.NonWrapperOptionalDouble;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -114,6 +115,16 @@ public class WrapperCommands {
     @Command("uuid")
     public void uuid(UUID ref) {
         AdmiralMod.LOGGER.info("uuid: {}", ref);
+    }
+
+    @Command("vec3")
+    public void uuid(Vec3 ref) {
+        AdmiralMod.LOGGER.info("vec3: {}", ref);
+    }
+
+    @Command("uncenteredvec3")
+    public void uncenteredvec3(UncenteredVec3 ref) {
+        AdmiralMod.LOGGER.info("uncenteredvec3: {}", ref);
     }
 
 }
