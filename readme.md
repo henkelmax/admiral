@@ -140,6 +140,7 @@ public class MyCommands {
 | `UUID`                           | `UuidArgument::uuid`                         |                                        |
 | `FunctionArgument.Result`        | `FunctionArgument::functions`                |                                        |
 | `ParticleOptions`                | `ParticleArgument::particle`                 |                                        |
+| `ItemInput`                      | `ItemArgument::item`                         |                                        |
 | `ServerLevel`                    | `DimensionArgument::dimension`               |                                        |
 | `Objective`                      | `ObjectiveArgument::objective`               |                                        |
 | `Advancement`                    | `ResourceLocationArgument::id`               |                                        |

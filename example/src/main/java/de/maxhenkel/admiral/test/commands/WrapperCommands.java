@@ -8,6 +8,7 @@ import de.maxhenkel.admiral.test.AdmiralMod;
 import de.maxhenkel.admiral.test.types.NonWrapperDouble;
 import de.maxhenkel.admiral.test.types.NonWrapperOptionalDouble;
 import net.minecraft.commands.arguments.item.FunctionArgument;
+import net.minecraft.commands.arguments.item.ItemInput;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ColumnPos;
 import net.minecraft.world.level.block.Mirror;
@@ -174,6 +175,11 @@ public class WrapperCommands {
     @Command("function")
     public void function(FunctionArgument.Result ref) {
         AdmiralMod.LOGGER.info("function: {}", ref);
+    }
+
+    @Command("iteminput")
+    public void iteminput(ItemInput ref) {
+        AdmiralMod.LOGGER.info("iteminput: {}", ref);
     }
 
 }

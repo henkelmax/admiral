@@ -18,6 +18,8 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.*;
 import net.minecraft.commands.arguments.coordinates.*;
 import net.minecraft.commands.arguments.item.FunctionArgument;
+import net.minecraft.commands.arguments.item.ItemArgument;
+import net.minecraft.commands.arguments.item.ItemInput;
 import net.minecraft.commands.arguments.selector.EntitySelector;
 import net.minecraft.commands.synchronization.SuggestionProviders;
 import net.minecraft.core.BlockPos;
@@ -117,6 +119,10 @@ public class MinecraftArgumentTypes {
         argumentRegistry.register(
                 ParticleOptions.class,
                 (ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, ParticleOptions>) ctx -> ctx == null ? null : ParticleArgument.particle(ctx)
+        );
+        argumentRegistry.register(
+                ItemInput.class,
+                (ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, ItemInput>) ctx -> ctx == null ? null : ItemArgument.item(ctx)
         );
 
         argumentRegistry.<CommandSourceStack, CommandBuildContext, ResourceLocation, ServerLevel>register(
