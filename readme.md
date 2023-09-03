@@ -138,6 +138,7 @@ public class MyCommands {
 | `Mirror`                         | `TemplateMirrorArgument::templateMirror`     |                                        |
 | `Rotation`                       | `TemplateRotationArgument::templateRotation` |                                        |
 | `UUID`                           | `UuidArgument::uuid`                         |                                        |
+| `FunctionArgument.Result`        | `FunctionArgument::functions`                |                                        |
 | `ParticleOptions`                | `ParticleArgument::particle`                 |                                        |
 | `ServerLevel`                    | `DimensionArgument::dimension`               |                                        |
 | `Objective`                      | `ObjectiveArgument::objective`               |                                        |

@@ -7,6 +7,7 @@ import de.maxhenkel.admiral.arguments.*;
 import de.maxhenkel.admiral.test.AdmiralMod;
 import de.maxhenkel.admiral.test.types.NonWrapperDouble;
 import de.maxhenkel.admiral.test.types.NonWrapperOptionalDouble;
+import net.minecraft.commands.arguments.item.FunctionArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ColumnPos;
 import net.minecraft.world.level.block.Mirror;
@@ -168,6 +169,11 @@ public class WrapperCommands {
     @Command("rotation")
     public void rotation(de.maxhenkel.admiral.arguments.Rotation ref) {
         AdmiralMod.LOGGER.info("rotation: {}", ref);
+    }
+
+    @Command("function")
+    public void function(FunctionArgument.Result ref) {
+        AdmiralMod.LOGGER.info("function: {}", ref);
     }
 
 }

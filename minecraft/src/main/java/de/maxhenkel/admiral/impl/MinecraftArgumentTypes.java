@@ -17,6 +17,7 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.*;
 import net.minecraft.commands.arguments.coordinates.*;
+import net.minecraft.commands.arguments.item.FunctionArgument;
 import net.minecraft.commands.arguments.selector.EntitySelector;
 import net.minecraft.commands.synchronization.SuggestionProviders;
 import net.minecraft.core.BlockPos;
@@ -111,6 +112,7 @@ public class MinecraftArgumentTypes {
         argumentRegistry.register(Mirror.class, TemplateMirrorArgument::templateMirror);
         argumentRegistry.register(Rotation.class, TemplateRotationArgument::templateRotation);
         argumentRegistry.register(UUID.class, UuidArgument::uuid);
+        argumentRegistry.register(FunctionArgument.Result.class, FunctionArgument::functions);
 
         argumentRegistry.register(
                 ParticleOptions.class,
