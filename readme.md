@@ -140,6 +140,7 @@ public class MyCommands {
 | `UUID`                           | `UuidArgument::uuid`                         |                                        |
 | `FunctionArgument.Result`        | `FunctionArgument::functions`                |                                        |
 | `BlockPredicateArgument.Result`  | `BlockPredicateArgument::blockPredicate`     |                                        |
+| `BlockInput`                     | `BlockStateArgument::block`                  |                                        |
 | `ParticleOptions`                | `ParticleArgument::particle`                 |                                        |
 | `ItemInput`                      | `ItemArgument::item`                         |                                        |
 | `ItemPredicateArgument.Result`   | `ItemPredicateArgument::itemPredicate`       |                                        |

@@ -16,7 +16,9 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.*;
+import net.minecraft.commands.arguments.blocks.BlockInput;
 import net.minecraft.commands.arguments.blocks.BlockPredicateArgument;
+import net.minecraft.commands.arguments.blocks.BlockStateArgument;
 import net.minecraft.commands.arguments.coordinates.*;
 import net.minecraft.commands.arguments.item.FunctionArgument;
 import net.minecraft.commands.arguments.item.ItemArgument;
@@ -121,6 +123,10 @@ public class MinecraftArgumentTypes {
         argumentRegistry.register(
                 BlockPredicateArgument.Result.class,
                 (ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, BlockPredicateArgument.Result>) ctx -> ctx == null ? null : BlockPredicateArgument.blockPredicate(ctx)
+        );
+        argumentRegistry.register(
+                BlockInput.class,
+                (ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, BlockInput>) ctx -> ctx == null ? null : BlockStateArgument.block(ctx)
         );
         argumentRegistry.register(
                 ParticleOptions.class,
