@@ -139,6 +139,7 @@ public class MyCommands {
 | `Rotation`                       | `TemplateRotationArgument::templateRotation` |                                        |
 | `UUID`                           | `UuidArgument::uuid`                         |                                        |
 | `FunctionArgument.Result`        | `FunctionArgument::functions`                |                                        |
+| `BlockPredicateArgument.Result`  | `BlockPredicateArgument::blockPredicate`     |                                        |
 | `ParticleOptions`                | `ParticleArgument::particle`                 |                                        |
 | `ItemInput`                      | `ItemArgument::item`                         |                                        |
 | `ItemPredicateArgument.Result`   | `ItemPredicateArgument::itemPredicate`       |                                        |

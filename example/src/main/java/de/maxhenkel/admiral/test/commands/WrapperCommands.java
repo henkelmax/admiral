@@ -7,6 +7,7 @@ import de.maxhenkel.admiral.arguments.*;
 import de.maxhenkel.admiral.test.AdmiralMod;
 import de.maxhenkel.admiral.test.types.NonWrapperDouble;
 import de.maxhenkel.admiral.test.types.NonWrapperOptionalDouble;
+import net.minecraft.commands.arguments.blocks.BlockPredicateArgument;
 import net.minecraft.commands.arguments.item.FunctionArgument;
 import net.minecraft.commands.arguments.item.ItemInput;
 import net.minecraft.commands.arguments.item.ItemPredicateArgument;
@@ -186,6 +187,11 @@ public class WrapperCommands {
     @Command("itempredicate")
     public void itempredicate(ItemPredicateArgument.Result ref) {
         AdmiralMod.LOGGER.info("itempredicate: {}", ref);
+    }
+
+    @Command("blockpredicate")
+    public void blockpredicate(BlockPredicateArgument.Result ref) {
+        AdmiralMod.LOGGER.info("blockpredicate: {}", ref);
     }
 
 }
