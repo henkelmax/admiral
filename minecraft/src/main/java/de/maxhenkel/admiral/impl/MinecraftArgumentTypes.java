@@ -17,6 +17,7 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.*;
 import net.minecraft.commands.arguments.coordinates.Coordinates;
+import net.minecraft.commands.arguments.coordinates.Vec2Argument;
 import net.minecraft.commands.arguments.coordinates.Vec3Argument;
 import net.minecraft.commands.arguments.selector.EntitySelector;
 import net.minecraft.commands.synchronization.SuggestionProviders;
@@ -38,6 +39,7 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Objective;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
@@ -70,6 +72,14 @@ public class MinecraftArgumentTypes {
         argumentRegistry.<CommandSourceStack, CommandBuildContext, Integer, Slot>register(Slot.class, SlotArgument::slot, (context, value) -> new Slot(value));
         argumentRegistry.<CommandSourceStack, CommandBuildContext, String, Team>register(Team.class, TeamArgument::team, (context, value) -> new Team(value));
         argumentRegistry.register(Time.class, (RangedArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, Integer>) (min, max) -> TimeArgument.time(min == null ? 0 : min), (context, value) -> new Time(value));
+        argumentRegistry.<CommandSourceStack, CommandBuildContext, Coordinates, Vec2>register(Vec2.class, Vec2Argument::vec2, (context, value) -> {
+            Vec3 position = value.getPosition(context.getSource());
+            return new Vec2((float) position.x, (float) position.z);
+        });
+        argumentRegistry.<CommandSourceStack, CommandBuildContext, Coordinates, UncenteredVec2>register(UncenteredVec2.class, () -> Vec2Argument.vec2(false), (context, value) -> {
+            Vec3 position = value.getPosition(context.getSource());
+            return new UncenteredVec2(new Vec2((float) position.x, (float) position.z));
+        });
         argumentRegistry.<CommandSourceStack, CommandBuildContext, Coordinates, Vec3>register(Vec3.class, Vec3Argument::vec3, (context, value) -> value.getPosition(context.getSource()));
         argumentRegistry.<CommandSourceStack, CommandBuildContext, Coordinates, UncenteredVec3>register(UncenteredVec3.class, () -> Vec3Argument.vec3(false), (context, value) -> new UncenteredVec3(value.getPosition(context.getSource())));
 
