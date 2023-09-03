@@ -115,6 +115,7 @@ public class MyCommands {
 | `LoadedBlockPos`                 | `BlockPosArgument::blockPos`                 |                                        |
 | `SpawnableBlockPos`              | `BlockPosArgument::blockPos`                 |                                        |
 | `ColumnPos`                      | `ColumnPosArgument::columnPos`               |                                        |
+| `Rotation`                       | `RotationArgument::rotation`                 |                                        |
 | `Swizzle`                        | `SwizzleArgument::swizzle`                   |                                        |
 | `Vec2`                           | `Vec2Argument::vec2`                         |                                        |
 | `UncenteredVec2`                 | `Vec2Argument::vec2`                         | Does not center the X and Z coordinate |

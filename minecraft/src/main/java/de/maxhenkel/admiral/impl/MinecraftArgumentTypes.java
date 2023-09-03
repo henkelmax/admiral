@@ -81,6 +81,7 @@ public class MinecraftArgumentTypes {
             BlockPos blockPos = value.getBlockPos(context.getSource());
             return new ColumnPos(blockPos.getX(), blockPos.getZ());
         });
+        argumentRegistry.<CommandSourceStack, CommandBuildContext, Coordinates, de.maxhenkel.admiral.arguments.Rotation>register(de.maxhenkel.admiral.arguments.Rotation.class, RotationArgument::rotation, (context, value) -> new de.maxhenkel.admiral.arguments.Rotation(value.getRotation(context.getSource())));
         argumentRegistry.<CommandSourceStack, CommandBuildContext, EnumSet<Direction.Axis>, Swizzle>register(Swizzle.class, SwizzleArgument::swizzle, (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : new Swizzle(SwizzleArgument.getSwizzle(context, name)));
         argumentRegistry.<CommandSourceStack, CommandBuildContext, Coordinates, Vec2>register(Vec2.class, Vec2Argument::vec2, (context, value) -> {
             Vec3 position = value.getPosition(context.getSource());

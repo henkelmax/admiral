@@ -100,9 +100,9 @@ public class WrapperCommands {
         AdmiralMod.LOGGER.info("mirror: {}", ref);
     }
 
-    @Command("rotation")
-    public void rotation(Rotation ref) {
-        AdmiralMod.LOGGER.info("rotation: {}", ref);
+    @Command("blockrotation")
+    public void blockrotation(Rotation ref) {
+        AdmiralMod.LOGGER.info("blockrotation: {}", ref);
     }
 
     @Command("time")
@@ -163,6 +163,11 @@ public class WrapperCommands {
     @Command("columnpos")
     public void columnpos(ColumnPos ref) {
         AdmiralMod.LOGGER.info("columnpos: {}", ref);
+    }
+
+    @Command("rotation")
+    public void rotation(de.maxhenkel.admiral.arguments.Rotation ref) {
+        AdmiralMod.LOGGER.info("rotation: {}", ref);
     }
 
 }
