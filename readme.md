@@ -141,6 +141,7 @@ public class MyCommands {
 | `FunctionArgument.Result`        | `FunctionArgument::functions`                |                                        |
 | `ParticleOptions`                | `ParticleArgument::particle`                 |                                        |
 | `ItemInput`                      | `ItemArgument::item`                         |                                        |
+| `ItemPredicateArgument.Result`   | `ItemPredicateArgument::itemPredicate`       |                                        |
 | `ServerLevel`                    | `DimensionArgument::dimension`               |                                        |
 | `Objective`                      | `ObjectiveArgument::objective`               |                                        |
 | `Advancement`                    | `ResourceLocationArgument::id`               |                                        |

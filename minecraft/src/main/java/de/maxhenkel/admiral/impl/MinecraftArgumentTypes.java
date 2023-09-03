@@ -20,6 +20,7 @@ import net.minecraft.commands.arguments.coordinates.*;
 import net.minecraft.commands.arguments.item.FunctionArgument;
 import net.minecraft.commands.arguments.item.ItemArgument;
 import net.minecraft.commands.arguments.item.ItemInput;
+import net.minecraft.commands.arguments.item.ItemPredicateArgument;
 import net.minecraft.commands.arguments.selector.EntitySelector;
 import net.minecraft.commands.synchronization.SuggestionProviders;
 import net.minecraft.core.BlockPos;
@@ -123,6 +124,10 @@ public class MinecraftArgumentTypes {
         argumentRegistry.register(
                 ItemInput.class,
                 (ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, ItemInput>) ctx -> ctx == null ? null : ItemArgument.item(ctx)
+        );
+        argumentRegistry.register(
+                ItemPredicateArgument.Result.class,
+                (ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, ItemPredicateArgument.Result>) ctx -> ctx == null ? null : ItemPredicateArgument.itemPredicate(ctx)
         );
 
         argumentRegistry.<CommandSourceStack, CommandBuildContext, ResourceLocation, ServerLevel>register(
