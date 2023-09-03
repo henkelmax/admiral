@@ -138,4 +138,9 @@ public class WrapperCommands {
         AdmiralMod.LOGGER.info("uncenteredvec2: {}", ref);
     }
 
+    @Command("swizzle")
+    public void swizzle(Swizzle ref) {
+        AdmiralMod.LOGGER.info("swizzle: {}", ref);
+    }
+
 }

@@ -17,10 +17,12 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.*;
 import net.minecraft.commands.arguments.coordinates.Coordinates;
+import net.minecraft.commands.arguments.coordinates.SwizzleArgument;
 import net.minecraft.commands.arguments.coordinates.Vec2Argument;
 import net.minecraft.commands.arguments.coordinates.Vec3Argument;
 import net.minecraft.commands.arguments.selector.EntitySelector;
 import net.minecraft.commands.synchronization.SuggestionProviders;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.Registries;
@@ -44,6 +46,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Objective;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
 
+import java.util.EnumSet;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -62,8 +65,8 @@ public class MinecraftArgumentTypes {
     private static void registerInternal(ArgumentTypeRegistryImpl argumentRegistry) {
         argumentRegistry.<CommandSourceStack, CommandBuildContext, EntitySelector, Entity>register(Entity.class, EntityArgument::entity, (context, value) -> value.findSingleEntity(context.getSource()));
         argumentRegistry.<CommandSourceStack, CommandBuildContext, EntitySelector, ServerPlayer>register(ServerPlayer.class, EntityArgument::player, (context, value) -> value.findSinglePlayer(context.getSource()));
-        argumentRegistry.<CommandSourceStack, CommandBuildContext, EntitySelector, Entities>register(Entities.class, EntityArgument::entities, (RawArgumentTypeConverter) (context, name, value) -> new Entities<>(EntityArgument.getEntities(context, name)));
-        argumentRegistry.<CommandSourceStack, CommandBuildContext, EntitySelector, Players>register(Players.class, EntityArgument::players, (RawArgumentTypeConverter) (context, name, value) -> new Players(EntityArgument.getPlayers(context, name)));
+        argumentRegistry.<CommandSourceStack, CommandBuildContext, EntitySelector, Entities>register(Entities.class, EntityArgument::entities, (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : new Entities<>(EntityArgument.getEntities(context, name)));
+        argumentRegistry.<CommandSourceStack, CommandBuildContext, EntitySelector, Players>register(Players.class, EntityArgument::players, (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : new Players(EntityArgument.getPlayers(context, name)));
         argumentRegistry.<CommandSourceStack, CommandBuildContext, EntitySelector, OptionalEntities>register(OptionalEntities.class, EntityArgument::entities, (context, value) -> new OptionalEntities(value.findEntities(context.getSource())));
         argumentRegistry.<CommandSourceStack, CommandBuildContext, EntitySelector, OptionalPlayers>register(OptionalPlayers.class, EntityArgument::players, (context, value) -> new OptionalPlayers(value.findPlayers(context.getSource())));
         argumentRegistry.<CommandSourceStack, CommandBuildContext, Integer, ScoreboardSlot>register(ScoreboardSlot.class, ScoreboardSlotArgument::displaySlot, (context, value) -> new ScoreboardSlot(value));
@@ -72,6 +75,7 @@ public class MinecraftArgumentTypes {
         argumentRegistry.<CommandSourceStack, CommandBuildContext, Integer, Slot>register(Slot.class, SlotArgument::slot, (context, value) -> new Slot(value));
         argumentRegistry.<CommandSourceStack, CommandBuildContext, String, Team>register(Team.class, TeamArgument::team, (context, value) -> new Team(value));
         argumentRegistry.register(Time.class, (RangedArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, Integer>) (min, max) -> TimeArgument.time(min == null ? 0 : min), (context, value) -> new Time(value));
+        argumentRegistry.<CommandSourceStack, CommandBuildContext, EnumSet<Direction.Axis>, Swizzle>register(Swizzle.class, SwizzleArgument::swizzle, (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : new Swizzle(SwizzleArgument.getSwizzle(context, name)));
         argumentRegistry.<CommandSourceStack, CommandBuildContext, Coordinates, Vec2>register(Vec2.class, Vec2Argument::vec2, (context, value) -> {
             Vec3 position = value.getPosition(context.getSource());
             return new Vec2((float) position.x, (float) position.z);
