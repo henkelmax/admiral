@@ -7,6 +7,7 @@ import de.maxhenkel.admiral.arguments.*;
 import de.maxhenkel.admiral.test.AdmiralMod;
 import de.maxhenkel.admiral.test.types.NonWrapperDouble;
 import de.maxhenkel.admiral.test.types.NonWrapperOptionalDouble;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.phys.Vec2;
@@ -141,6 +142,21 @@ public class WrapperCommands {
     @Command("swizzle")
     public void swizzle(Swizzle ref) {
         AdmiralMod.LOGGER.info("swizzle: {}", ref);
+    }
+
+    @Command("blockpos")
+    public void blockpos(BlockPos ref) {
+        AdmiralMod.LOGGER.info("blockpos: {}", ref);
+    }
+
+    @Command("spawnableblockpos")
+    public void spawnableblockpos(SpawnableBlockPos ref) {
+        AdmiralMod.LOGGER.info("spawnableblockpos: {}", ref);
+    }
+
+    @Command("loadedblockpos")
+    public void loadedblockpos(LoadedBlockPos ref) {
+        AdmiralMod.LOGGER.info("loadedblockpos: {}", ref);
     }
 
 }

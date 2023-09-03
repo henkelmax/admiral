@@ -111,6 +111,9 @@ public class MyCommands {
 | `Slot`                           | `SlotArgument::slot`                         |                                        |
 | `Team`                           | `TeamArgument::team`                         |                                        |
 | `Time`                           | `TimeArgument::time`                         | Can have `@Min`                        |
+| `BlockPos`                       | `BlockPosArgument::blockPos`                 |                                        |
+| `LoadedBlockPos`                 | `BlockPosArgument::blockPos`                 |                                        |
+| `SpawnableBlockPos`              | `BlockPosArgument::blockPos`                 |                                        |
 | `Swizzle`                        | `SwizzleArgument::swizzle`                   |                                        |
 | `Vec2`                           | `Vec2Argument::vec2`                         |                                        |
 | `UncenteredVec2`                 | `Vec2Argument::vec2`                         | Does not center the X and Z coordinate |
