@@ -1,12 +1,10 @@
 package de.maxhenkel.admiral.impl;
 
-import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.brigadier.tree.LiteralCommandNode;
 import de.maxhenkel.admiral.annotations.Command;
 import de.maxhenkel.admiral.impl.permissions.Permission;
 import de.maxhenkel.admiral.impl.permissions.PermissionAnnotationUtil;
@@ -23,10 +21,9 @@ import java.util.stream.Collectors;
 
 public class AdmiralMethod<S, C> {
 
-    private boolean registered;
     private final AdmiralClass<S, C> admiralClass;
     private final Method method;
-    private final List<MethodParameter<S, C, ?, ?>> parameters;
+    private List<MethodParameter<S, C, ?, ?>> parameters;
     private List<Command> commands;
     private List<Permission<S>> requiredPermissions;
 
@@ -34,26 +31,25 @@ public class AdmiralMethod<S, C> {
         this.admiralClass = admiralClass;
         this.method = method;
         this.parameters = new ArrayList<>();
+        this.commands = new ArrayList<>();
+        this.requiredPermissions = new ArrayList<>();
     }
 
-    public void register() {
-        if (registered) {
-            throw new IllegalStateException("Already registered");
-        }
-        parameters.addAll(collectParameters());
+    public List<ArgumentBuilder<S, ?>> register() {
+        parameters = collectParameters();
         commands = Arrays.asList(method.getDeclaredAnnotationsByType(Command.class));
         requiredPermissions = PermissionAnnotationUtil.getPermissions(method);
 
+        List<ArgumentBuilder<S, ?>> nodes = new ArrayList<>();
+
         for (List<String> path : getPaths()) {
-            handleCommand(path);
+            nodes.add(handleCommand(path));
         }
+        return nodes;
     }
 
-    private LiteralCommandNode<S> handleCommand(List<String> path) {
-        if (path.isEmpty()) {
-            throw new IllegalStateException("Can't create command without parameters");
-        }
-
+    @Nullable
+    private ArgumentBuilder<S, ?> handleCommand(List<String> path) {
         ArgumentBuilder<S, ?> last = null;
         AdmiralParameter<S, C, ?, ?> lastParameter = null;
         for (int i = parameters.size() - 1; i >= 0; i--) {
@@ -66,8 +62,8 @@ public class AdmiralMethod<S, C> {
             if (last != null) {
                 argument.then(last);
             }
+            permission(null, argument);
             if (lastParameter == null || lastParameter.isOptional()) {
-                permission(argument);
                 execute(argument);
             }
             last = argument;
@@ -80,38 +76,45 @@ public class AdmiralMethod<S, C> {
             if (last != null) {
                 literal.then(last);
             }
+            permission(path, literal);
             if ((lastParameter == null || lastParameter.isOptional()) && firstPass) {
-                permission(literal);
                 execute(literal);
             }
             last = literal;
             firstPass = false;
         }
 
-        if (last == null) {
-            throw new IllegalStateException("Can't create command without parameters");
-        }
-
-        registered = true;
-        return getDispatcher().register((LiteralArgumentBuilder<S>) last);
+        return last;
     }
 
-    private List<Permission<S>> getRequiredPermissions() {
-        List<Permission<S>> permissions = new ArrayList<>();
-        permissions.addAll(admiralClass.getRequiredPermissions());
-        permissions.addAll(requiredPermissions);
-        return permissions;
-    }
-
-    private void execute(ArgumentBuilder<S, ?> builder) {
+    protected void execute(ArgumentBuilder<S, ?> builder) {
         builder.executes(this::onExecute);
     }
 
-    private void permission(ArgumentBuilder<S, ?> builder) {
+    private void permission(List<String> path, ArgumentBuilder<S, ?> builder) {
+        if (path == null) {
+            builder.requires(source -> {
+                @Nullable PermissionManager<S> permissionManager = getAdmiral().getPermissionManager();
+                if (!admiralClass.checkClassPermissions(source, permissionManager)) {
+                    return false;
+                }
+                return requiredPermissions.stream().allMatch(p -> p.hasPermission(source, permissionManager));
+            });
+            return;
+        }
+        List<List<Permission<S>>> perms = getAllRequiredPermissions(path);
+        perms.add(requiredPermissions);
         builder.requires(source -> {
             @Nullable PermissionManager<S> permissionManager = getAdmiral().getPermissionManager();
-            return getRequiredPermissions().stream().allMatch(p -> p.hasPermission(source, permissionManager));
+            if (!admiralClass.checkClassPermissions(source, permissionManager)) {
+                return false;
+            }
+            return perms.stream().anyMatch(permissions -> permissions.stream().allMatch(p -> p.hasPermission(source, permissionManager)));
         });
+    }
+
+    private List<List<Permission<S>>> getAllRequiredPermissions(List<String> path) {
+        return admiralClass.getPermissions().computeIfAbsent(String.join("/", path), k -> new ArrayList<>());
     }
 
     private int onExecute(CommandContext<S> context) throws CommandSyntaxException {
@@ -163,27 +166,7 @@ public class AdmiralMethod<S, C> {
     }
 
     private List<List<String>> getPaths() {
-        List<List<String>> paths = new ArrayList<>();
-        List<List<String>> classPaths = admiralClass.getPaths();
-        List<List<String>> methodPaths = commands.stream().map(command -> new ArrayList<>(Arrays.asList(command.value()))).collect(Collectors.toList());
-        for (List<String> classPath : classPaths) {
-            for (List<String> methodPath : methodPaths) {
-                List<String> path = new ArrayList<>(classPath);
-                path.addAll(methodPath);
-                paths.add(path);
-            }
-        }
-        if (classPaths.isEmpty()) {
-            paths.addAll(methodPaths);
-        }
-        if (methodPaths.isEmpty()) {
-            paths.addAll(classPaths);
-        }
-        return paths;
-    }
-
-    public CommandDispatcher<S> getDispatcher() {
-        return admiralClass.getAdmiral().getDispatcher();
+        return commands.stream().map(command -> new ArrayList<>(Arrays.asList(command.value()))).collect(Collectors.toList());
     }
 
     public AdmiralClass<S, C> getAdmiralClass() {

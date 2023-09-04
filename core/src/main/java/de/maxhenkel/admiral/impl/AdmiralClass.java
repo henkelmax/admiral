@@ -1,14 +1,16 @@
 package de.maxhenkel.admiral.impl;
 
+import com.mojang.brigadier.builder.ArgumentBuilder;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import de.maxhenkel.admiral.annotations.Command;
 import de.maxhenkel.admiral.impl.permissions.Permission;
 import de.maxhenkel.admiral.impl.permissions.PermissionAnnotationUtil;
+import de.maxhenkel.admiral.permissions.PermissionManager;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class AdmiralClass<S, C> {
@@ -19,10 +21,12 @@ public class AdmiralClass<S, C> {
     private Object instance;
     private List<Command> commands;
     private List<Permission<S>> requiredPermissions;
+    private Map<String, List<List<Permission<S>>>> permissions;
 
     public AdmiralClass(AdmiralImpl<S, C> admiral, Class<?> clazz) {
         this.admiral = admiral;
         this.clazz = clazz;
+        this.permissions = new LinkedHashMap<>();
     }
 
     public void register() {
@@ -47,21 +51,57 @@ public class AdmiralClass<S, C> {
                 continue;
             }
             AdmiralMethod<S, C> admiralMethod = new AdmiralMethod<>(this, method);
-            admiralMethod.register();
+            List<ArgumentBuilder<S, ?>> nodes = admiralMethod.register();
+
+            List<List<String>> classPaths = getPaths();
+
+            if (classPaths.isEmpty()) {
+                classPaths.add(new ArrayList<>());
+            }
+
+            for (List<String> path : classPaths) {
+                if (path.isEmpty()) {
+                    for (ArgumentBuilder<S, ?> node : nodes) {
+                        if (node instanceof LiteralArgumentBuilder) {
+                            admiral.getDispatcher().register((LiteralArgumentBuilder) node);
+                        }
+                    }
+                    continue;
+                }
+
+                LiteralArgumentBuilder<S> last = null;
+                for (int i = path.size() - 1; i >= 0; i--) {
+                    LiteralArgumentBuilder<S> literal = LiteralArgumentBuilder.literal(path.get(i));
+                    if (last != null) {
+                        literal.then(last);
+                    } else {
+                        for (ArgumentBuilder<S, ?> node : nodes) {
+                            if (node == null) {
+                                admiralMethod.execute(literal);
+                                continue;
+                            }
+                            literal.then(node);
+                        }
+                    }
+
+                    last = literal;
+                }
+                admiral.getDispatcher().register(last);
+            }
         }
         registered = true;
-    }
-
-    public Class<?> getClazz() {
-        return clazz;
     }
 
     public AdmiralImpl<S, C> getAdmiral() {
         return admiral;
     }
 
-    public List<Permission<S>> getRequiredPermissions() {
-        return requiredPermissions;
+    public Map<String, List<List<Permission<S>>>> getPermissions() {
+        return permissions;
+    }
+
+    public boolean checkClassPermissions(S source, @Nullable PermissionManager<S> permissionManager) {
+        return requiredPermissions.stream().allMatch(permission -> permission.hasPermission(source, permissionManager));
     }
 
     @Nullable

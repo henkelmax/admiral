@@ -42,4 +42,16 @@ public class PermissionCommands {
         AdmiralMod.LOGGER.info("perm5: {}", test);
     }
 
+    @Command("test1")
+    @RequiresPermission("admiral.test.perm2")
+    public void test2(CommandContext<CommandSourceStack> context, int test) throws CommandSyntaxException {
+        AdmiralMod.LOGGER.info("test2: {}", test);
+    }
+
+    @Command({"test1", "test2"})
+    @RequiresPermission("admiral.test.perm1")
+    public void test1(CommandContext<CommandSourceStack> context, int test) throws CommandSyntaxException {
+        AdmiralMod.LOGGER.info("test1: {}", test);
+    }
+
 }
