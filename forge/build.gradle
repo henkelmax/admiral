@@ -1,0 +1,83 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'net.neoforged.gradle' version "${forge_gradle_version}"
+    id 'com.github.johnrengelman.shadow'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+group = maven_group
+archivesBaseName = archives_base_name
+version = "${library_version}+${minecraft_version}"
+
+minecraft {
+    mappings channel: 'official', version: minecraft_version
+}
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    shadowMc.extendsFrom minecraftLibrary
+}
+
+dependencies {
+    minecraft "net.neoforged:forge:${minecraft_version}-${forge_version}"
+
+    shadowMc project(':core')
+    shadowMc project(':minecraft')
+
+    compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
+}
+
+processResources {
+    filesMatching('**/*.toml') {
+        expand 'version': version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = 'UTF-8'
+    it.options.release = 17
+}
+
+shadowJar {
+    configurations = [project.configurations.shadowMc]
+    archiveClassifier = ''
+    dependencies {
+        exclude(dependency('com.google.code.findbugs:jsr305'))
+        exclude(dependency('com.mojang:brigadier'))
+    }
+}
+shadowJar.dependsOn('reobfJar')
+
+reobf {
+    shadowJar {}
+}
+
+publishing {
+    publications {
+        admiralFabric(MavenPublication) {
+            artifactId archives_base_name
+            artifact(jar) {
+                builtBy build
+                classifier null
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = 'henkelmax.public'
+            url = 'https://maven.maxhenkel.de/repository/public'
+            credentials {
+                username System.getenv('MAVEN_USERNAME')
+                password System.getenv('MAVEN_PASSWORD')
+            }
+        }
+    }
+}

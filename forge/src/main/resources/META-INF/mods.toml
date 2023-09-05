@@ -1,0 +1,12 @@
+modLoader="javafml"
+loaderVersion="*"
+license="All rights reserved"
+issueTrackerURL="https://github.com/henkelmax/admiral/issues"
+displayURL="https://modrinth.com/mod/admiral"
+authors="Max Henkel"
+[[mods]]
+modId="admiral"
+version="${version}"
+displayName="Admiral"
+displayTest="NONE"
+description='''Admiral for Forge'''
