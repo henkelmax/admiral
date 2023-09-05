@@ -4,5 +4,14 @@
   "version": "${version}",
   "name": "Admiral",
   "description": "Admiral for Fabric",
+  "authors": [
+    "Max Henkel"
+  ],
+  "contact": {
+    "homepage": "https://modrinth.com/mod/admiral",
+    "issues": "https://github.com/henkelmax/admiral/issues",
+    "sources": "https://github.com/henkelmax/admiral"
+  },
+  "license": "All Rights Reserved",
   "environment": "*"
 }
