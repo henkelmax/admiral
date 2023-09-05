@@ -99,6 +99,12 @@ public class MyCommands {
 
 ## Setup
 
+It is generally recommended to use [Shadow](https://github.com/johnrengelman/shadow) to shade Admiral into your mod.
+This avoids conflicts with other mods using different versions of Admiral.
+
+
+Alternatively use the following setup to include Admiral in your mod.
+
 ### Fabric
 
 ``` gradle
@@ -119,8 +125,6 @@ dependencies {
 
 ### Forge
 
-It is generally recommended to use [Shadow](https://github.com/johnrengelman/shadow) to shade Admiral into your mod.
-This avoids conflicts with other mods using different versions of Admiral.
 
 Alternatively you can use [JarJar](https://docs.minecraftforge.net/en/fg-6.x/dependencies/jarinjar/) to include the Admiral jar in your mod:
 ``` gradle
