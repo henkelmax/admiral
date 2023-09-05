@@ -28,7 +28,7 @@ configurations {
 }
 
 dependencies {
-    minecraft "net.neoforged:forge:${minecraft_version}-${forge_version}"
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     shadowMc project(':core')
     shadowMc project(':minecraft')

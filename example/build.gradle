@@ -1,7 +1,6 @@
 plugins {
     id 'java'
     id 'fabric-loom'
-    id 'com.github.johnrengelman.shadow'
 }
 
 java {
@@ -25,35 +24,12 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
 
     implementation project(':core')
-    shadow project(':core')
     implementation project(path: ':minecraft', configuration: 'namedElements')
-    shadow project(path: ':minecraft', configuration: 'namedElements')
 
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
-}
-
-processResources {
-    filesMatching('fabric.mod.json') {
-        expand 'version': version,
-                'loader_version': loader_version
-    }
 }
 
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = 'UTF-8'
     it.options.release = 17
-}
-
-shadowJar {
-    configurations = [project.configurations.shadow]
-    archiveClassifier = 'shadow-dev'
-    dependencies {
-        exclude(dependency('com.google.code.findbugs:jsr305'))
-        exclude(dependency('com.mojang:brigadier'))
-    }
-}
-
-remapJar {
-    dependsOn shadowJar
-    inputFile = shadowJar.archiveFile.get()
 }
