@@ -91,7 +91,7 @@ modrinth {
     uploadFile = jar
     versionType = release_type.toUpperCase()
     changelog = rootProject.file('changelog.md').text
-    gameVersions = [minecraft_version]
+    gameVersions = supported_minecraft_versions.split(',').collect { it.trim() }
     loaders = ['forge', 'neoforge']
 }
 tasks.modrinth.dependsOn(build)
