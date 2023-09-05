@@ -3,6 +3,7 @@ plugins {
     id 'maven-publish'
     id 'fabric-loom'
     id 'com.github.johnrengelman.shadow'
+    id 'com.modrinth.minotaur'
 }
 
 java {
@@ -80,3 +81,16 @@ publishing {
         }
     }
 }
+
+modrinth {
+    token = file("${rootDir}/modrinth_token.txt").exists() ? file("${rootDir}/modrinth_token.txt").text : ''
+    projectId = modrinth_id
+    versionNumber = "${version}+fabric"
+    versionName = "Admiral Fabric ${version}"
+    uploadFile = remapJar
+    versionType = release_type.toUpperCase()
+    changelog = rootProject.file('changelog.md').text
+    gameVersions = [minecraft_version]
+    loaders = ['fabric']
+}
+tasks.modrinth.dependsOn(build)
