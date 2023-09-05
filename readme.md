@@ -87,6 +87,50 @@ public class MyCommands {
 }
 ```
 
+## Setup
+
+### Fabric
+
+``` gradle
+repositories {
+    // See https://docs.modrinth.com/maven
+    maven {
+        url = 'https://api.modrinth.com/maven'
+        content {
+            includeGroup "maven.modrinth"
+        }
+    }
+}
+
+dependencies {
+    include(modImplementation("maven.modrinth:admiral:${admiral_version}+${minecraft_version}+fabric"))
+}
+```
+
+### Forge
+
+It is generally recommended to use [Shadow](https://github.com/johnrengelman/shadow) to shade Admiral into your mod.
+This avoids conflicts with other mods using different versions of Admiral.
+
+Alternatively you can use [JarJar](https://docs.minecraftforge.net/en/fg-6.x/dependencies/jarinjar/) to include the Admiral jar in your mod:
+``` gradle
+jarJar.enable()
+
+repositories {
+    // See https://docs.modrinth.com/maven
+    maven {
+        url = 'https://api.modrinth.com/maven'
+        content {
+            includeGroup 'maven.modrinth'
+        }
+    }
+}
+
+dependencies {
+    jarJar(group: 'maven.modrinth', name: 'admiral', version: "${admiral_version}+${minecraft_version}+forge")
+}
+```
+
 ## Supported Argument Types
 
 ### Core
