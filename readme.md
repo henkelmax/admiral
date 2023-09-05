@@ -1,3 +1,7 @@
+⚠️ **Warning**
+This project is still in early development and might contain bugs.
+Please report any issues you find.
+
 # Admiral
 
 An open-source annotation based command handling library for [Brigadier](https://github.com/Mojang/brigadier).
