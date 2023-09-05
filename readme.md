@@ -1,6 +1,13 @@
 # Admiral
 
-An annotation based command registration library for Brigadier.
+An annotation based command registration library for [Brigadier](https://github.com/Mojang/brigadier).
+
+This project contains four different modules:
+
+- `admiral-core` The core module containing the annotation processor and all built-in argument types from [Brigadier](https://github.com/Mojang/brigadier).
+- `admiral-minecraft` A module containing all Minecraft-specific argument types, compiled with official Minecraft mappings.
+- `admiral-fabric` A module containing everything from the `core` and `minecraft` modules, compiled with Fabric intermediary mappings.
+- `admiral-forge` A module containing everything from the `core` and `minecraft` modules, compiled with SRG mappings.
 
 ## Usage
 
