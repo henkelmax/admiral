@@ -14,6 +14,7 @@ import net.minecraft.commands.arguments.item.ItemInput;
 import net.minecraft.commands.arguments.item.ItemPredicateArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ColumnPos;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.phys.Vec2;
@@ -50,28 +51,28 @@ public class WrapperCommands {
         AdmiralMod.LOGGER.info("nonwrapperoptionaldouble: {}", d.getValue().map(String::valueOf).orElse("N/A"));
     }
 
-    @Command("entityreference")
-    public void entityreference(EntityReference ref) {
-        AdmiralMod.LOGGER.info("entityreference: {}", ref);
+    @Command("summonableentity")
+    public void summonableentity(SummonableEntity ref) {
+        AdmiralMod.LOGGER.info("summonableentity: {}", ref);
     }
 
-    @Command("attributereference")
-    public void attributereference(AttributeReference ref) {
-        AdmiralMod.LOGGER.info("attributereference: {}", ref);
+    @Command("attribute")
+    public void attribute(Attribute ref) {
+        AdmiralMod.LOGGER.info("attribute: {}", ref);
     }
 
     @Command("configuredfeaturereference")
-    public void configuredfeaturereference(ConfiguredFeatureReference ref) {
+    public void configuredfeaturereference(ConfiguredFeatureHolder ref) {
         AdmiralMod.LOGGER.info("configuredfeaturereference: {}", ref);
     }
 
     @Command("structurereference")
-    public void structurereference(StructureReference ref) {
+    public void structurereference(StructureHolder ref) {
         AdmiralMod.LOGGER.info("structurereference: {}", ref);
     }
 
     @Command("structuretemplatepoolreference")
-    public void structuretemplatepoolreference(StructureTemplatePoolReference ref) {
+    public void structuretemplatepoolreference(StructureTemplatePoolHolder ref) {
         AdmiralMod.LOGGER.info("structuretemplatepoolreference: {}", ref);
     }
 

@@ -1,15 +1,14 @@
 package de.maxhenkel.admiral.impl.arguments;
 
-import net.minecraft.commands.CommandBuildContext;
-import net.minecraft.commands.arguments.ResourceOrTagArgument;
+import net.minecraft.commands.arguments.ResourceOrTagLocationArgument;
 import net.minecraft.resources.ResourceKey;
 
 /**
- * A wrapper for {@link ResourceOrTagArgument#resourceOrTag(CommandBuildContext, ResourceKey)}.
+ * A wrapper for {@link ResourceOrTagLocationArgument#resourceOrTag(ResourceKey)}.
  */
-public class ResourceOrTagBase<T> extends SimpleArgumentType<ResourceOrTagArgument.Result<T>> {
+public class ResourceOrTagBase<T> extends SimpleArgumentType<ResourceOrTagLocationArgument.Result<T>> {
 
-    public ResourceOrTagBase(ResourceOrTagArgument.Result<T> value) {
+    public ResourceOrTagBase(ResourceOrTagLocationArgument.Result<T> value) {
         super(value);
     }
 
