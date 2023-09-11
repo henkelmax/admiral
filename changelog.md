@@ -1,1 +1,1 @@
-- Backported changes to 1.19.2
+- Fixed class without commands being able to be registered
