@@ -45,11 +45,14 @@ public class AdmiralClass<S, C> {
 
         Method[] declaredMethods = clazz.getDeclaredMethods();
 
+        int registeredMethods = 0;
         for (Method method : declaredMethods) {
             method.setAccessible(true);
             if (method.getDeclaredAnnotationsByType(Command.class).length == 0) {
                 continue;
             }
+            registeredMethods++;
+
             AdmiralMethod<S, C> admiralMethod = new AdmiralMethod<>(this, method);
             List<ArgumentBuilder<S, ?>> nodes = admiralMethod.register();
 
@@ -89,6 +92,11 @@ public class AdmiralClass<S, C> {
                 admiral.getDispatcher().register(last);
             }
         }
+
+        if (commands.isEmpty() && registeredMethods == 0) {
+            throw new IllegalStateException(String.format("Class %s does not contain any commands", clazz.getSimpleName()));
+        }
+
         registered = true;
     }
 

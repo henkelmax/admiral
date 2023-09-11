@@ -1,0 +1,1 @@
+- Fixed class without commands being able to be registered
