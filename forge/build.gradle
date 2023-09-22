@@ -21,6 +21,7 @@ minecraft {
 
 repositories {
     mavenCentral()
+    maven { url 'https://maven.minecraftforge.net' }
 }
 
 configurations {

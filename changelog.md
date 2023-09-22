@@ -1,1 +1,1 @@
-- Fixed class without commands being able to be registered
+- Updated to 1.20.2
