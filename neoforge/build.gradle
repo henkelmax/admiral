@@ -84,4 +84,4 @@ modrinth {
     gameVersions = supported_minecraft_versions.split(',').collect { it.trim() }
     loaders = ['neoforge']
 }
-tasks.modrinth.dependsOn(build)
+tasks.modrinth.dependsOn(shadowJar)
