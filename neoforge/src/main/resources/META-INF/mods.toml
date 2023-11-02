@@ -9,4 +9,4 @@ modId="admiral"
 version="${version}"
 displayName="Admiral"
 displayTest="NONE"
-description='''Admiral for Forge'''
+description='''Admiral for NeoForge'''

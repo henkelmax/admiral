@@ -11,6 +11,7 @@ This project contains four different modules:
 - `admiral-core` The core module containing the annotation processor and all built-in argument types from [Brigadier](https://github.com/Mojang/brigadier).
 - `admiral-minecraft` A module containing all Minecraft-specific argument types, compiled with official Minecraft mappings.
 - `admiral-fabric` A module containing everything from the `core` and `minecraft` modules, compiled with Fabric intermediary mappings.
+- `admiral-neoforge` A module containing everything from the `core` and `minecraft` modules, compiled with official mappings for NeoForge.
 - `admiral-forge` A module containing everything from the `core` and `minecraft` modules, compiled with SRG mappings.
 
 ## Links
@@ -21,7 +22,8 @@ This project contains four different modules:
 
 ## Supported versions
 
-- `1.19.4`, `1.20` and `1.20.1` (Branch [master](https://github.com/henkelmax/admiral/tree/master))
+- `1.20.2` (Branch [master](https://github.com/henkelmax/admiral/tree/master))
+- `1.19.4`, `1.20` and `1.20.1` (Branch [1.20.1](https://github.com/henkelmax/admiral/tree/1.20.1))
 - `1.19`, `1.19.1` and `1.19.2` (Branch [1.19.2](https://github.com/henkelmax/admiral/tree/1.19.2))
 
 ## Usage
@@ -128,7 +130,7 @@ dependencies {
 }
 ```
 
-### Forge
+### NeoForge/Forge
 
 
 Alternatively you can use [JarJar](https://docs.minecraftforge.net/en/fg-6.x/dependencies/jarinjar/) to include the Admiral jar in your mod:
@@ -146,6 +148,9 @@ repositories {
 }
 
 dependencies {
+    // For NeoForge
+    jarJar(group: 'maven.modrinth', name: 'admiral', version: "${admiral_version}+${minecraft_version}+neoforge")
+    // For Forge
     jarJar(group: 'maven.modrinth', name: 'admiral', version: "${admiral_version}+${minecraft_version}+forge")
 }
 ```
