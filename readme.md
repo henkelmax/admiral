@@ -21,7 +21,6 @@ This project contains four different modules:
 
 ## Supported versions
 
-- `1.19.4`, `1.20` and `1.20.1` (Branch [1.20.1](https://github.com/henkelmax/admiral/tree/1.20.1))
 - `1.19`, `1.19.1` and `1.19.2` (Branch [1.19.2](https://github.com/henkelmax/admiral/tree/1.19.2))
 
 ## Usage
