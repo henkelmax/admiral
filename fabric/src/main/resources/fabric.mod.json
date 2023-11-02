@@ -12,6 +12,6 @@
     "issues": "https://github.com/henkelmax/admiral/issues",
     "sources": "https://github.com/henkelmax/admiral"
   },
-  "license": "All Rights Reserved",
+  "license": "MIT",
   "environment": "*"
 }
