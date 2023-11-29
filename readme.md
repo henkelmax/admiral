@@ -180,7 +180,7 @@ dependencies {
 | `Players`                        | `EntityArgument::players`                    | Fails if no player was found           |
 | `OptionalEntities`               | `EntityArgument::entities`                   |                                        |
 | `OptionalPlayers`                | `EntityArgument::players`                    |                                        |
-| `ScoreboardSlot`                 | `ScoreboardSlotArgument::displaySlot`        |                                        |
+| `DisplaySlot`                    | `ScoreboardSlotArgument::displaySlot`        |                                        |
 | `ScoreHolder`                    | `ScoreHolderArgument::scoreHolder`           |                                        |
 | `ScoreHolders`                   | `ScoreHolderArgument::scoreHolders`          |                                        |
 | `Slot`                           | `SlotArgument::slot`                         |                                        |

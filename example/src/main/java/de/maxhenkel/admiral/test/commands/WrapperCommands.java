@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.scores.DisplaySlot;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -75,9 +76,9 @@ public class WrapperCommands {
         AdmiralMod.LOGGER.info("structuretemplatepoolreference: {}", ref);
     }
 
-    @Command("scoreboardslot")
-    public void scoreboardslot(ScoreboardSlot ref) {
-        AdmiralMod.LOGGER.info("scoreboardslot: {}", ref);
+    @Command("displayslot")
+    public void displayslot(DisplaySlot ref) {
+        AdmiralMod.LOGGER.info("displayslot: {}", ref);
     }
 
     @Command("scoreholder")
