@@ -1,1 +1,1 @@
-- Fixed class without commands being able to be registered
+- Fixed optionals being ignored when only having single path
