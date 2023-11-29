@@ -1,6 +1,5 @@
 package de.maxhenkel.admiral.impl;
 
-import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import de.maxhenkel.admiral.annotations.Command;
 import de.maxhenkel.admiral.impl.permissions.Permission;
@@ -54,7 +53,7 @@ public class AdmiralClass<S, C> {
             registeredMethods++;
 
             AdmiralMethod<S, C> admiralMethod = new AdmiralMethod<>(this, method);
-            List<ArgumentBuilder<S, ?>> nodes = admiralMethod.register();
+            List<AdmiralMethod.WrappedArgumentBuilder<S>> nodes = admiralMethod.register();
 
             List<List<String>> classPaths = getPaths();
 
@@ -64,9 +63,9 @@ public class AdmiralClass<S, C> {
 
             for (List<String> path : classPaths) {
                 if (path.isEmpty()) {
-                    for (ArgumentBuilder<S, ?> node : nodes) {
-                        if (node instanceof LiteralArgumentBuilder) {
-                            admiral.getDispatcher().register((LiteralArgumentBuilder) node);
+                    for (AdmiralMethod.WrappedArgumentBuilder<S> node : nodes) {
+                        if (node.builder instanceof LiteralArgumentBuilder) {
+                            admiral.getDispatcher().register((LiteralArgumentBuilder) node.builder);
                         }
                     }
                     continue;
@@ -78,12 +77,14 @@ public class AdmiralClass<S, C> {
                     if (last != null) {
                         literal.then(last);
                     } else {
-                        for (ArgumentBuilder<S, ?> node : nodes) {
-                            if (node == null) {
+                        for (AdmiralMethod.WrappedArgumentBuilder<S> node : nodes) {
+                            if (node.builder == null) {
                                 admiralMethod.execute(literal);
                                 continue;
+                            } else if (node.needsExecution) {
+                                admiralMethod.execute(literal);
                             }
-                            literal.then(node);
+                            literal.then(node.builder);
                         }
                     }
 

@@ -35,12 +35,12 @@ public class AdmiralMethod<S, C> {
         this.requiredPermissions = new ArrayList<>();
     }
 
-    public List<ArgumentBuilder<S, ?>> register() {
+    public List<WrappedArgumentBuilder<S>> register() {
         parameters = collectParameters();
         commands = Arrays.asList(method.getDeclaredAnnotationsByType(Command.class));
         requiredPermissions = PermissionAnnotationUtil.getPermissions(method);
 
-        List<ArgumentBuilder<S, ?>> nodes = new ArrayList<>();
+        List<WrappedArgumentBuilder<S>> nodes = new ArrayList<>();
 
         for (List<String> path : getPaths()) {
             nodes.add(handleCommand(path));
@@ -48,8 +48,7 @@ public class AdmiralMethod<S, C> {
         return nodes;
     }
 
-    @Nullable
-    private ArgumentBuilder<S, ?> handleCommand(List<String> path) {
+    private WrappedArgumentBuilder<S> handleCommand(List<String> path) {
         ArgumentBuilder<S, ?> last = null;
         AdmiralParameter<S, C, ?, ?> lastParameter = null;
         for (int i = parameters.size() - 1; i >= 0; i--) {
@@ -84,7 +83,18 @@ public class AdmiralMethod<S, C> {
             firstPass = false;
         }
 
-        return last;
+        return new WrappedArgumentBuilder<>(last, (lastParameter == null || lastParameter.isOptional()) && firstPass);
+    }
+
+    public static class WrappedArgumentBuilder<S> {
+        @Nullable
+        public final ArgumentBuilder<S, ?> builder;
+        public final boolean needsExecution;
+
+        public WrappedArgumentBuilder(ArgumentBuilder<S, ?> builder, boolean needsExecution) {
+            this.builder = builder;
+            this.needsExecution = needsExecution;
+        }
     }
 
     protected void execute(ArgumentBuilder<S, ?> builder) {
