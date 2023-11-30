@@ -13,5 +13,6 @@
     "sources": "https://github.com/henkelmax/admiral"
   },
   "license": "MIT",
+  "icon": "icon.png",
   "environment": "*"
 }

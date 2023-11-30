@@ -1,1 +1,1 @@
-- Fixed optionals being ignored when only having single path
+- Added mod icon
