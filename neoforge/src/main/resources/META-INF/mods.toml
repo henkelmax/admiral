@@ -8,5 +8,6 @@ authors="Max Henkel"
 modId="admiral"
 version="${version}"
 displayName="Admiral"
+logoFile="icon.png"
 displayTest="NONE"
 description='''Admiral for NeoForge'''
