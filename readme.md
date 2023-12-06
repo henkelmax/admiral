@@ -21,6 +21,9 @@ This project contains four different modules:
 
 ## Supported versions
 
+- `1.20.3` (Branch [master](https://github.com/henkelmax/admiral/tree/master))
+- `1.20.2` (Branch [1.20.2](https://github.com/henkelmax/admiral/tree/1.20.2))
+- `1.19.4`, `1.20` and `1.20.1` (Branch [1.20.1](https://github.com/henkelmax/admiral/tree/1.20.1))
 - `1.19`, `1.19.1` and `1.19.2` (Branch [1.19.2](https://github.com/henkelmax/admiral/tree/1.19.2))
 
 ## Usage
@@ -105,6 +108,7 @@ public class MyCommands {
 
 It is generally recommended to use [Shadow](https://github.com/johnrengelman/shadow) to shade Admiral into your mod.
 This avoids conflicts with other mods using different versions of Admiral.
+
 
 Alternatively use the following setup to include Admiral in your mod.
 
