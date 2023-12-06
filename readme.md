@@ -181,6 +181,7 @@ dependencies {
 | `OptionalEntities`               | `EntityArgument::entities`                   |                                        |
 | `OptionalPlayers`                | `EntityArgument::players`                    |                                        |
 | `DisplaySlot`                    | `ScoreboardSlotArgument::displaySlot`        |                                        |
+| `Style`                          | `ScoreboardSlotArgument::style`              |                                        |
 | `ScoreHolder`                    | `ScoreHolderArgument::scoreHolder`           |                                        |
 | `ScoreHolders`                   | `ScoreHolderArgument::scoreHolders`          |                                        |
 | `Slot`                           | `SlotArgument::slot`                         |                                        |

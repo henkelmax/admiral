@@ -34,6 +34,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ColumnPos;
@@ -120,6 +121,7 @@ public class MinecraftArgumentTypes {
         argumentRegistry.register(UUID.class, UuidArgument::uuid);
         argumentRegistry.register(FunctionArgument.Result.class, FunctionArgument::functions);
         argumentRegistry.register(DisplaySlot.class, ScoreboardSlotArgument::displaySlot);
+        argumentRegistry.register(Style.class, StyleArgument::style);
 
         argumentRegistry.register(
                 BlockPredicateArgument.Result.class,
