@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'maven-publish'
-    id 'net.neoforged.gradle' version "${forge_gradle_version}"
+    id 'net.minecraftforge.gradle' version "${forge_gradle_version}"
     id 'com.github.johnrengelman.shadow'
     id 'com.modrinth.minotaur'
 }
@@ -17,6 +17,7 @@ version = "${library_version}+${minecraft_version}"
 
 minecraft {
     mappings channel: 'official', version: minecraft_version
+    copyIdeResources = true
 }
 
 repositories {
@@ -46,6 +47,12 @@ processResources {
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = 'UTF-8'
     it.options.release = 17
+}
+
+sourceSets.each {
+    def dir = layout.buildDirectory.dir("sourcesSets/$it.name")
+    it.output.resourcesDir = dir
+    it.java.destinationDirectory = dir
 }
 
 shadowJar {
@@ -95,4 +102,4 @@ modrinth {
     gameVersions = supported_minecraft_versions.split(',').collect { it.trim() }
     loaders = ['forge']
 }
-tasks.modrinth.dependsOn(build)
+tasks.modrinth.dependsOn(shadowJar)
