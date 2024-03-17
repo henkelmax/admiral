@@ -104,7 +104,7 @@ public class MinecraftArgumentTypes {
 
         argumentRegistry.register(AngleArgument.SingleAngle.class, AngleArgument::angle);
         argumentRegistry.register(ChatFormatting.class, ColorArgument::color);
-        argumentRegistry.register(Component.class, ComponentArgument::textComponent);
+
         argumentRegistry.register(CompoundTag.class, CompoundTagArgument::compoundTag);
         argumentRegistry.register(EntityAnchorArgument.Anchor.class, EntityAnchorArgument::anchor);
         argumentRegistry.register(GameType.class, GameModeArgument::gameMode);
@@ -121,8 +121,15 @@ public class MinecraftArgumentTypes {
         argumentRegistry.register(UUID.class, UuidArgument::uuid);
         argumentRegistry.register(FunctionArgument.Result.class, FunctionArgument::functions);
         argumentRegistry.register(DisplaySlot.class, ScoreboardSlotArgument::displaySlot);
-        argumentRegistry.register(Style.class, StyleArgument::style);
 
+        argumentRegistry.register(
+                Component.class,
+                (ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, Component>) ctx -> ctx == null ? null : ComponentArgument.textComponent(ctx)
+        );
+        argumentRegistry.register(
+                Style.class,
+                (ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, Style>) ctx -> ctx == null ? null : StyleArgument.style(ctx)
+        );
         argumentRegistry.register(
                 BlockPredicateArgument.Result.class,
                 (ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, BlockPredicateArgument.Result>) ctx -> ctx == null ? null : BlockPredicateArgument.blockPredicate(ctx)
