@@ -46,8 +46,6 @@ import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
-import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.DisplaySlot;
@@ -190,36 +188,6 @@ public class MinecraftArgumentTypes {
                     }
                 },
                 (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ResourceLocationArgument.getRecipe(context, name)
-        );
-        argumentRegistry.register(
-                LootItemCondition.class,
-                new ArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, ResourceLocation>() {
-                    @Override
-                    public ArgumentType<ResourceLocation> get() {
-                        return ResourceLocationArgument.id();
-                    }
-
-                    @Override
-                    public SuggestionProvider<CommandSourceStack> getSuggestionProvider() {
-                        return ReflectionSuggestionProviders.getPredicateSuggestions();
-                    }
-                },
-                (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ResourceLocationArgument.getPredicate(context, name)
-        );
-        argumentRegistry.register(
-                LootItemFunction.class,
-                new ArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, ResourceLocation>() {
-                    @Override
-                    public ArgumentType<ResourceLocation> get() {
-                        return ResourceLocationArgument.id();
-                    }
-
-                    @Override
-                    public SuggestionProvider<CommandSourceStack> getSuggestionProvider() {
-                        return ReflectionSuggestionProviders.getLootItemSuggestions();
-                    }
-                },
-                (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ResourceLocationArgument.getItemModifier(context, name)
         );
 
         registerResourceReference(argumentRegistry, AttributeReference.class, () -> Registries.ATTRIBUTE, (ctx, name) -> new AttributeReference(ResourceArgument.getAttribute(ctx, name)));
