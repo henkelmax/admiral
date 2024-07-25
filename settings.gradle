@@ -8,4 +8,4 @@ pluginManagement {
 }
 
 rootProject.name = 'admiral'
-include('core', 'minecraft', 'fabric', /*'neoforge', 'forge', */'example')
+include('core', 'minecraft', 'fabric', 'neoforge', 'forge', 'example')
