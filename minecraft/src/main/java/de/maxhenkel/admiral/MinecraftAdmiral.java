@@ -1,14 +1,13 @@
 package de.maxhenkel.admiral;
 
 import com.mojang.brigadier.CommandDispatcher;
-import de.maxhenkel.admiral.impl.AdmiralImpl;
-import de.maxhenkel.admiral.impl.MinecraftArgumentTypes;
-import de.maxhenkel.admiral.impl.MinecraftLogging;
+import de.maxhenkel.admiral.impl.*;
 import net.minecraft.commands.CommandBuildContext;
 
 public class MinecraftAdmiral {
 
     static {
+        PermissionLevelManager.setPermissionLevelAccessor(new MinecraftPermissionLevelAccessor<>());
         MinecraftArgumentTypes.register();
         MinecraftLogging.useMinecraftLogger();
     }
