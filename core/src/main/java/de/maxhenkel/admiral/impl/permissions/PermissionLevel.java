@@ -1,9 +1,9 @@
 package de.maxhenkel.admiral.impl.permissions;
 
+import de.maxhenkel.admiral.impl.PermissionLevelManager;
 import de.maxhenkel.admiral.permissions.PermissionManager;
 
 import javax.annotation.Nullable;
-import java.lang.reflect.Method;
 
 public class PermissionLevel<S> implements Permission<S> {
 
@@ -19,15 +19,10 @@ public class PermissionLevel<S> implements Permission<S> {
 
     @Override
     public boolean hasPermission(S source, @Nullable PermissionManager<S> permissionManager) {
-        try {
-            Method hasPermission = source.getClass().getDeclaredMethod("hasPermission", int.class);
-            Object invoke = hasPermission.invoke(source, permissionLevel);
-            if (!(invoke instanceof Boolean)) {
-                throw new IllegalStateException("hasPermission method must return boolean");
-            }
-            return (Boolean) invoke;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        PermissionLevelManager.PermissionLevelAccessor<Object> permissionLevelAccessor = PermissionLevelManager.getPermissionLevelAccessor();
+        if (permissionLevelAccessor == null) {
+            throw new IllegalStateException("Command source does not have a permission level");
         }
+        return permissionLevelAccessor.hasPermissionLevel(source, permissionLevel);
     }
 }

@@ -1,1 +1,1 @@
-- Added mod icon
+- Fixed permission level annotation
