@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'maven-publish'
-    id 'net.neoforged.gradle' version "${forge_gradle_version}"
+    id 'net.minecraftforge.gradle' version "${forge_gradle_version}"
     id 'com.github.johnrengelman.shadow'
     id 'com.modrinth.minotaur'
 }
