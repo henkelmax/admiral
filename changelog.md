@@ -1,1 +1,1 @@
-- Fixed permission level annotation
+- Updated to 1.21.1
