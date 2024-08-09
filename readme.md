@@ -21,7 +21,8 @@ This project contains four different modules:
 
 ## Supported versions
 
-- `1.20.3`, `1.20.4` (Branch [master](https://github.com/henkelmax/admiral/tree/master))
+- `1.20.5`, `1.20.6`, `1.21`, `1.21.1` (Branch [master](https://github.com/henkelmax/admiral/tree/master))
+- `1.20.3`, `1.20.4` (Branch [1.20.4](https://github.com/henkelmax/admiral/tree/1.20.4))
 - `1.20.2` (Branch [1.20.2](https://github.com/henkelmax/admiral/tree/1.20.2))
 - `1.19.4`, `1.20` and `1.20.1` (Branch [1.20.1](https://github.com/henkelmax/admiral/tree/1.20.1))
 - `1.19`, `1.19.1` and `1.19.2` (Branch [1.19.2](https://github.com/henkelmax/admiral/tree/1.19.2))
