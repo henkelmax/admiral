@@ -1,0 +1,13 @@
+modLoader = "javafml"
+loaderVersion = "*"
+license = "MIT"
+issueTrackerURL = "https://github.com/henkelmax/admiral/issues"
+[[mods]]
+modId = "admiral"
+version = "${version}"
+displayName = "Admiral"
+displayURL = "https://modrinth.com/mod/admiral"
+logoFile = "icon.png"
+authors = "Max Henkel"
+displayTest = "NONE"
+description = '''Admiral for NeoForge'''
