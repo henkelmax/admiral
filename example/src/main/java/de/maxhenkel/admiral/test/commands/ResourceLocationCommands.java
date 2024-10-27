@@ -5,9 +5,9 @@ import de.maxhenkel.admiral.arguments.BiomeResourceOrTag;
 import de.maxhenkel.admiral.arguments.PoiTypeResourceOrTag;
 import de.maxhenkel.admiral.arguments.StructureResourceOrTagKey;
 import de.maxhenkel.admiral.test.AdmiralMod;
-import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 
 @Command("resourcelocation")
 public class ResourceLocationCommands {
@@ -18,12 +18,12 @@ public class ResourceLocationCommands {
     }
 
     @Command("advancement")
-    public void advancement(Advancement value) {
+    public void advancement(AdvancementHolder value) {
         AdmiralMod.LOGGER.info("advancement: {}", value);
     }
 
     @Command("recipe")
-    public void recipe(Recipe<?> value) {
+    public void recipe(RecipeHolder<?> value) {
         AdmiralMod.LOGGER.info("recipe: {}", value);
     }
 

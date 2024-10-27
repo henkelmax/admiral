@@ -2,9 +2,7 @@ package de.maxhenkel.admiral.impl;
 
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.suggestion.SuggestionProvider;
 import de.maxhenkel.admiral.arguments.*;
-import de.maxhenkel.admiral.argumenttype.ArgumentTypeSupplier;
 import de.maxhenkel.admiral.argumenttype.ContextArgumentTypeSupplier;
 import de.maxhenkel.admiral.argumenttype.RangedArgumentTypeSupplier;
 import de.maxhenkel.admiral.argumenttype.RawArgumentTypeConverter;
@@ -13,6 +11,7 @@ import de.maxhenkel.admiral.impl.arguments.ResourceOrTagBase;
 import de.maxhenkel.admiral.impl.arguments.ResourceOrTagKeyBase;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.*;
@@ -25,7 +24,6 @@ import net.minecraft.commands.arguments.item.ItemArgument;
 import net.minecraft.commands.arguments.item.ItemInput;
 import net.minecraft.commands.arguments.item.ItemPredicateArgument;
 import net.minecraft.commands.arguments.selector.EntitySelector;
-import net.minecraft.commands.synchronization.SuggestionProviders;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
@@ -41,7 +39,7 @@ import net.minecraft.server.level.ColumnPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -159,35 +157,16 @@ public class MinecraftArgumentTypes {
                 ObjectiveArgument::objective,
                 (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ObjectiveArgument.getObjective(context, name)
         );
-        argumentRegistry.register(
-                Advancement.class,
-                new ArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, ResourceLocation>() {
-                    @Override
-                    public ArgumentType<ResourceLocation> get() {
-                        return ResourceLocationArgument.id();
-                    }
 
-                    @Override
-                    public SuggestionProvider<CommandSourceStack> getSuggestionProvider() {
-                        return ReflectionSuggestionProviders.getAdvancementSuggestions();
-                    }
-                },
-                (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ResourceLocationArgument.getAdvancement(context, name)
+        argumentRegistry.register(
+                AdvancementHolder.class,
+                (ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, Advancement>) ctx -> (ArgumentType) ResourceKeyArgument.key(Registries.ADVANCEMENT),
+                (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ResourceKeyArgument.getAdvancement(context, name)
         );
         argumentRegistry.register(
-                Recipe.class,
-                new ArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, ResourceLocation>() {
-                    @Override
-                    public ArgumentType<ResourceLocation> get() {
-                        return ResourceLocationArgument.id();
-                    }
-
-                    @Override
-                    public SuggestionProvider<CommandSourceStack> getSuggestionProvider() {
-                        return SuggestionProviders.ALL_RECIPES;
-                    }
-                },
-                (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ResourceLocationArgument.getRecipe(context, name)
+                RecipeHolder.class,
+                (ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, Advancement>) ctx -> (ArgumentType) ResourceKeyArgument.key(Registries.RECIPE),
+                (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ResourceKeyArgument.getRecipe(context, name)
         );
 
         registerResourceReference(argumentRegistry, AttributeReference.class, () -> Registries.ATTRIBUTE, (ctx, name) -> new AttributeReference(ResourceArgument.getAttribute(ctx, name)));
@@ -195,6 +174,7 @@ public class MinecraftArgumentTypes {
         registerResourceReference(argumentRegistry, SummonableEntityReference.class, () -> Registries.ENTITY_TYPE, (ctx, name) -> new SummonableEntityReference(ResourceArgument.getSummonableEntityType(ctx, name)));
         registerResourceReference(argumentRegistry, MobEffectReference.class, () -> Registries.MOB_EFFECT, (ctx, name) -> new MobEffectReference(ResourceArgument.getMobEffect(ctx, name)));
         registerResourceReference(argumentRegistry, EnchantmentReference.class, () -> Registries.ENCHANTMENT, (ctx, name) -> new EnchantmentReference(ResourceArgument.getEnchantment(ctx, name)));
+
         registerResourceKeyReference(argumentRegistry, ConfiguredFeatureReference.class, () -> Registries.CONFIGURED_FEATURE, (ctx, name) -> new ConfiguredFeatureReference(ResourceKeyArgument.getConfiguredFeature(ctx, name)));
         registerResourceKeyReference(argumentRegistry, StructureReference.class, () -> Registries.STRUCTURE, (ctx, name) -> new StructureReference(ResourceKeyArgument.getStructure(ctx, name)));
         registerResourceKeyReference(argumentRegistry, StructureTemplatePoolReference.class, () -> Registries.TEMPLATE_POOL, (ctx, name) -> new StructureTemplatePoolReference(ResourceKeyArgument.getStructureTemplatePool(ctx, name)));
