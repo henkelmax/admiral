@@ -2,7 +2,9 @@ package de.maxhenkel.admiral.impl;
 
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.suggestion.SuggestionProvider;
 import de.maxhenkel.admiral.arguments.*;
+import de.maxhenkel.admiral.argumenttype.ArgumentTypeSupplier;
 import de.maxhenkel.admiral.argumenttype.ContextArgumentTypeSupplier;
 import de.maxhenkel.admiral.argumenttype.RangedArgumentTypeSupplier;
 import de.maxhenkel.admiral.argumenttype.RawArgumentTypeConverter;
@@ -35,6 +37,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.commands.FunctionCommand;
 import net.minecraft.server.level.ColumnPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -115,7 +118,16 @@ public class MinecraftArgumentTypes {
         argumentRegistry.register(Mirror.class, TemplateMirrorArgument::templateMirror);
         argumentRegistry.register(Rotation.class, TemplateRotationArgument::templateRotation);
         argumentRegistry.register(UUID.class, UuidArgument::uuid);
-        argumentRegistry.register(FunctionArgument.Result.class, FunctionArgument::functions);
+        argumentRegistry.register(FunctionArgument.Result.class, new ArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, FunctionArgument.Result>() {
+            @Override
+            public ArgumentType<FunctionArgument.Result> get() {
+                return FunctionArgument.functions();
+            }
+            @Override
+            public SuggestionProvider<CommandSourceStack> getSuggestionProvider() {
+                return FunctionCommand.SUGGEST_FUNCTION;
+            }
+        });
         argumentRegistry.register(DisplaySlot.class, ScoreboardSlotArgument::displaySlot);
 
         argumentRegistry.register(
