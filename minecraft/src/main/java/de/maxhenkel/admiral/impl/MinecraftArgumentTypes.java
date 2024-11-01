@@ -36,6 +36,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.commands.FunctionCommand;
 import net.minecraft.server.level.ColumnPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -118,7 +119,16 @@ public class MinecraftArgumentTypes {
         argumentRegistry.register(Mirror.class, TemplateMirrorArgument::templateMirror);
         argumentRegistry.register(Rotation.class, TemplateRotationArgument::templateRotation);
         argumentRegistry.register(UUID.class, UuidArgument::uuid);
-        argumentRegistry.register(FunctionArgument.Result.class, FunctionArgument::functions);
+        argumentRegistry.register(FunctionArgument.Result.class, new ArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, FunctionArgument.Result>() {
+            @Override
+            public ArgumentType<FunctionArgument.Result> get() {
+                return FunctionArgument.functions();
+            }
+            @Override
+            public SuggestionProvider<CommandSourceStack> getSuggestionProvider() {
+                return FunctionCommand.SUGGEST_FUNCTION;
+            }
+        });
         argumentRegistry.register(DisplaySlot.class, ScoreboardSlotArgument::displaySlot);
 
         argumentRegistry.register(
