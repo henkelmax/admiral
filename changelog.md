@@ -1,1 +1,3 @@
-- Added suggestion provider for function arguments
+- Added LootTable argument
+- Added LootTableLootTable argument
+- Added LootItemCondition argument
