@@ -38,6 +38,7 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.commands.FunctionCommand;
+import net.minecraft.server.commands.LootCommand;
 import net.minecraft.server.level.ColumnPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -47,11 +48,15 @@ import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.DisplaySlot;
 import net.minecraft.world.scores.Objective;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 import java.util.UUID;
@@ -123,6 +128,7 @@ public class MinecraftArgumentTypes {
             public ArgumentType<FunctionArgument.Result> get() {
                 return FunctionArgument.functions();
             }
+
             @Override
             public SuggestionProvider<CommandSourceStack> getSuggestionProvider() {
                 return FunctionCommand.SUGGEST_FUNCTION;
@@ -179,6 +185,31 @@ public class MinecraftArgumentTypes {
                 RecipeHolder.class,
                 (ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, Advancement>) ctx -> (ArgumentType) ResourceKeyArgument.key(Registries.RECIPE),
                 (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ResourceKeyArgument.getRecipe(context, name)
+        );
+        argumentRegistry.register(
+                LootTable.class,
+                new ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, Advancement>() {
+                    @Override
+                    public ArgumentType<Advancement> get(@Nullable CommandBuildContext ctx) {
+                        return (ArgumentType) ResourceOrIdArgument.lootTable(ctx);
+                    }
+
+                    @Override
+                    public SuggestionProvider<CommandSourceStack> getSuggestionProvider() {
+                        return LootCommand.SUGGEST_LOOT_TABLE;
+                    }
+                },
+                (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ResourceOrIdArgument.getLootTable(context, name).value()
+        );
+        argumentRegistry.register(
+                LootItemFunction.class,
+                (ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, Advancement>) ctx -> (ArgumentType) ResourceOrIdArgument.lootModifier(ctx),
+                (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ResourceOrIdArgument.getLootModifier(context, name).value()
+        );
+        argumentRegistry.register(
+                LootItemCondition.class,
+                (ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, Advancement>) ctx -> (ArgumentType) ResourceOrIdArgument.lootPredicate(ctx),
+                (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ResourceOrIdArgument.getLootPredicate(context, name).value()
         );
 
         registerResourceReference(argumentRegistry, AttributeReference.class, () -> Registries.ATTRIBUTE, (ctx, name) -> new AttributeReference(ResourceArgument.getAttribute(ctx, name)));

@@ -238,3 +238,6 @@ dependencies {
 | `BiomeResourceOrTag`             | `ResourceOrTagArgument::resourceOrTag`       |                                        |
 | `PoiTypeResourceOrTag`           | `ResourceOrTagArgument::resourceOrTag`       |                                        |
 | `StructureResourceOrTagKey`      | `ResourceOrTagKeyArgument::resourceOrTagKey` |                                        |
+| `LootTable`                      | `ResourceOrIdArgument::lootTable`            |                                        |
+| `LootTableLootTable`             | `ResourceOrIdArgument::lootModifier`         |                                        |
+| `LootItemCondition`              | `ResourceOrIdArgument::lootPredicate`        |                                        |
