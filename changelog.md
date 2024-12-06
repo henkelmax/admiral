@@ -1,3 +1,1 @@
-- Added LootTable argument
-- Added LootTableLootTable argument
-- Added LootItemCondition argument
+- Updated to 1.21.4
