@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'maven-publish'
     id 'fabric-loom'
-    id 'com.github.johnrengelman.shadow'
+    id 'com.gradleup.shadow'
     id 'com.modrinth.minotaur'
 }
 
