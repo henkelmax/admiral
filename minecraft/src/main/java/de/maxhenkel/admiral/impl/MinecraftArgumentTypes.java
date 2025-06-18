@@ -188,17 +188,7 @@ public class MinecraftArgumentTypes {
         );
         argumentRegistry.register(
                 LootTable.class,
-                new ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, Advancement>() {
-                    @Override
-                    public ArgumentType<Advancement> get(@Nullable CommandBuildContext ctx) {
-                        return (ArgumentType) ResourceOrIdArgument.lootTable(ctx);
-                    }
-
-                    @Override
-                    public SuggestionProvider<CommandSourceStack> getSuggestionProvider() {
-                        return LootCommand.SUGGEST_LOOT_TABLE;
-                    }
-                },
+                (ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, Advancement>) ctx -> (ArgumentType) ResourceOrIdArgument.lootTable(ctx),
                 (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ResourceOrIdArgument.getLootTable(context, name).value()
         );
         argumentRegistry.register(
