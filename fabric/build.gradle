@@ -20,8 +20,10 @@ repositories {
     maven { url = 'https://maven.fabricmc.net/' }
 }
 
-runClient.doFirst {
-    args = ['--username', "henkelmax${new Random().nextInt(1000)}"]
+tasks.named('runClient', JavaExec) {
+    doFirst {
+        args = ['--username', "henkelmax${new Random().nextInt(1000)}"]
+    }
 }
 
 dependencies {
