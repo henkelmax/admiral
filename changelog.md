@@ -1,1 +1,1 @@
-- Added suggestion provider for function arguments
+- Allow public inherited methods in check for commands on command class
