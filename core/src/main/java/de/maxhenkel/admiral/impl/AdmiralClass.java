@@ -42,10 +42,11 @@ public class AdmiralClass<S, C> {
         commands = Arrays.asList(clazz.getDeclaredAnnotationsByType(Command.class));
         requiredPermissions = PermissionAnnotationUtil.getPermissions(clazz);
 
-        Method[] declaredMethods = clazz.getDeclaredMethods();
+        HashSet<Method> allMethods = new HashSet<>(Arrays.asList(clazz.getDeclaredMethods()));
+        allMethods.addAll(Arrays.asList(clazz.getMethods()));
 
         int registeredMethods = 0;
-        for (Method method : declaredMethods) {
+        for (Method method : allMethods) {
             method.setAccessible(true);
             if (method.getDeclaredAnnotationsByType(Command.class).length == 0) {
                 continue;
