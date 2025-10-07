@@ -1,2 +1,1 @@
-- Updated to 1.21.9
-- Allow public inherited methods in check for commands on command class
+- Updated to 1.21.10
