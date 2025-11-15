@@ -150,8 +150,9 @@ public class AdmiralMethod<S, C> {
             // TODO Command result object
             return 1;
         } catch (Exception e) {
-            Log.LOGGER.log(Level.SEVERE, "Error while executing command", e);
-            throw ExceptionUtils.getAsCommandSyntaxException(e);
+            RuntimeException nonCommandSyntaxException = ExceptionUtils.getAsCommandSyntaxException(e);
+            Log.LOGGER.log(Level.SEVERE, "Error while executing command", nonCommandSyntaxException);
+            throw nonCommandSyntaxException;
         }
     }
 
