@@ -23,6 +23,7 @@ public class AdmiralMod implements ModInitializer {
             MinecraftAdmiral.builder(dispatcher, registryAccess)
                     .addCommandClasses(
                             ExampleCommands.class,
+                            ExceptionCommands.class,
                             IntegerCommands.class,
                             PlayerCommands.class,
                             AliasCommands.class,
