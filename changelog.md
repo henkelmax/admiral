@@ -1,1 +1,1 @@
-- Allow public inherited methods in check for commands on command class
+- Fixed error being logged if a command syntax exception was thrown
