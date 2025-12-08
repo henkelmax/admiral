@@ -1,1 +1,1 @@
-- Fixed error being logged if a command syntax exception was thrown
+- Updated to 1.21.11
