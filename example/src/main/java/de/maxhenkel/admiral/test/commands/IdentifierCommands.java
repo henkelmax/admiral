@@ -6,18 +6,18 @@ import de.maxhenkel.admiral.arguments.PoiTypeResourceOrTag;
 import de.maxhenkel.admiral.arguments.StructureResourceOrTagKey;
 import de.maxhenkel.admiral.test.AdmiralMod;
 import net.minecraft.advancements.AdvancementHolder;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
-@Command("resourcelocation")
-public class ResourceLocationCommands {
+@Command("identifier")
+public class IdentifierCommands {
 
-    @Command("resourcelocation")
-    public void resourcelocation(ResourceLocation value) {
-        AdmiralMod.LOGGER.info("resourcelocation: {}", value);
+    @Command("identifier")
+    public void identifier(Identifier value) {
+        AdmiralMod.LOGGER.info("identifier: {}", value);
     }
 
     @Command("advancement")

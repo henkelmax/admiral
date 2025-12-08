@@ -36,7 +36,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.commands.FunctionCommand;
 import net.minecraft.server.level.ColumnPos;
 import net.minecraft.server.level.ServerLevel;
@@ -117,7 +117,7 @@ public class MinecraftArgumentTypes {
         argumentRegistry.register(Tag.class, NbtTagArgument::nbtTag);
         argumentRegistry.register(ObjectiveCriteria.class, ObjectiveCriteriaArgument::criteria);
         argumentRegistry.register(OperationArgument.Operation.class, OperationArgument::operation);
-        argumentRegistry.register(ResourceLocation.class, ResourceLocationArgument::id);
+        argumentRegistry.register(Identifier.class, IdentifierArgument::id);
         argumentRegistry.register(Mirror.class, TemplateMirrorArgument::templateMirror);
         argumentRegistry.register(Rotation.class, TemplateRotationArgument::templateRotation);
         argumentRegistry.register(UUID.class, UuidArgument::uuid);
@@ -163,7 +163,7 @@ public class MinecraftArgumentTypes {
                 (ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, ItemPredicateArgument.Result>) ctx -> ctx == null ? null : ItemPredicateArgument.itemPredicate(ctx)
         );
 
-        argumentRegistry.<CommandSourceStack, CommandBuildContext, ResourceLocation, ServerLevel>register(
+        argumentRegistry.<CommandSourceStack, CommandBuildContext, Identifier, ServerLevel>register(
                 ServerLevel.class,
                 DimensionArgument::dimension,
                 (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : DimensionArgument.getDimension(context, name)

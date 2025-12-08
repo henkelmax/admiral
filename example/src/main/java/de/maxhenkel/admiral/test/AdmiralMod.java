@@ -8,6 +8,7 @@ import de.maxhenkel.admiral.test.types.NonWrapperDouble;
 import de.maxhenkel.admiral.test.types.NonWrapperOptionalDouble;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.minecraft.server.permissions.Permissions;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,7 +34,7 @@ public class AdmiralMod implements ModInitializer {
                             WrapperCommands.class,
                             LevelCommands.class,
                             ParticleCommands.class,
-                            ResourceLocationCommands.class,
+                            IdentifierCommands.class,
                             PermissionSuggestionCommands.class,
                             OptionalCommands.class
                     ).setPermissionManager((source, permission) -> {
@@ -42,7 +43,7 @@ public class AdmiralMod implements ModInitializer {
                         } else if (permission.equals("admiral.test.perm2")) {
                             return false;
                         } else {
-                            return source.hasPermission(2);
+                            return source.permissions().hasPermission(Permissions.COMMANDS_MODERATOR);
                         }
                     })
                     .addArgumentTypes(argumentRegistry -> {
