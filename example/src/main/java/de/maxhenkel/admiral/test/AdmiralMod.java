@@ -36,7 +36,8 @@ public class AdmiralMod implements ModInitializer {
                             ParticleCommands.class,
                             IdentifierCommands.class,
                             PermissionSuggestionCommands.class,
-                            OptionalCommands.class
+                            OptionalCommands.class,
+                            OtherCommands.class
                     ).setPermissionManager((source, permission) -> {
                         if (permission.equals("admiral.test.perm1")) {
                             return true;

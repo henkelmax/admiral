@@ -184,13 +184,17 @@ dependencies {
 | `Players`                        | `EntityArgument::players`                    | Fails if no player was found           |
 | `OptionalEntities`               | `EntityArgument::entities`                   |                                        |
 | `OptionalPlayers`                | `EntityArgument::players`                    |                                        |
+| `WaypointTransmitter`            | `EntityArgument::entity`                     |                                        |
 | `DisplaySlot`                    | `ScoreboardSlotArgument::displaySlot`        |                                        |
 | `Style`                          | `ScoreboardSlotArgument::style`              |                                        |
 | `ScoreHolder`                    | `ScoreHolderArgument::scoreHolder`           |                                        |
 | `ScoreHolders`                   | `ScoreHolderArgument::scoreHolders`          |                                        |
 | `Slot`                           | `SlotArgument::slot`                         |                                        |
+| `SlotRange`                      | `SlotsArgument::slots`                       |                                        |
 | `Team`                           | `TeamArgument::team`                         |                                        |
 | `Time`                           | `TimeArgument::time`                         | Can have `@Min`                        |
+| `MinMaxBounds.Ints`              | `RangeArgument::intRange`                    |                                        |
+| `MinMaxBounds.Doubles`           | `RangeArgument::floatRange`                  |                                        |
 | `BlockPos`                       | `BlockPosArgument::blockPos`                 |                                        |
 | `LoadedBlockPos`                 | `BlockPosArgument::blockPos`                 |                                        |
 | `SpawnableBlockPos`              | `BlockPosArgument::blockPos`                 |                                        |
@@ -204,6 +208,7 @@ dependencies {
 | `AngleArgument.SingleAngle`      | `AngleArgument::angle`                       |                                        |
 | `ChatFormatting`                 | `ColorArgument::color`                       |                                        |
 | `Component`                      | `ComponentArgument::textComponent`           |                                        |
+| `HexColor`                       | `HexColorArgument::hexColor`                 |                                        |
 | `CompoundTag`                    | `CompoundTagArgument::compoundTag`           |                                        |
 | `EntityAnchorArgument.Anchor`    | `EntityAnchorArgument::anchor`               |                                        |
 | `GameType`                       | `GameModeArgument::gameMode`                 |                                        |
