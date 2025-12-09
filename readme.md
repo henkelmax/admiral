@@ -247,3 +247,5 @@ dependencies {
 | `LootTable`                      | `ResourceOrIdArgument::lootTable`            |                                        |
 | `LootTableLootTable`             | `ResourceOrIdArgument::lootModifier`         |                                        |
 | `LootItemCondition`              | `ResourceOrIdArgument::lootPredicate`        |                                        |
+| `Dialog`                         | `ResourceOrIdArgument::dialog`               |                                        |
+| `GameTestInstances`              | `ResourceSelectorArgument::resourceSelector` |                                        |

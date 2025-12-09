@@ -29,9 +29,11 @@ import net.minecraft.commands.arguments.item.ItemPredicateArgument;
 import net.minecraft.commands.arguments.selector.EntitySelector;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.gametest.framework.GameTestInstance;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -39,6 +41,7 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.commands.FunctionCommand;
+import net.minecraft.server.dialog.Dialog;
 import net.minecraft.server.level.ColumnPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -59,6 +62,7 @@ import net.minecraft.world.scores.Objective;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
 import net.minecraft.world.waypoints.WaypointTransmitter;
 
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -203,9 +207,19 @@ public class MinecraftArgumentTypes {
                 (ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, Advancement>) ctx -> (ArgumentType) ResourceOrIdArgument.lootPredicate(ctx),
                 (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ResourceOrIdArgument.getLootPredicate(context, name).value()
         );
+        argumentRegistry.register(
+                Dialog.class,
+                (ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, Dialog>) ctx -> (ArgumentType) ResourceOrIdArgument.dialog(ctx),
+                (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ResourceOrIdArgument.getDialog(context, name).value()
+        );
         registerResourceOrTag(argumentRegistry, BiomeResourceOrTag.class, () -> Registries.BIOME, (ctx, name) -> new BiomeResourceOrTag(ResourceOrTagArgument.getResourceOrTag(ctx, name, Registries.BIOME)));
         registerResourceOrTag(argumentRegistry, PoiTypeResourceOrTag.class, () -> Registries.POINT_OF_INTEREST_TYPE, (ctx, name) -> new PoiTypeResourceOrTag(ResourceOrTagArgument.getResourceOrTag(ctx, name, Registries.POINT_OF_INTEREST_TYPE)));
         registerResourceOrTagKey(argumentRegistry, StructureResourceOrTagKey.class, () -> Registries.STRUCTURE, (ctx, name) -> new StructureResourceOrTagKey(ResourceOrTagKeyArgument.getResourceOrTagKey(ctx, name, Registries.STRUCTURE, DynamicExceptionTypes.ERROR_STRUCTURE_INVALID)));
+        argumentRegistry.register(
+                GameTestInstances.class,
+                (ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, Collection<Holder.Reference<GameTestInstance>>>) ctx -> ctx == null ? null : ResourceSelectorArgument.resourceSelector(ctx, Registries.TEST_INSTANCE),
+                (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : new GameTestInstances(ResourceSelectorArgument.getSelectedResources(context, name))
+        );
         argumentRegistry.register(DisplaySlot.class, ScoreboardSlotArgument::displaySlot);
         argumentRegistry.<CommandSourceStack, CommandBuildContext, ScoreHolderArgument.Result, ScoreHolder>register(ScoreHolder.class, ScoreHolderArgument::scoreHolder, (context, value) -> new ScoreHolder(value));
         argumentRegistry.<CommandSourceStack, CommandBuildContext, ScoreHolderArgument.Result, ScoreHolders>register(ScoreHolders.class, ScoreHolderArgument::scoreHolders, (context, value) -> new ScoreHolders(value));

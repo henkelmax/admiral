@@ -3,10 +3,12 @@ package de.maxhenkel.admiral.test.commands;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import de.maxhenkel.admiral.annotations.Command;
+import de.maxhenkel.admiral.arguments.GameTestInstances;
 import de.maxhenkel.admiral.arguments.HexColor;
 import de.maxhenkel.admiral.test.AdmiralMod;
 import net.minecraft.advancements.criterion.MinMaxBounds;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.server.dialog.Dialog;
 import net.minecraft.world.inventory.SlotRange;
 import net.minecraft.world.waypoints.WaypointTransmitter;
 
@@ -36,6 +38,16 @@ public class OtherCommands {
     @Command("slotrange")
     public void slotrange(CommandContext<CommandSourceStack> context, SlotRange slotRange) throws CommandSyntaxException {
         AdmiralMod.LOGGER.info("slotRange: {}", slotRange);
+    }
+
+    @Command("dialog")
+    public void dialog(CommandContext<CommandSourceStack> context, Dialog dialog) throws CommandSyntaxException {
+        AdmiralMod.LOGGER.info("dialog: {}", dialog);
+    }
+
+    @Command("gametestinstances")
+    public void gametestinstances(CommandContext<CommandSourceStack> context, GameTestInstances gameTestInstances) throws CommandSyntaxException {
+        AdmiralMod.LOGGER.info("gameTestInstances: {}", gameTestInstances);
     }
 
 }
