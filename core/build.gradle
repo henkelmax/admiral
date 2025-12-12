@@ -3,8 +3,10 @@ plugins {
     id 'maven-publish'
 }
 
+base {
+    archivesName = archives_base_name
+}
 group = maven_group
-archivesBaseName = archives_base_name
 version = library_version
 
 java {
@@ -36,7 +38,7 @@ publishing {
     publications {
         admiralCore(MavenPublication) {
             artifactId archives_base_name
-            artifact(jar.archivePath) {
+            artifact(jar) {
                 builtBy build
                 classifier null
             }

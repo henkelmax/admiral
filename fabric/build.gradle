@@ -11,8 +11,10 @@ java {
     targetCompatibility = JavaVersion.VERSION_21
 }
 
+base {
+    archivesName = archives_base_name
+}
 group = maven_group
-archivesBaseName = archives_base_name
 version = "${library_version}+${minecraft_version}"
 
 repositories {
