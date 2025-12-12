@@ -11,26 +11,31 @@ java {
     targetCompatibility = JavaVersion.VERSION_21
 }
 
+base {
+    archivesName = archives_base_name
+}
 group = maven_group
-archivesBaseName = archives_base_name
 version = "${library_version}+${minecraft_version}"
 
 minecraft {
     mappings channel: 'official', version: minecraft_version
-    copyIdeResources = true
 }
 
 repositories {
     mavenCentral()
-    maven { url 'https://maven.minecraftforge.net' }
+    maven minecraft.mavenizer
+    maven fg.forgeMaven
+    maven fg.minecraftLibsMaven
 }
 
 configurations {
+    minecraftLibrary {}
+    implementation.extendsFrom minecraftLibrary
     shadowMc.extendsFrom minecraftLibrary
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    implementation minecraft.dependency("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
 
     shadowMc project(':core')
     shadowMc project([path: ':minecraft', configuration: 'namedElements'])
@@ -63,11 +68,7 @@ shadowJar {
         exclude(dependency('com.mojang:brigadier'))
     }
 }
-shadowJar.dependsOn('reobfJar')
-
-reobf {
-    shadowJar {}
-}
+assemble.dependsOn('shadowJar')
 
 publishing {
     publications {
