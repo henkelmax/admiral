@@ -1,13 +1,13 @@
 plugins {
     id 'java'
     id 'maven-publish'
-    id 'fabric-loom'
+    id 'net.fabricmc.fabric-loom'
     id 'com.gradleup.shadow'
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
     withSourcesJar()
 }
 
@@ -28,8 +28,7 @@ repositories {
 
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
-    mappings loom.officialMojangMappings()
-    modCompileOnly "net.fabricmc:fabric-loader:${loader_version}"
+    compileOnly "net.fabricmc:fabric-loader:${loader_version}"
 
     shadow project(':core')
 
@@ -43,22 +42,31 @@ dependencies {
 
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = 'UTF-8'
-    it.options.release = 21
+    it.options.release = 25
 }
 
 shadowJar {
     configurations = [project.configurations.shadow]
-    archiveClassifier = 'shadow-dev'
     dependencies {
         exclude(dependency('com.google.code.findbugs:jsr305'))
         exclude(dependency('com.mojang:brigadier'))
     }
-}
 
-remapJar {
-    dependsOn shadowJar
-    inputFile = shadowJar.archiveFile.get()
+    jar {
+        archiveClassifier = 'dev'
+    }
+    archiveClassifier = ''
+    dependsOn tasks.jar
+    from(zipTree(tasks.jar.archiveFile))
+    def resourcesOutputDir = sourceSets.main.output.resourcesDir
+    exclude { FileTreeElement details ->
+        return details.file.absolutePath.startsWith(resourcesOutputDir.absolutePath)
+    }
+    doLast {
+        delete tasks.jar.archiveFile
+    }
 }
+assemble.dependsOn('shadowJar')
 
 tasks.register('shadedSourcesJar', Jar) {
     archiveClassifier = 'sources'

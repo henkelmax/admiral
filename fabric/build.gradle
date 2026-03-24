@@ -1,14 +1,14 @@
 plugins {
     id 'java'
     id 'maven-publish'
-    id 'fabric-loom'
+    id 'net.fabricmc.fabric-loom'
     id 'com.gradleup.shadow'
     id 'com.modrinth.minotaur'
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
 }
 
 base {
@@ -30,11 +30,10 @@ tasks.named('runClient', JavaExec) {
 
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
-    mappings loom.officialMojangMappings()
-    modCompileOnly "net.fabricmc:fabric-loader:${loader_version}"
+    compileOnly "net.fabricmc:fabric-loader:${loader_version}"
 
     shadow project(':core')
-    shadow project(path: ':minecraft', configuration: 'namedElements')
+    shadow project(':minecraft')
 
     compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
 }
@@ -47,28 +46,38 @@ processResources {
 
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = 'UTF-8'
-    it.options.release = 21
+    it.options.release = 25
 }
 
 shadowJar {
     configurations = [project.configurations.shadow]
-    archiveClassifier = 'shadow-dev'
     dependencies {
         exclude(dependency('com.google.code.findbugs:jsr305'))
         exclude(dependency('com.mojang:brigadier'))
     }
-}
 
-remapJar {
-    dependsOn shadowJar
-    inputFile = shadowJar.archiveFile.get()
+
+    jar {
+        archiveClassifier = 'dev'
+    }
+    archiveClassifier = ''
+    dependsOn tasks.jar
+    from(zipTree(tasks.jar.archiveFile))
+    def resourcesOutputDir = sourceSets.main.output.resourcesDir
+    exclude { FileTreeElement details ->
+        return details.file.absolutePath.startsWith(resourcesOutputDir.absolutePath)
+    }
+    doLast {
+        delete tasks.jar.archiveFile
+    }
 }
+assemble.dependsOn('shadowJar')
 
 publishing {
     publications {
         admiralFabric(MavenPublication) {
             artifactId archives_base_name
-            artifact(remapJar) {
+            artifact(shadowJar) {
                 builtBy build
                 classifier null
             }
@@ -91,7 +100,7 @@ modrinth {
     projectId = modrinth_id
     versionNumber = "${version}+fabric"
     versionName = "Admiral Fabric ${version}"
-    uploadFile = remapJar
+    uploadFile = shadowJar
     versionType = release_type.toUpperCase()
     changelog = rootProject.file('changelog.md').text
     gameVersions = supported_minecraft_versions.split(',').collect { it.trim() }
