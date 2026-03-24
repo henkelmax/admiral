@@ -7,11 +7,11 @@ plugins {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+java.toolchain.languageVersion = JavaLanguageVersion.of(25)
 
 base {
     archivesName = archives_base_name
@@ -27,7 +27,7 @@ dependencies {
     implementation "net.neoforged:neoforge:${neoforge_version}"
 
     shadow project(':core')
-    shadow project(path: ':minecraft', configuration: 'namedElements')
+    shadow project(':minecraft')
 
     compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
 }
@@ -40,7 +40,7 @@ processResources {
 
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = 'UTF-8'
-    it.options.release = 21
+    it.options.release = 25
 }
 
 shadowJar {
