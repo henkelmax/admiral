@@ -20,16 +20,16 @@ This project contains four different modules:
 - [Issues](https://github.com/henkelmax/admiral/issues)
 - [License](LICENSE)
 
-## Supported versions
+## Minecraft Versions
 
 - `26.1`, `26.1.1` (Branch [master](https://github.com/henkelmax/admiral/tree/master))
 - `1.21.11` (Branch [1.21.11](https://github.com/henkelmax/admiral/tree/1.21.11))
 - `1.21.2`, `1.21.3`, `1.21.4`, `1.21.5`, `1.21.6`, `1.21.7`, `1.21.8`, `1.21.9`, `1.21.10` (Branch [1.21.10](https://github.com/henkelmax/admiral/tree/1.21.10))
 - `1.20.5`, `1.20.6`, `1.21`, `1.21.1` (Branch [1.21.1](https://github.com/henkelmax/admiral/tree/1.21.1))
-- `1.20.3`, `1.20.4` (Branch [1.20.4](https://github.com/henkelmax/admiral/tree/1.20.4))
-- `1.20.2` (Branch [1.20.2](https://github.com/henkelmax/admiral/tree/1.20.2))
-- `1.19.4`, `1.20` and `1.20.1` (Branch [1.20.1](https://github.com/henkelmax/admiral/tree/1.20.1))
-- `1.19`, `1.19.1` and `1.19.2` (Branch [1.19.2](https://github.com/henkelmax/admiral/tree/1.19.2))
+- `1.20.3`, `1.20.4` (Branch [1.20.4](https://github.com/henkelmax/admiral/tree/1.20.4), not actively developed anymore)
+- `1.20.2` (Branch [1.20.2](https://github.com/henkelmax/admiral/tree/1.20.2), not actively developed anymore)
+- `1.19.4`, `1.20` and `1.20.1` (Branch [1.20.1](https://github.com/henkelmax/admiral/tree/1.20.1), not actively developed anymore)
+- `1.19`, `1.19.1` and `1.19.2` (Branch [1.19.2](https://github.com/henkelmax/admiral/tree/1.19.2), not actively developed anymore)
 
 ## Usage
 
