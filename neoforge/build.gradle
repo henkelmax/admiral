@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'maven-publish'
-    id 'net.neoforged.gradle.userdev' version "${neogradle_version}"
+    id 'net.neoforged.moddev' version "${moddevgradle_version}"
     id 'com.gradleup.shadow'
     id 'com.modrinth.minotaur'
 }
@@ -23,9 +23,11 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    implementation "net.neoforged:neoforge:${neoforge_version}"
+neoForge {
+    version = neoforge_version
+}
 
+dependencies {
     shadow project(':core')
     shadow project(':minecraft')
 
