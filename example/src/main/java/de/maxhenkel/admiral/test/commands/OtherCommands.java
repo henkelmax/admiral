@@ -6,7 +6,7 @@ import de.maxhenkel.admiral.annotations.Command;
 import de.maxhenkel.admiral.arguments.GameTestInstances;
 import de.maxhenkel.admiral.arguments.HexColor;
 import de.maxhenkel.admiral.test.AdmiralMod;
-import net.minecraft.advancements.criterion.MinMaxBounds;
+import net.minecraft.advancements.predicates.MinMaxBounds;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.dialog.Dialog;
 import net.minecraft.world.inventory.SlotRange;

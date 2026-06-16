@@ -14,7 +14,7 @@ import de.maxhenkel.admiral.impl.arguments.ResourceOrTagKeyBase;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
-import net.minecraft.advancements.criterion.MinMaxBounds;
+import net.minecraft.advancements.predicates.MinMaxBounds;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.*;
@@ -38,6 +38,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.commands.FunctionCommand;
@@ -59,6 +60,7 @@ import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.DisplaySlot;
 import net.minecraft.world.scores.Objective;
+import net.minecraft.world.scores.TeamColor;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
 import net.minecraft.world.waypoints.WaypointTransmitter;
 
@@ -134,7 +136,7 @@ public class MinecraftArgumentTypes {
 
         // net.minecraft.commands.arguments
         argumentRegistry.register(AngleArgument.SingleAngle.class, AngleArgument::angle);
-        argumentRegistry.register(ChatFormatting.class, ColorArgument::color);
+        argumentRegistry.register(TeamColor.class, TeamColorArgument::teamColor);
         argumentRegistry.register(
                 Component.class,
                 (ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, Component>) ctx -> ctx == null ? null : ComponentArgument.textComponent(ctx)

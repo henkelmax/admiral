@@ -8,10 +8,14 @@ An open-source annotation based command handling library for [Brigadier](https:/
 
 This project contains four different modules:
 
-- `admiral-core` The core module containing the annotation processor and all built-in argument types from [Brigadier](https://github.com/Mojang/brigadier).
-- `admiral-minecraft` A module containing all Minecraft-specific argument types, compiled with official Minecraft mappings.
-- `admiral-fabric` A module containing everything from the `core` and `minecraft` modules, compiled with Fabric intermediary mappings.
-- `admiral-neoforge` A module containing everything from the `core` and `minecraft` modules, compiled with official mappings for NeoForge.
+- `admiral-core` The core module containing the annotation processor and all built-in argument types
+  from [Brigadier](https://github.com/Mojang/brigadier).
+- `admiral-minecraft` A module containing all Minecraft-specific argument types, compiled with official Minecraft
+  mappings.
+- `admiral-fabric` A module containing everything from the `core` and `minecraft` modules, compiled with Fabric
+  intermediary mappings.
+- `admiral-neoforge` A module containing everything from the `core` and `minecraft` modules, compiled with official
+  mappings for NeoForge.
 - `admiral-forge` A module containing everything from the `core` and `minecraft` modules, compiled with SRG mappings.
 
 ## Links
@@ -22,14 +26,18 @@ This project contains four different modules:
 
 ## Minecraft Versions
 
-- `26.1`, `26.1.1`, `26.1.2` (Branch [master](https://github.com/henkelmax/admiral/tree/master))
+- `26.2` (Branch [master](https://github.com/henkelmax/admiral/tree/master))
+- `26.1`, `26.1.1`, `26.1.2`, (Branch [26.1](https://github.com/henkelmax/admiral/tree/26.1))
 - `1.21.11` (Branch [1.21.11](https://github.com/henkelmax/admiral/tree/1.21.11))
-- `1.21.2`, `1.21.3`, `1.21.4`, `1.21.5`, `1.21.6`, `1.21.7`, `1.21.8`, `1.21.9`, `1.21.10` (Branch [1.21.10](https://github.com/henkelmax/admiral/tree/1.21.10))
+- `1.21.2`, `1.21.3`, `1.21.4`, `1.21.5`, `1.21.6`, `1.21.7`, `1.21.8`, `1.21.9`, `1.21.10` (
+  Branch [1.21.10](https://github.com/henkelmax/admiral/tree/1.21.10))
 - `1.20.5`, `1.20.6`, `1.21`, `1.21.1` (Branch [1.21.1](https://github.com/henkelmax/admiral/tree/1.21.1))
 - `1.20.3`, `1.20.4` (Branch [1.20.4](https://github.com/henkelmax/admiral/tree/1.20.4), not actively developed anymore)
 - `1.20.2` (Branch [1.20.2](https://github.com/henkelmax/admiral/tree/1.20.2), not actively developed anymore)
-- `1.19.4`, `1.20` and `1.20.1` (Branch [1.20.1](https://github.com/henkelmax/admiral/tree/1.20.1), not actively developed anymore)
-- `1.19`, `1.19.1` and `1.19.2` (Branch [1.19.2](https://github.com/henkelmax/admiral/tree/1.19.2), not actively developed anymore)
+- `1.19.4`, `1.20` and `1.20.1` (Branch [1.20.1](https://github.com/henkelmax/admiral/tree/1.20.1), not actively
+  developed anymore)
+- `1.19`, `1.19.1` and `1.19.2` (Branch [1.19.2](https://github.com/henkelmax/admiral/tree/1.19.2), not actively
+  developed anymore)
 
 ## Usage
 
@@ -114,7 +122,6 @@ public class MyCommands {
 It is generally recommended to use [Shadow](https://github.com/johnrengelman/shadow) to shade Admiral into your mod.
 This avoids conflicts with other mods using different versions of Admiral.
 
-
 Alternatively use the following setup to include Admiral in your mod.
 
 ### Fabric
@@ -137,8 +144,9 @@ dependencies {
 
 ### NeoForge/Forge
 
+Alternatively you can use [JarJar](https://docs.minecraftforge.net/en/fg-6.x/dependencies/jarinjar/) to include the
+Admiral jar in your mod:
 
-Alternatively you can use [JarJar](https://docs.minecraftforge.net/en/fg-6.x/dependencies/jarinjar/) to include the Admiral jar in your mod:
 ``` gradle
 jarJar.enable()
 
@@ -207,7 +215,7 @@ dependencies {
 | `Vec3`                           | `Vec3Argument::vec3`                         |                                        |
 | `UncenteredVec3`                 | `Vec3Argument::vec3`                         | Does not center the X and Z coordinate |
 | `AngleArgument.SingleAngle`      | `AngleArgument::angle`                       |                                        |
-| `ChatFormatting`                 | `ColorArgument::color`                       |                                        |
+| `TeamColor`                      | `TeamColorArgument::teamColor`               |                                        |
 | `Component`                      | `ComponentArgument::textComponent`           |                                        |
 | `HexColor`                       | `HexColorArgument::hexColor`                 |                                        |
 | `CompoundTag`                    | `CompoundTagArgument::compoundTag`           |                                        |
