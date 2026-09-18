@@ -61,11 +61,6 @@ public class WrapperCommands {
         AdmiralMod.LOGGER.info("attributereference: {}", ref);
     }
 
-    @Command("configuredfeaturereference")
-    public void configuredfeaturereference(ConfiguredFeatureReference ref) {
-        AdmiralMod.LOGGER.info("configuredfeaturereference: {}", ref);
-    }
-
     @Command("structurereference")
     public void structurereference(StructureReference ref) {
         AdmiralMod.LOGGER.info("structurereference: {}", ref);

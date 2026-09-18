@@ -26,8 +26,9 @@ This project contains four different modules:
 
 ## Minecraft Versions
 
-- `26.2` (Branch [master](https://github.com/henkelmax/admiral/tree/master))
-- `26.1`, `26.1.1`, `26.1.2`, (Branch [26.1](https://github.com/henkelmax/admiral/tree/26.1))
+- `26.3` (Branch [master](https://github.com/henkelmax/admiral/tree/master))
+- `26.2` (Branch [26.2](https://github.com/henkelmax/admiral/tree/26.2))
+- `26.1`, `26.1.1`, `26.1.2` (Branch [26.1](https://github.com/henkelmax/admiral/tree/26.1))
 - `1.21.11` (Branch [1.21.11](https://github.com/henkelmax/admiral/tree/1.21.11))
 - `1.21.2`, `1.21.3`, `1.21.4`, `1.21.5`, `1.21.6`, `1.21.7`, `1.21.8`, `1.21.9`, `1.21.10` (
   Branch [1.21.10](https://github.com/henkelmax/admiral/tree/1.21.10))
@@ -247,7 +248,7 @@ dependencies {
 | `EnchantmentReference`           | `ResourceOrTagArgument::resourceOrTag`       |                                        |
 | `AdvancementHolder`              | `ResourceKeyArgument::id`                    |                                        |
 | `RecipeHolder`                   | `ResourceKeyArgument::id`                    |                                        |
-| `ConfiguredFeatureReference`     | `ResourceKeyArgument::key`                   |                                        |
+| `Feature`                        | `ResourceOrIdArgument::feature`              |                                        |
 | `StructureReference`             | `ResourceKeyArgument::key`                   |                                        |
 | `StructureTemplatePoolReference` | `ResourceKeyArgument::key`                   |                                        |
 | `BiomeResourceOrTag`             | `ResourceOrTagArgument::resourceOrTag`       |                                        |

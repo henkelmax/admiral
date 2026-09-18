@@ -11,7 +11,6 @@ import de.maxhenkel.admiral.argumenttype.RawArgumentTypeConverter;
 import de.maxhenkel.admiral.impl.arguments.ReferenceBase;
 import de.maxhenkel.admiral.impl.arguments.ResourceOrTagBase;
 import de.maxhenkel.admiral.impl.arguments.ResourceOrTagKeyBase;
-import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.predicates.MinMaxBounds;
@@ -38,7 +37,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.commands.FunctionCommand;
@@ -53,6 +51,7 @@ import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
@@ -177,11 +176,10 @@ public class MinecraftArgumentTypes {
         argumentRegistry.<CommandSourceStack, CommandBuildContext, MinMaxBounds.Ints, MinMaxBounds.Ints>register(MinMaxBounds.Ints.class, RangeArgument::intRange, (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : RangeArgument.Ints.getRange(context, name));
         argumentRegistry.<CommandSourceStack, CommandBuildContext, MinMaxBounds.Doubles, MinMaxBounds.Doubles>register(MinMaxBounds.Doubles.class, RangeArgument::floatRange, (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : RangeArgument.Floats.getRange(context, name));
         registerResourceReference(argumentRegistry, AttributeReference.class, () -> Registries.ATTRIBUTE, (ctx, name) -> new AttributeReference(ResourceArgument.getAttribute(ctx, name)));
-        registerResourceReference(argumentRegistry, EntityReference.class, () -> Registries.ENTITY_TYPE, (ctx, name) -> new EntityReference(ResourceArgument.getEntityType(ctx, name)));
+        registerResourceReference(argumentRegistry, EntityReference.class, () -> Registries.ENTITY_TYPE, (ctx, name) -> new EntityReference(ResourceArgument.getResource(ctx, name, Registries.ENTITY_TYPE)));
         registerResourceReference(argumentRegistry, SummonableEntityReference.class, () -> Registries.ENTITY_TYPE, (ctx, name) -> new SummonableEntityReference(ResourceArgument.getSummonableEntityType(ctx, name)));
         registerResourceReference(argumentRegistry, MobEffectReference.class, () -> Registries.MOB_EFFECT, (ctx, name) -> new MobEffectReference(ResourceArgument.getMobEffect(ctx, name)));
         registerResourceReference(argumentRegistry, EnchantmentReference.class, () -> Registries.ENCHANTMENT, (ctx, name) -> new EnchantmentReference(ResourceArgument.getEnchantment(ctx, name)));
-        registerResourceKeyReference(argumentRegistry, ConfiguredFeatureReference.class, () -> Registries.CONFIGURED_FEATURE, (ctx, name) -> new ConfiguredFeatureReference(ResourceKeyArgument.getConfiguredFeature(ctx, name)));
         registerResourceKeyReference(argumentRegistry, StructureReference.class, () -> Registries.STRUCTURE, (ctx, name) -> new StructureReference(ResourceKeyArgument.getStructure(ctx, name)));
         registerResourceKeyReference(argumentRegistry, StructureTemplatePoolReference.class, () -> Registries.TEMPLATE_POOL, (ctx, name) -> new StructureTemplatePoolReference(ResourceKeyArgument.getStructureTemplatePool(ctx, name)));
         argumentRegistry.register(
@@ -213,6 +211,11 @@ public class MinecraftArgumentTypes {
                 Dialog.class,
                 (ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, Dialog>) ctx -> (ArgumentType) ResourceOrIdArgument.dialog(ctx),
                 (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ResourceOrIdArgument.getDialog(context, name).value()
+        );
+        argumentRegistry.register(
+                Feature.class,
+                (ContextArgumentTypeSupplier<CommandSourceStack, CommandBuildContext, Feature>) ctx -> (ArgumentType) ResourceOrIdArgument.feature(ctx),
+                (RawArgumentTypeConverter) (context, name, value) -> value == null ? null : ResourceOrIdArgument.getFeature(context, name).value()
         );
         registerResourceOrTag(argumentRegistry, BiomeResourceOrTag.class, () -> Registries.BIOME, (ctx, name) -> new BiomeResourceOrTag(ResourceOrTagArgument.getResourceOrTag(ctx, name, Registries.BIOME)));
         registerResourceOrTag(argumentRegistry, PoiTypeResourceOrTag.class, () -> Registries.POINT_OF_INTEREST_TYPE, (ctx, name) -> new PoiTypeResourceOrTag(ResourceOrTagArgument.getResourceOrTag(ctx, name, Registries.POINT_OF_INTEREST_TYPE)));

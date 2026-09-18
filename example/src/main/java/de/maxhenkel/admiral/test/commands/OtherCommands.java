@@ -10,6 +10,7 @@ import net.minecraft.advancements.predicates.MinMaxBounds;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.dialog.Dialog;
 import net.minecraft.world.inventory.SlotRange;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.waypoints.WaypointTransmitter;
 
 @Command("other")
@@ -43,6 +44,11 @@ public class OtherCommands {
     @Command("dialog")
     public void dialog(CommandContext<CommandSourceStack> context, Dialog dialog) throws CommandSyntaxException {
         AdmiralMod.LOGGER.info("dialog: {}", dialog);
+    }
+
+    @Command("feature")
+    public void feature(CommandContext<CommandSourceStack> context, Feature feature) throws CommandSyntaxException {
+        AdmiralMod.LOGGER.info("feature: {}", feature);
     }
 
     @Command("gametestinstances")
